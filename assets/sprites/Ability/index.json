@@ -1,0 +1,82 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "ready",
+      "path": "ready.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "ready-lit",
+      "path": "ready-lit.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "wait-1",
+      "path": "wait-1.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "wait-2",
+      "path": "wait-2.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "wait-3",
+      "path": "wait-3.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "wait-4",
+      "path": "wait-4.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "wait-5",
+      "path": "wait-5.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    }
+  ]
+}

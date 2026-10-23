@@ -1,0 +1,79 @@
+import "math"
+
+var slot int
+
+onStart => {
+    hide
+    for i := 1; i < 192; i++ { clone i }
+}
+
+onCloned data => {
+    slot = data.(int)
+    directions := []string{"up","right","down","left"}
+    digits := []string{"0","1","2","3","4","5","6","7","8","9"}
+    previousKind := 0
+    visualAge := 0
+    forever => {
+        k := entity[slot]
+        if k != previousKind { visualAge = 0; previousKind = k }
+        if !paused { visualAge++ }
+        if k == 0 || (k == 1 && shield > 0 && shield%10 < 4) || (k == 12 && age[slot] >= 30) {
+            hide
+        } else {
+            setHeading Right
+            if k == 1 {
+                f := (ticks/5)%4
+                if shotDelay > 10 { f = 4 } else if shotDelay > 7 { f = 5 }
+                setCostume "plant-"+directions[facing[slot]]+"-"+digits[f]
+            }
+            if k == 2 {
+                f := (age[slot]/5)%4
+                if age[slot]%(100+zombieType[slot]*15) >= 30 && age[slot]%(100+zombieType[slot]*15) < 35 { f = 4 }
+                if hitFlash[slot] > 0 { f = 5 }
+                if dashWindup[slot] > 0 { f = 6 }
+                if dashRemaining[slot] > 0 { f = 7 }
+                setCostume "zombie-"+digits[zombieType[slot]]+"-"+directions[facing[slot]]+"-"+digits[f]
+            }
+            if k == 3 { setCostume "hedge" }
+            if k == 4 { setCostume "stone" }
+            if k == 5 { setCostume "house" }
+            if k == 6 {
+                if rocket[slot] {
+                    if incendiary[slot] { setCostume "fire-missile-"+digits[ticks%2] } else { setCostume "missile-"+digits[ticks%2] }
+                    setHeading 90-math.Atan2(vely[slot],velx[slot])*180/math.Pi
+                } else {
+                    if incendiary[slot] { setCostume "fire-seed-"+digits[ticks%2] } else { setCostume "seed-"+digits[ticks%2] }
+                }
+            }
+            if k == 7 { setCostume "spore-"+digits[ticks%2] }
+            if k == 8 {
+                f := age[slot]/2
+                if f > 6 { f = 6 }
+                setCostume "pop-"+digits[f]
+            }
+            if k == 9 {
+                setCostume "mega-"+digits[(age[slot]/2)%4]
+                setHeading float64(facing[slot]*90)
+            }
+            if k == 10 {
+                f := visualAge/3
+                if f > 9 { f = 9 }
+                setCostume "burst-"+digits[f]
+            }
+            if k == 11 {
+                f := growth[slot]/10
+                if f > 4 { f = 4 }
+                setCostume "grow-"+digits[f]
+            }
+            if k == 12 { setCostume "death-"+digits[age[slot]/5] }
+            if k == 13 { setCostume "portal-"+digits[(age[slot]/4)%5] }
+            if k == 14 { setCostume "pickup-"+digits[pickupType[slot]]+"-"+digits[(ticks/6)%2] }
+            if k == 15 { setCostume "cherry-burst-"+digits[age[slot]/4] }
+            setXpos px[slot]
+            setYpos py[slot]
+            if k == 14 { setYpos py[slot]+sin(float64(ticks+slot*7)*0.12)*2 }
+            show
+        }
+        wait 0.02
+    }
+}

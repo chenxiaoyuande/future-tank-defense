@@ -1,0 +1,22 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "frame",
+      "path": "frame.svg",
+      "x": 240.0,
+      "y": 180.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 480,
+      "imageHeight": 360
+    }
+  ]
+}

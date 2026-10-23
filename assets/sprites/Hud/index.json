@@ -1,0 +1,112 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "d0",
+      "path": "d0.svg",
+      "x": 6.0,
+      "y": 8.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 12,
+      "imageHeight": 16
+    },
+    {
+      "name": "d1",
+      "path": "d1.svg",
+      "x": 6.0,
+      "y": 8.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 12,
+      "imageHeight": 16
+    },
+    {
+      "name": "d2",
+      "path": "d2.svg",
+      "x": 6.0,
+      "y": 8.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 12,
+      "imageHeight": 16
+    },
+    {
+      "name": "d3",
+      "path": "d3.svg",
+      "x": 6.0,
+      "y": 8.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 12,
+      "imageHeight": 16
+    },
+    {
+      "name": "d4",
+      "path": "d4.svg",
+      "x": 6.0,
+      "y": 8.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 12,
+      "imageHeight": 16
+    },
+    {
+      "name": "d5",
+      "path": "d5.svg",
+      "x": 6.0,
+      "y": 8.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 12,
+      "imageHeight": 16
+    },
+    {
+      "name": "d6",
+      "path": "d6.svg",
+      "x": 6.0,
+      "y": 8.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 12,
+      "imageHeight": 16
+    },
+    {
+      "name": "d7",
+      "path": "d7.svg",
+      "x": 6.0,
+      "y": 8.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 12,
+      "imageHeight": 16
+    },
+    {
+      "name": "d8",
+      "path": "d8.svg",
+      "x": 6.0,
+      "y": 8.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 12,
+      "imageHeight": 16
+    },
+    {
+      "name": "d9",
+      "path": "d9.svg",
+      "x": 6.0,
+      "y": 8.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 12,
+      "imageHeight": 16
+    }
+  ]
+}

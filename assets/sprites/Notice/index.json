@@ -1,0 +1,42 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "win",
+      "path": "win.svg",
+      "x": 169.0,
+      "y": 90.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 338,
+      "imageHeight": 180
+    },
+    {
+      "name": "lose",
+      "path": "lose.svg",
+      "x": 169.0,
+      "y": 90.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 338,
+      "imageHeight": 180
+    },
+    {
+      "name": "pause",
+      "path": "pause.svg",
+      "x": 169.0,
+      "y": 90.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 338,
+      "imageHeight": 180
+    }
+  ]
+}

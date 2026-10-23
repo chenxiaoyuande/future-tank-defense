@@ -1,0 +1,39 @@
+{
+  "backdrops": [
+    {
+      "name": "暮光花园",
+      "path": "painted-ground.png",
+      "x": 724.0,
+      "y": 543.0,
+      "bitmapResolution": 3,
+      "imageWidth": 1448,
+      "imageHeight": 1086
+    }
+  ],
+  "backdropIndex": 0,
+  "map": {
+    "width": 480,
+    "height": 360
+  },
+  "run": {
+    "width": 480,
+    "height": 360
+  },
+  "physics": false,
+  "stretchMode": true,
+  "maxFPS": 60,
+  "fontPreferences": [
+    "garden-chinese",
+    "default"
+  ],
+  "zorder": [
+    "Atmosphere",
+    "Actor",
+    "Health",
+    "Frame",
+    "Hud",
+    "Ability",
+    "Buff",
+    "Notice"
+  ]
+}

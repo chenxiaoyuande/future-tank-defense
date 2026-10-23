@@ -1,0 +1,1872 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "normal",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "plant-up-0",
+      "path": "plant-up-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-up-1",
+      "path": "plant-up-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-up-2",
+      "path": "plant-up-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-up-3",
+      "path": "plant-up-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-up-4",
+      "path": "plant-up-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-up-5",
+      "path": "plant-up-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-up-0",
+      "path": "zombie-0-up-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-up-0",
+      "path": "zombie-1-up-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-up-0",
+      "path": "zombie-2-up-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-up-1",
+      "path": "zombie-0-up-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-up-1",
+      "path": "zombie-1-up-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-up-1",
+      "path": "zombie-2-up-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-up-2",
+      "path": "zombie-0-up-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-up-2",
+      "path": "zombie-1-up-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-up-2",
+      "path": "zombie-2-up-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-up-3",
+      "path": "zombie-0-up-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-up-3",
+      "path": "zombie-1-up-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-up-3",
+      "path": "zombie-2-up-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-up-4",
+      "path": "zombie-0-up-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-up-4",
+      "path": "zombie-1-up-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-up-4",
+      "path": "zombie-2-up-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-up-5",
+      "path": "zombie-0-up-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-up-5",
+      "path": "zombie-1-up-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-up-5",
+      "path": "zombie-2-up-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-up-6",
+      "path": "zombie-0-up-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-up-6",
+      "path": "zombie-1-up-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-up-6",
+      "path": "zombie-2-up-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-up-7",
+      "path": "zombie-0-up-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-up-7",
+      "path": "zombie-1-up-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-up-7",
+      "path": "zombie-2-up-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-right-0",
+      "path": "plant-right-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-right-1",
+      "path": "plant-right-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-right-2",
+      "path": "plant-right-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-right-3",
+      "path": "plant-right-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-right-4",
+      "path": "plant-right-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-right-5",
+      "path": "plant-right-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-right-0",
+      "path": "zombie-0-right-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-right-0",
+      "path": "zombie-1-right-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-right-0",
+      "path": "zombie-2-right-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-right-1",
+      "path": "zombie-0-right-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-right-1",
+      "path": "zombie-1-right-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-right-1",
+      "path": "zombie-2-right-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-right-2",
+      "path": "zombie-0-right-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-right-2",
+      "path": "zombie-1-right-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-right-2",
+      "path": "zombie-2-right-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-right-3",
+      "path": "zombie-0-right-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-right-3",
+      "path": "zombie-1-right-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-right-3",
+      "path": "zombie-2-right-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-right-4",
+      "path": "zombie-0-right-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-right-4",
+      "path": "zombie-1-right-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-right-4",
+      "path": "zombie-2-right-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-right-5",
+      "path": "zombie-0-right-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-right-5",
+      "path": "zombie-1-right-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-right-5",
+      "path": "zombie-2-right-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-right-6",
+      "path": "zombie-0-right-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-right-6",
+      "path": "zombie-1-right-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-right-6",
+      "path": "zombie-2-right-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-right-7",
+      "path": "zombie-0-right-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-right-7",
+      "path": "zombie-1-right-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-right-7",
+      "path": "zombie-2-right-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-down-0",
+      "path": "plant-down-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-down-1",
+      "path": "plant-down-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-down-2",
+      "path": "plant-down-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-down-3",
+      "path": "plant-down-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-down-4",
+      "path": "plant-down-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-down-5",
+      "path": "plant-down-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-down-0",
+      "path": "zombie-0-down-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-down-0",
+      "path": "zombie-1-down-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-down-0",
+      "path": "zombie-2-down-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-down-1",
+      "path": "zombie-0-down-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-down-1",
+      "path": "zombie-1-down-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-down-1",
+      "path": "zombie-2-down-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-down-2",
+      "path": "zombie-0-down-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-down-2",
+      "path": "zombie-1-down-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-down-2",
+      "path": "zombie-2-down-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-down-3",
+      "path": "zombie-0-down-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-down-3",
+      "path": "zombie-1-down-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-down-3",
+      "path": "zombie-2-down-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-down-4",
+      "path": "zombie-0-down-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-down-4",
+      "path": "zombie-1-down-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-down-4",
+      "path": "zombie-2-down-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-down-5",
+      "path": "zombie-0-down-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-down-5",
+      "path": "zombie-1-down-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-down-5",
+      "path": "zombie-2-down-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-down-6",
+      "path": "zombie-0-down-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-down-6",
+      "path": "zombie-1-down-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-down-6",
+      "path": "zombie-2-down-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-down-7",
+      "path": "zombie-0-down-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-down-7",
+      "path": "zombie-1-down-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-down-7",
+      "path": "zombie-2-down-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-left-0",
+      "path": "plant-left-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-left-1",
+      "path": "plant-left-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-left-2",
+      "path": "plant-left-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-left-3",
+      "path": "plant-left-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-left-4",
+      "path": "plant-left-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "plant-left-5",
+      "path": "plant-left-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-left-0",
+      "path": "zombie-0-left-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-left-0",
+      "path": "zombie-1-left-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-left-0",
+      "path": "zombie-2-left-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-left-1",
+      "path": "zombie-0-left-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-left-1",
+      "path": "zombie-1-left-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-left-1",
+      "path": "zombie-2-left-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-left-2",
+      "path": "zombie-0-left-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-left-2",
+      "path": "zombie-1-left-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-left-2",
+      "path": "zombie-2-left-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-left-3",
+      "path": "zombie-0-left-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-left-3",
+      "path": "zombie-1-left-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-left-3",
+      "path": "zombie-2-left-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-left-4",
+      "path": "zombie-0-left-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-left-4",
+      "path": "zombie-1-left-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-left-4",
+      "path": "zombie-2-left-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-left-5",
+      "path": "zombie-0-left-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-left-5",
+      "path": "zombie-1-left-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-left-5",
+      "path": "zombie-2-left-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-left-6",
+      "path": "zombie-0-left-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-left-6",
+      "path": "zombie-1-left-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-left-6",
+      "path": "zombie-2-left-6.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-0-left-7",
+      "path": "zombie-0-left-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-1-left-7",
+      "path": "zombie-1-left-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "zombie-2-left-7",
+      "path": "zombie-2-left-7.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "hedge",
+      "path": "hedge.svg",
+      "x": 13.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 26,
+      "imageHeight": 30
+    },
+    {
+      "name": "stone",
+      "path": "stone.svg",
+      "x": 14.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 28,
+      "imageHeight": 30
+    },
+    {
+      "name": "house",
+      "path": "house.svg",
+      "x": 23.0,
+      "y": 24.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 48
+    },
+    {
+      "name": "seed-0",
+      "path": "seed-0.svg",
+      "x": 9.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 18,
+      "imageHeight": 18
+    },
+    {
+      "name": "spore-0",
+      "path": "spore-0.svg",
+      "x": 10.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 20,
+      "imageHeight": 20
+    },
+    {
+      "name": "seed-1",
+      "path": "seed-1.svg",
+      "x": 9.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 18,
+      "imageHeight": 18
+    },
+    {
+      "name": "spore-1",
+      "path": "spore-1.svg",
+      "x": 10.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 20,
+      "imageHeight": 20
+    },
+    {
+      "name": "pop-0",
+      "path": "pop-0.svg",
+      "x": 30.0,
+      "y": 30.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 60,
+      "imageHeight": 60
+    },
+    {
+      "name": "pop-1",
+      "path": "pop-1.svg",
+      "x": 30.0,
+      "y": 30.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 60,
+      "imageHeight": 60
+    },
+    {
+      "name": "pop-2",
+      "path": "pop-2.svg",
+      "x": 30.0,
+      "y": 30.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 60,
+      "imageHeight": 60
+    },
+    {
+      "name": "pop-3",
+      "path": "pop-3.svg",
+      "x": 30.0,
+      "y": 30.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 60,
+      "imageHeight": 60
+    },
+    {
+      "name": "pop-4",
+      "path": "pop-4.svg",
+      "x": 30.0,
+      "y": 30.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 60,
+      "imageHeight": 60
+    },
+    {
+      "name": "pop-5",
+      "path": "pop-5.svg",
+      "x": 30.0,
+      "y": 30.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 60,
+      "imageHeight": 60
+    },
+    {
+      "name": "pop-6",
+      "path": "pop-6.svg",
+      "x": 30.0,
+      "y": 30.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 60,
+      "imageHeight": 60
+    },
+    {
+      "name": "mega-0",
+      "path": "mega-0.svg",
+      "x": 27.0,
+      "y": 16.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 54,
+      "imageHeight": 32
+    },
+    {
+      "name": "mega-1",
+      "path": "mega-1.svg",
+      "x": 27.0,
+      "y": 16.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 54,
+      "imageHeight": 32
+    },
+    {
+      "name": "mega-2",
+      "path": "mega-2.svg",
+      "x": 27.0,
+      "y": 16.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 54,
+      "imageHeight": 32
+    },
+    {
+      "name": "mega-3",
+      "path": "mega-3.svg",
+      "x": 27.0,
+      "y": 16.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 54,
+      "imageHeight": 32
+    },
+    {
+      "name": "burst-0",
+      "path": "burst-0.svg",
+      "x": 100.0,
+      "y": 100.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 200,
+      "imageHeight": 200
+    },
+    {
+      "name": "burst-1",
+      "path": "burst-1.svg",
+      "x": 100.0,
+      "y": 100.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 200,
+      "imageHeight": 200
+    },
+    {
+      "name": "burst-2",
+      "path": "burst-2.svg",
+      "x": 100.0,
+      "y": 100.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 200,
+      "imageHeight": 200
+    },
+    {
+      "name": "burst-3",
+      "path": "burst-3.svg",
+      "x": 100.0,
+      "y": 100.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 200,
+      "imageHeight": 200
+    },
+    {
+      "name": "burst-4",
+      "path": "burst-4.svg",
+      "x": 100.0,
+      "y": 100.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 200,
+      "imageHeight": 200
+    },
+    {
+      "name": "burst-5",
+      "path": "burst-5.svg",
+      "x": 100.0,
+      "y": 100.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 200,
+      "imageHeight": 200
+    },
+    {
+      "name": "burst-6",
+      "path": "burst-6.svg",
+      "x": 100.0,
+      "y": 100.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 200,
+      "imageHeight": 200
+    },
+    {
+      "name": "burst-7",
+      "path": "burst-7.svg",
+      "x": 100.0,
+      "y": 100.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 200,
+      "imageHeight": 200
+    },
+    {
+      "name": "burst-8",
+      "path": "burst-8.svg",
+      "x": 100.0,
+      "y": 100.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 200,
+      "imageHeight": 200
+    },
+    {
+      "name": "burst-9",
+      "path": "burst-9.svg",
+      "x": 100.0,
+      "y": 100.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 200,
+      "imageHeight": 200
+    },
+    {
+      "name": "missile-0",
+      "path": "missile-0.svg",
+      "x": 16.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 32,
+      "imageHeight": 20
+    },
+    {
+      "name": "missile-1",
+      "path": "missile-1.svg",
+      "x": 16.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 32,
+      "imageHeight": 20
+    },
+    {
+      "name": "grow-0",
+      "path": "grow-0.svg",
+      "x": 16.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 32,
+      "imageHeight": 34
+    },
+    {
+      "name": "grow-1",
+      "path": "grow-1.svg",
+      "x": 16.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 32,
+      "imageHeight": 34
+    },
+    {
+      "name": "grow-2",
+      "path": "grow-2.svg",
+      "x": 16.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 32,
+      "imageHeight": 34
+    },
+    {
+      "name": "grow-3",
+      "path": "grow-3.svg",
+      "x": 16.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 32,
+      "imageHeight": 34
+    },
+    {
+      "name": "grow-4",
+      "path": "grow-4.svg",
+      "x": 16.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 32,
+      "imageHeight": 34
+    },
+    {
+      "name": "death-0",
+      "path": "death-0.svg",
+      "x": 24.0,
+      "y": 24.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 48
+    },
+    {
+      "name": "death-1",
+      "path": "death-1.svg",
+      "x": 24.0,
+      "y": 24.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 48
+    },
+    {
+      "name": "death-2",
+      "path": "death-2.svg",
+      "x": 24.0,
+      "y": 24.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 48
+    },
+    {
+      "name": "death-3",
+      "path": "death-3.svg",
+      "x": 24.0,
+      "y": 24.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 48
+    },
+    {
+      "name": "death-4",
+      "path": "death-4.svg",
+      "x": 24.0,
+      "y": 24.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 48
+    },
+    {
+      "name": "death-5",
+      "path": "death-5.svg",
+      "x": 24.0,
+      "y": 24.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 48
+    },
+    {
+      "name": "portal-0",
+      "path": "portal-0.svg",
+      "x": 23.0,
+      "y": 23.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 46
+    },
+    {
+      "name": "portal-1",
+      "path": "portal-1.svg",
+      "x": 23.0,
+      "y": 23.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 46
+    },
+    {
+      "name": "portal-2",
+      "path": "portal-2.svg",
+      "x": 23.0,
+      "y": 23.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 46
+    },
+    {
+      "name": "portal-3",
+      "path": "portal-3.svg",
+      "x": 23.0,
+      "y": 23.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 46
+    },
+    {
+      "name": "portal-4",
+      "path": "portal-4.svg",
+      "x": 23.0,
+      "y": 23.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 46
+    },
+    {
+      "name": "pickup-0-0",
+      "path": "pickup-0-0.svg",
+      "x": 20.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 42
+    },
+    {
+      "name": "pickup-0-1",
+      "path": "pickup-0-1.svg",
+      "x": 20.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 42
+    },
+    {
+      "name": "pickup-1-0",
+      "path": "pickup-1-0.svg",
+      "x": 20.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 42
+    },
+    {
+      "name": "pickup-1-1",
+      "path": "pickup-1-1.svg",
+      "x": 20.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 42
+    },
+    {
+      "name": "pickup-2-0",
+      "path": "pickup-2-0.svg",
+      "x": 20.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 42
+    },
+    {
+      "name": "pickup-2-1",
+      "path": "pickup-2-1.svg",
+      "x": 20.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 42
+    },
+    {
+      "name": "pickup-3-0",
+      "path": "pickup-3-0.svg",
+      "x": 20.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 42
+    },
+    {
+      "name": "pickup-3-1",
+      "path": "pickup-3-1.svg",
+      "x": 20.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 42
+    },
+    {
+      "name": "fire-seed-0",
+      "path": "fire-seed-0.svg",
+      "x": 10.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 20,
+      "imageHeight": 20
+    },
+    {
+      "name": "fire-missile-0",
+      "path": "fire-missile-0.svg",
+      "x": 18.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 36,
+      "imageHeight": 20
+    },
+    {
+      "name": "fire-seed-1",
+      "path": "fire-seed-1.svg",
+      "x": 10.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 20,
+      "imageHeight": 20
+    },
+    {
+      "name": "fire-missile-1",
+      "path": "fire-missile-1.svg",
+      "x": 18.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 36,
+      "imageHeight": 20
+    },
+    {
+      "name": "cherry-burst-0",
+      "path": "cherry-burst-0.svg",
+      "x": 110.0,
+      "y": 110.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 220
+    },
+    {
+      "name": "cherry-burst-1",
+      "path": "cherry-burst-1.svg",
+      "x": 110.0,
+      "y": 110.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 220
+    },
+    {
+      "name": "cherry-burst-2",
+      "path": "cherry-burst-2.svg",
+      "x": 110.0,
+      "y": 110.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 220
+    },
+    {
+      "name": "cherry-burst-3",
+      "path": "cherry-burst-3.svg",
+      "x": 110.0,
+      "y": 110.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 220
+    },
+    {
+      "name": "cherry-burst-4",
+      "path": "cherry-burst-4.svg",
+      "x": 110.0,
+      "y": 110.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 220
+    },
+    {
+      "name": "cherry-burst-5",
+      "path": "cherry-burst-5.svg",
+      "x": 110.0,
+      "y": 110.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 220
+    },
+    {
+      "name": "cherry-burst-6",
+      "path": "cherry-burst-6.svg",
+      "x": 110.0,
+      "y": 110.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 220
+    },
+    {
+      "name": "cherry-burst-7",
+      "path": "cherry-burst-7.svg",
+      "x": 110.0,
+      "y": 110.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 220
+    }
+  ]
+}

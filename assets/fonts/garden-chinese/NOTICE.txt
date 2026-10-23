@@ -1,0 +1,1 @@
+WenQuanYi Zen Hei subset; glyph outlines used in SVG artwork. Source: Ubuntu fonts-wqy-zenhei package. See LICENSE.txt for license and font embedding exception.

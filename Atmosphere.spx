@@ -1,0 +1,117 @@
+import "math"
+
+var effect int
+
+onStart => {
+    hide
+    for i := 0; i < 34; i++ { clone i }
+}
+
+onCloned data => {
+    effect = data.(int)
+    names := []string{"aura-0","aura-1","aura-2","aura-3"}
+    bars := []string{"cooldown-0","cooldown-1","cooldown-2","cooldown-3","cooldown-4","cooldown-5","cooldown-6","cooldown-7","cooldown-8","cooldown-9","cooldown-10"}
+    previousScore := score
+    feedbackUntil := 0
+    forever => {
+        hide
+        if effect < 12 {
+            setCostume "firefly"
+            setXpos float64((effect*83)%420-210)+sin(float64(ticks+effect*23)*0.018)*9
+            setYpos float64((effect*47)%260-130)+cos(float64(ticks+effect*31)*0.014)*6
+            setSize 0.6+0.5*(1+sin(float64(ticks+effect*29)*0.07))/2
+            show
+        }
+        if effect >= 12 && effect < 22 && state == 0 {
+            ordinal := 0
+            for i := 2; i < 192; i++ {
+                if entity[i] == 6 || entity[i] == 7 || entity[i] == 9 {
+                    if ordinal == effect-12 {
+                        if entity[i] == 6 { if rocket[i] { setCostume "missile-trail" } else { setCostume "seed-trail" } } else if entity[i] == 9 { setCostume "mega-trail" } else { setCostume "spore-trail" }
+                        if entity[i] == 6 && incendiary[i] { setCostume "fire-trail" }
+                        setXpos px[i]-velx[i]*10
+                        setYpos py[i]-vely[i]*10
+                        setHeading 90-math.Atan2(vely[i],velx[i])*180/math.Pi
+                        show
+                    }
+                    ordinal++
+                }
+            }
+        }
+        if effect == 22 && entity[1] == 1 {
+            setXpos px[1]
+            setYpos py[1]-12
+            setCostume names[(ticks/4)%4]
+            if shield > 0 { setSize 1.15 } else { setSize 0.78 }
+            show
+        }
+        if effect == 23 && entity[1] == 1 && shotDelay > 9 {
+            setCostume "muzzle"
+            setXpos px[1]+vx(facing[1])*19
+            setYpos py[1]+vy(facing[1])*19
+            setHeading float64(facing[1]*90)
+            setSize 0.65+float64(shotDelay-9)*0.08
+            show
+        }
+        if effect == 24 {
+            if score < previousScore { previousScore = score; feedbackUntil = 0 }
+            if score > previousScore {
+                previousScore = score
+                feedbackUntil = ticks+28
+            }
+            if ticks < feedbackUntil && state == 0 {
+                setCostume "reward"
+                setXpos px[1]
+                setYpos py[1]+22+float64(28-feedbackUntil+ticks)*0.4
+                setLayer Front
+                show
+            }
+        }
+        if effect == 25 {
+            setCostume bars[10-(ultimateCooldown+24)/25]
+            setXpos -112
+            setYpos -155
+            show
+        }
+        if effect == 26 && shield > 0 && entity[1] == 1 {
+            setCostume "shield"
+            setXpos px[1]
+            setYpos py[1]
+            setSize 0.9+sin(float64(ticks)*0.15)*0.04
+            show
+        }
+        if effect >= 27 && effect < 30 {
+            i := zombieSlots[effect-27]
+            if i > 0 && entity[i] == 2 && zombieType[i] == 2 && (dashWindup[i] > 0 || dashRemaining[i] > 0) {
+                if dashWindup[i] > 0 { setCostume "dash-warning" } else { setCostume "dash-trail" }
+                offset := 36.0; if dashRemaining[i] > 0 { offset = -36 }
+                setXpos px[i]+vx(facing[i])*offset
+                setYpos py[i]+vy(facing[i])*offset
+                setHeading float64(facing[i]*90)
+                setSize 1
+                show
+            }
+        }
+        if effect == 30 && state == 0 {
+            if upgradeFlash > 0 { setCostume "upgrade" } else if weaponLevel == 1 { setCostume "weapon-ready" } else {
+                if kills == 0 { setCostume "weapon-0" } else if kills == 1 { setCostume "weapon-1" } else { setCostume "weapon-2" }
+            }
+            setSize 1
+            setHeading Right
+            setXpos 0
+            setYpos 126
+            setLayer Front
+            show
+        }
+        if effect >= 31 && entity[1] == 1 && state == 0 {
+            setHeading Right
+            setSize 1
+            setXpos px[1]
+            setYpos py[1]
+            if effect == 31 && shieldBuff > 0 && shieldCharges > 0 { setCostume "nut-shield"; show }
+            if effect == 32 && speedBuff > 0 { setCostume "speed-wake"; setHeading float64(facing[1]*90); show }
+            if effect == 33 && pepperBuff > 0 { setCostume "pepper-aura"; show }
+        }
+        wait 0.04
+    }
+}

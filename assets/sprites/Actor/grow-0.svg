@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="34" viewBox="0 0 32 34"><defs>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#d4f8a0"/><stop offset=".45" stop-color="#76c886"/><stop offset="1" stop-color="#236c62"/></linearGradient>
+<radialGradient id="face" cx=".3" cy=".2" r=".85"><stop stop-color="#d9ffb9"/><stop offset=".55" stop-color="#8cdb9b"/><stop offset="1" stop-color="#337f75"/></radialGradient>
+<linearGradient id="gold" x2=".2" y2="1"><stop stop-color="#fff4b1"/><stop offset=".4" stop-color="#ffc96a"/><stop offset="1" stop-color="#c48145"/></linearGradient>
+<linearGradient id="petal" x2=".2" y2="1"><stop stop-color="#fff6c2"/><stop offset=".45" stop-color="#ffda79"/><stop offset="1" stop-color="#d88455"/></linearGradient>
+<radialGradient id="skin" cx=".3" cy=".2" r=".9"><stop stop-color="#d5e3ba"/><stop offset=".5" stop-color="#9faf9a"/><stop offset="1" stop-color="#657b80"/></radialGradient>
+<linearGradient id="coat" x2=".8" y2="1"><stop stop-color="#c69299"/><stop offset=".5" stop-color="#8f697e"/><stop offset="1" stop-color="#48455d"/></linearGradient>
+<radialGradient id="orb" cx=".35" cy=".3"><stop stop-color="#fff7f8"/><stop offset=".35" stop-color="#d9a8ef"/><stop offset="1" stop-color="#73578f"/></radialGradient>
+<linearGradient id="hedge" x2=".4" y2="1"><stop stop-color="#b5de86"/><stop offset=".25" stop-color="#6aa872"/><stop offset=".7" stop-color="#39766b"/><stop offset="1" stop-color="#225453"/></linearGradient>
+<linearGradient id="stone" x2=".8" y2="1"><stop stop-color="#aebeb2"/><stop offset=".5" stop-color="#6d8790"/><stop offset="1" stop-color="#3d596a"/></linearGradient>
+</defs><ellipse cx="16" cy="29" rx="14" ry="3" fill="#193c3b" opacity=".5"/><path d="M6 28l4-8 5 5 6-5 4 8Z" fill="#795e47"/><ellipse cx="16" cy="28" rx="11" ry="2" fill="#b89964"/></svg>

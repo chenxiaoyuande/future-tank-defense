@@ -1,0 +1,14 @@
+onStart => {
+    setXpos 112
+    setYpos -155
+    show
+    labels := []string{"ready","wait-1","wait-2","wait-3","wait-4","wait-5"}
+    forever => {
+        seconds := (ultimateCooldown+49)/50
+        if seconds > 5 { seconds = 5 }
+        setCostume labels[seconds]
+        if seconds == 0 && (ticks/12)%2 == 0 { setCostume "ready-lit" }
+        setLayer Front
+        wait 0.04
+    }
+}
