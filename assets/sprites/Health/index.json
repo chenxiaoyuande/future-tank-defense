@@ -1,0 +1,132 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "hp-0-0",
+      "path": "hp-0-0.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-0-1",
+      "path": "hp-0-1.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-0-2",
+      "path": "hp-0-2.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-0-3",
+      "path": "hp-0-3.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-0-4",
+      "path": "hp-0-4.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-0-5",
+      "path": "hp-0-5.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-1-0",
+      "path": "hp-1-0.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-1-1",
+      "path": "hp-1-1.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-2-0",
+      "path": "hp-2-0.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-2-1",
+      "path": "hp-2-1.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-2-2",
+      "path": "hp-2-2.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    },
+    {
+      "name": "hp-2-3",
+      "path": "hp-2-3.svg",
+      "x": 20.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 10
+    }
+  ]
+}

@@ -1,0 +1,352 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "normal",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "firefly",
+      "path": "firefly.svg",
+      "x": 5.0,
+      "y": 5.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 10
+    },
+    {
+      "name": "seed-trail",
+      "path": "seed-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "spore-trail",
+      "path": "spore-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "aura-0",
+      "path": "aura-0.svg",
+      "x": 28.0,
+      "y": 16.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 56,
+      "imageHeight": 32
+    },
+    {
+      "name": "aura-1",
+      "path": "aura-1.svg",
+      "x": 28.0,
+      "y": 16.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 56,
+      "imageHeight": 32
+    },
+    {
+      "name": "aura-2",
+      "path": "aura-2.svg",
+      "x": 28.0,
+      "y": 16.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 56,
+      "imageHeight": 32
+    },
+    {
+      "name": "aura-3",
+      "path": "aura-3.svg",
+      "x": 28.0,
+      "y": 16.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 56,
+      "imageHeight": 32
+    },
+    {
+      "name": "muzzle",
+      "path": "muzzle.svg",
+      "x": 20.0,
+      "y": 20.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 40
+    },
+    {
+      "name": "shield",
+      "path": "shield.svg",
+      "x": 32.0,
+      "y": 32.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 64,
+      "imageHeight": 64
+    },
+    {
+      "name": "reward",
+      "path": "reward.svg",
+      "x": 32.0,
+      "y": 11.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 64,
+      "imageHeight": 22
+    },
+    {
+      "name": "mega-trail",
+      "path": "mega-trail.svg",
+      "x": 36.0,
+      "y": 14.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 72,
+      "imageHeight": 28
+    },
+    {
+      "name": "cooldown-0",
+      "path": "cooldown-0.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-1",
+      "path": "cooldown-1.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-2",
+      "path": "cooldown-2.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-3",
+      "path": "cooldown-3.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-4",
+      "path": "cooldown-4.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-5",
+      "path": "cooldown-5.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-6",
+      "path": "cooldown-6.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-7",
+      "path": "cooldown-7.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-8",
+      "path": "cooldown-8.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-9",
+      "path": "cooldown-9.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-10",
+      "path": "cooldown-10.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "missile-trail",
+      "path": "missile-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "dash-warning",
+      "path": "dash-warning.svg",
+      "x": 41.0,
+      "y": 12.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 82,
+      "imageHeight": 24
+    },
+    {
+      "name": "dash-trail",
+      "path": "dash-trail.svg",
+      "x": 41.0,
+      "y": 12.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 82,
+      "imageHeight": 24
+    },
+    {
+      "name": "upgrade",
+      "path": "upgrade.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "weapon-ready",
+      "path": "weapon-ready.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "weapon-0",
+      "path": "weapon-0.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "weapon-1",
+      "path": "weapon-1.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "weapon-2",
+      "path": "weapon-2.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "fire-trail",
+      "path": "fire-trail.svg",
+      "x": 24.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 20
+    },
+    {
+      "name": "nut-shield",
+      "path": "nut-shield.svg",
+      "x": 34.0,
+      "y": 34.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 68,
+      "imageHeight": 68
+    },
+    {
+      "name": "speed-wake",
+      "path": "speed-wake.svg",
+      "x": 37.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 74,
+      "imageHeight": 36
+    },
+    {
+      "name": "pepper-aura",
+      "path": "pepper-aura.svg",
+      "x": 31.0,
+      "y": 31.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 62,
+      "imageHeight": 62
+    }
+  ]
+}
