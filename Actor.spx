@@ -17,14 +17,17 @@ onCloned data => {
         k := entity[slot]
         if k != previousKind { visualAge = 0; previousKind = k }
         if !paused { visualAge++ }
-        if k == 0 || (k == 1 && shield > 0 && shield%10 < 4) || (k == 12 && age[slot] >= 30) {
+        protection := shield; if slot == 191 { protection = shield2 }
+        if k == 0 || (k == 1 && protection > 0 && protection%10 < 4) || (k == 12 && (age[slot] >= 30 || zombieType[slot] == 3)) {
             hide
         } else {
             setHeading Right
             if k == 1 {
                 f := (ticks/5)%4
                 if shotDelay > 10 { f = 4 } else if shotDelay > 7 { f = 5 }
-                setCostume "plant-"+directions[facing[slot]]+"-"+digits[f]
+                prefix := "plant-"; if slot == 191 { prefix = "partner-" }
+                if slot == 191 { f = (ticks/5)%4; if shotDelay2 > 10 { f = 4 } else if shotDelay2 > 7 { f = 5 } }
+                setCostume prefix+directions[facing[slot]]+"-"+digits[f]
             }
             if k == 2 {
                 f := (age[slot]/5)%4
@@ -32,7 +35,7 @@ onCloned data => {
                 if hitFlash[slot] > 0 { f = 5 }
                 if dashWindup[slot] > 0 { f = 6 }
                 if dashRemaining[slot] > 0 { f = 7 }
-                setCostume "zombie-"+digits[zombieType[slot]]+"-"+directions[facing[slot]]+"-"+digits[f]
+                if zombieType[slot] == 3 { setCostume "boss" } else { setCostume "zombie-"+digits[zombieType[slot]]+"-"+directions[facing[slot]]+"-"+digits[f] }
             }
             if k == 3 { setCostume "hedge" }
             if k == 4 { setCostume "stone" }

@@ -1,7 +1,7 @@
 onStart => {
     setXpos 112
     setYpos -155
-    show
+    hide
     labels := []string{"ready","wait-1","wait-2","wait-3","wait-4","wait-5"}
     forever => {
         seconds := (ultimateCooldown+49)/50

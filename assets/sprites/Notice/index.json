@@ -9,34 +9,104 @@
   "collisionShapeType": "none",
   "costumes": [
     {
-      "name": "win",
-      "path": "win.svg",
-      "x": 169.0,
-      "y": 90.0,
+      "name": "menu-1-1",
+      "path": "menu-1-1.svg",
+      "x": 230.0,
+      "y": 156.0,
       "faceRight": 0,
       "bitmapResolution": 1,
-      "imageWidth": 338,
-      "imageHeight": 180
+      "imageWidth": 460,
+      "imageHeight": 312
+    },
+    {
+      "name": "menu-1-2",
+      "path": "menu-1-2.svg",
+      "x": 230.0,
+      "y": 156.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 460,
+      "imageHeight": 312
+    },
+    {
+      "name": "menu-1-3",
+      "path": "menu-1-3.svg",
+      "x": 230.0,
+      "y": 156.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 460,
+      "imageHeight": 312
+    },
+    {
+      "name": "menu-2-1",
+      "path": "menu-2-1.svg",
+      "x": 230.0,
+      "y": 156.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 460,
+      "imageHeight": 312
+    },
+    {
+      "name": "menu-2-2",
+      "path": "menu-2-2.svg",
+      "x": 230.0,
+      "y": 156.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 460,
+      "imageHeight": 312
+    },
+    {
+      "name": "menu-2-3",
+      "path": "menu-2-3.svg",
+      "x": 230.0,
+      "y": 156.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 460,
+      "imageHeight": 312
+    },
+    {
+      "name": "clear",
+      "path": "clear.svg",
+      "x": 210.0,
+      "y": 84.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 420,
+      "imageHeight": 168
+    },
+    {
+      "name": "win",
+      "path": "win.svg",
+      "x": 210.0,
+      "y": 84.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 420,
+      "imageHeight": 168
     },
     {
       "name": "lose",
       "path": "lose.svg",
-      "x": 169.0,
-      "y": 90.0,
+      "x": 210.0,
+      "y": 84.0,
       "faceRight": 0,
       "bitmapResolution": 1,
-      "imageWidth": 338,
-      "imageHeight": 180
+      "imageWidth": 420,
+      "imageHeight": 168
     },
     {
       "name": "pause",
       "path": "pause.svg",
-      "x": 169.0,
-      "y": 90.0,
+      "x": 210.0,
+      "y": 84.0,
       "faceRight": 0,
       "bitmapResolution": 1,
-      "imageWidth": 338,
-      "imageHeight": 180
+      "imageWidth": 420,
+      "imageHeight": 168
     }
   ]
 }

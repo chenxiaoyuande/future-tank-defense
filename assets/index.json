@@ -27,6 +27,7 @@
     "default"
   ],
   "zorder": [
+    "Scene",
     "Atmosphere",
     "Actor",
     "Health",
@@ -34,6 +35,7 @@
     "Hud",
     "Ability",
     "Buff",
+    "Campaign",
     "Notice"
   ]
 }
