@@ -1,0 +1,22 @@
+var ordinal int
+
+onStart => {
+    hide
+    for i := 0; i < 3; i++ { clone i }
+}
+onCloned data => {
+    ordinal = data.(int)
+    digits := []string{"0","1","2","3","4","5"}
+    forever => {
+        i := zombieSlots[ordinal]
+        hide
+        if i > 0 && entity[i] == 2 {
+            setCostume "hp-"+digits[zombieType[i]]+"-"+digits[hp[i]]
+            setXpos px[i]
+            setYpos py[i]+26
+            if hitFlash[i] > 0 { setSize 1.12 } else { setSize 1 }
+            show
+        }
+        wait 0.02
+    }
+}

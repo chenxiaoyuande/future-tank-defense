@@ -1,0 +1,33 @@
+var digit int
+
+onStart => {
+    hide
+    for i := 0; i < 9; i++ { clone i }
+}
+
+onCloned data => {
+    digit = data.(int)
+    names := []string{"d0","d1","d2","d3","d4","d5","d6","d7","d8","d9"}
+    setYpos 148
+    if digit < 5 { setXpos float64(-170+digit*10) }
+    if digit == 5 { setXpos -35 }
+    if digit > 5 { setXpos float64(112+(digit-6)*10) }
+    show
+    forever => {
+        value := 0
+        if digit == 0 { value = (score/10000)%10 }
+        if digit == 1 { value = (score/1000)%10 }
+        if digit == 2 { value = (score/100)%10 }
+        if digit == 3 { value = (score/10)%10 }
+        if digit == 4 { value = score%10 }
+        if digit == 5 { value = lives }
+        if digit == 6 { value = (kills/100)%10 }
+        if digit == 7 { value = (kills/10)%10 }
+        if digit == 8 { value = kills%10 }
+        if value < 0 { value = 0 }
+        if value > 9 { value = 9 }
+        setCostume names[value]
+        setLayer Front
+        wait 0.05
+    }
+}

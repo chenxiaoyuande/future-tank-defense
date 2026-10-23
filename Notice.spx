@@ -1,0 +1,18 @@
+onStart => {
+    setXpos 0
+    setYpos 0
+    forever => {
+        if state == 1 {
+            setCostume "win"
+            show
+        } else if state == -1 {
+            setCostume "lose"
+            show
+        } else if paused {
+            setCostume "pause"
+            show
+        } else { hide }
+        setLayer Front
+        wait 0.1
+    }
+}

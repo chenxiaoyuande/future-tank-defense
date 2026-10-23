@@ -1,0 +1,255 @@
+package main
+
+import (
+ "testing"
+ "math"
+ "encoding/json"
+ "os"
+)
+
+func prepare() {
+ restart(); for i:=2;i<192;i++ {entity[i]=0}
+ px[1]=-100;py[1]=-100;shield=1000;keys=map[int]bool{}
+}
+func count(k int) int {n:=0;for i:=2;i<192;i++ {if entity[i]==k {n++}};return n}
+func zombieAt(kind int,x,y float64) int {
+ i:=addEntity(2,x,y,1);zombieType[i]=kind;hp[i]=[]int{5,1,3}[kind];maxHP[i]=hp[i];dashCooldown[i]=150;return i
+}
+func TestHealthAndDeathOnce(t *testing.T) {
+ for kind,total:=range []int{5,1,3} {
+  prepare();i:=zombieAt(kind,0,50)
+  for n:=1;n<total;n++ {damageZombie(i,1);if entity[i]!=2 || hp[i]!=total-n || kills!=0 {t.Fatal("early death",kind,n)}}
+  damageZombie(i,1);damageZombie(i,3)
+  if entity[i]!=12 || kills!=1 || score!=100 || hp[i]!=0 {t.Fatal("death not counted once",kind)}
+ }
+}
+func TestSpawnVarietySafeAndFullHealth(t *testing.T) {
+ restart();keys=map[int]bool{};seen:=map[[2]int]bool{}
+ for n:=0;n<80;n++ {
+  i:=zombieSlots[n%3];oldX,oldY:=px[i],py[i];entity[i]=12;hp[i]=0
+  if !spawnZombie(i) {t.Fatal("no available spawn")}
+  seen[[2]int{int(px[i]),int(py[i])}]=true
+  if blocked(px[i],py[i],i) || math.Hypot(px[i]-px[1],py[i]-py[1])<=110 {t.Fatal("unsafe spawn")}
+  if entity[i]!=13 || hp[i]!=[]int{5,1,3}[zombieType[i]] || hp[i]!=maxHP[i] {t.Fatal("spawn health or portal")}
+  _=oldX;_=oldY
+ }
+ if len(seen)<15 {t.Fatal("spawn positions lack variety",len(seen))}
+}
+func TestDeathRespawnDelayAndPortal(t *testing.T) {
+ prepare();i:=zombieAt(2,0,0);damageZombie(i,3)
+ for n:=0;n<49;n++ {updateGame()}
+ if entity[i]!=12 {t.Fatal("respawn too early")}
+ updateGame();if entity[i]!=13 || hp[i]!=3 {t.Fatal("missing spawn portal")}
+ for n:=0;n<20;n++ {updateGame()}
+ if entity[i]!=2 || kills!=1 {t.Fatal("portal did not activate")}
+}
+func TestReservedSlotsCannotBeReused(t *testing.T) {
+ prepare();wall:=addEntity(3,0,0,0);breakHedge(wall);z:=zombieAt(0,80,80);damageZombie(z,5)
+ for n:=0;n<40;n++ {i:=addEntity(6,100,80,0);if i==wall||i==z {t.Fatal("reserved identity reused")}}
+ if entity[wall]!=11 || entity[z]!=12 {t.Fatal("reserved entities overwritten")}
+}
+func TestDashTimerWarningAndThreeCells(t *testing.T) {
+ prepare();i:=zombieAt(2,0,0);px[1]=200;py[1]=0
+ // Hold position with the test's surrounding stones until the warning starts.
+ for n:=0;n<137;n++ {px[i]=0;py[i]=0;age[i]++;updateZombie(i)}
+ if dashRemaining[i]!=0 || dashCooldown[i]!=13 {t.Fatal("dash before three seconds")}
+ px[i]=0;updateZombie(i)
+ if dashWindup[i]<=0 || facing[i]!=1 {t.Fatal("missing directional warning")}
+ for n:=0;n<11;n++ {updateZombie(i)}
+ if px[i]!=0 || dashCooldown[i]!=1 {t.Fatal("moved during charge warning")}
+ updateZombie(i)
+ if px[i]!=9 || dashCooldown[i]!=150 {t.Fatal("dash did not start at tick150")}
+ for n:=0;n<7;n++ {updateZombie(i)}
+ if math.Abs(px[i]-72)>0.001 || dashRemaining[i]!=0 {t.Fatal("dash distance is not three cells",px[i])}
+}
+func TestDashStopsAtWallAndDoesNotTunnel(t *testing.T) {
+ prepare();i:=zombieAt(2,0,0);facing[i]=1;dashRemaining[i]=72
+ wall:=addEntity(3,48,0,0)
+ for n:=0;n<8;n++ {updateZombie(i)}
+ if px[i]>=27 || entity[wall]!=3 || dashRemaining[i]!=0 {t.Fatal("dash crossed hedge",px[i])}
+}
+func TestDistinctMovementSpeeds(t *testing.T) {
+ speeds:=[]float64{.65,2.25,1.15}
+ for kind,speed:=range speeds {
+  prepare();i:=zombieAt(kind,0,0);age[i]=1;facing[i]=1;updateZombie(i)
+  if math.Abs(px[i]-speed)>1e-6 {t.Fatal("wrong movement speed",kind,px[i])}
+ }
+}
+func TestHedgeDelayAndGrowth(t *testing.T) {
+ prepare();i:=addEntity(3,0,0,0);breakHedge(i)
+ for n:=0;n<299;n++ {updateGame()}
+ if entity[i]!=11 || growth[i]!=0 || blocked(0,0,1) {t.Fatal("wall blocked while destroyed")}
+ for n:=0;n<25;n++ {updateGame()}
+ if entity[i]!=11 || growth[i]<=0 || growth[i]>=50 {t.Fatal("missing gradual growth")}
+ for n:=0;n<25;n++ {updateGame()}
+ if entity[i]!=3 || !blocked(0,0,1) {t.Fatal("hedge did not finish regrowing")}
+}
+func TestRegrowthWaitsForPlayerAndZombies(t *testing.T) {
+ for occupant:=0;occupant<3;occupant++ {
+  prepare();i:=addEntity(3,0,0,0);breakHedge(i);age[i]=400;growth[i]=49
+  if occupant==0 {px[1]=0;py[1]=0} else {k:=2;if occupant==2 {k=13};addEntity(k,0,0,0)}
+  updateHedge(i);if entity[i]!=11 || growth[i]!=0 {t.Fatal("wall trapped occupant",occupant)}
+  px[1]=-100;py[1]=-100;for j:=i+1;j<192;j++ {entity[j]=0}
+  for n:=0;n<50;n++ {updateHedge(i)}
+  if entity[i]!=3 {t.Fatal("wall never recovered")}
+ }
+}
+func TestUpgradeOnThirdKillAndFanDirections(t *testing.T) {
+ prepare()
+ for n:=0;n<3;n++ {
+  i:=zombieAt(1,0,80);damageZombie(i,1)
+  if n<2 && weaponLevel!=0 {t.Fatal("early upgrade")}
+ }
+ if weaponLevel!=1 || upgradeFlash!=100 {t.Fatal("no third-kill upgrade")}
+ for d:=0;d<4;d++ {
+  for i:=2;i<192;i++ {entity[i]=0};facing[1]=d;fire(1);shots:=0;cross:=[]float64{}
+  for i:=2;i<192;i++ {if entity[i]==6 {
+   shots++;if !rocket[i] || math.Abs(math.Hypot(velx[i],vely[i])-1)>1e-6 {t.Fatal("missile flag or normalized velocity")}
+   cross=append(cross,vx(d)*vely[i]-vy(d)*velx[i])
+  }}
+  if shots!=3 || math.Abs(cross[1])>1e-6 || math.Abs(cross[0]+cross[2])>1e-6 || cross[0]>=0 || cross[2]<=0 {t.Fatal("not symmetric fan",d,cross)}
+ }
+}
+func TestNormalShotAndMissileDamage(t *testing.T) {
+ prepare();px[1]=-80;py[1]=0;facing[1]=1;fire(1)
+ if count(6)!=1 {t.Fatal("initial attack must be single")}
+ for i:=2;i<192;i++ {entity[i]=0};weaponLevel=1
+ target:=zombieAt(0,0,0);fire(1)
+ for n:=0;n<8;n++ {updateGame()}
+ if hp[target]>=5 {t.Fatal("missiles failed to hit")}
+}
+func TestUpgradePersistsLifeButRestartResets(t *testing.T) {
+ prepare();kills=3;weaponLevel=1;shield=0;hitPlayer()
+ if lives!=2 || weaponLevel!=1 {t.Fatal("life reset upgrade")}
+ restart();if weaponLevel!=0 || kills!=0 || count(12)+count(13)!=3 {t.Fatal("restart did not reset")}
+}
+func TestUltimateCooldownFiveSeconds(t *testing.T) {
+ prepare();keys[KeyE]=true;updateUltimateInput()
+ if ultimateCooldown!=250 || count(9)!=1 {t.Fatal("initial ultimate")}
+ for n:=0;n<249;n++ {updateUltimateInput()}
+ if ultimateCooldown!=1 || castUltimate() {t.Fatal("cooldown early")}
+ updateUltimateInput();if ultimateCooldown!=0 || count(9)!=1 {t.Fatal("held key retriggered")}
+ keys[KeyE]=false;updateUltimateInput();keys[KeyE]=true;updateUltimateInput()
+ if count(9)!=2 {t.Fatal("cooldown failed to recover")}
+}
+func TestUltimateAreaDamageAndFriendlyImmunity(t *testing.T) {
+ prepare();heavy:=zombieAt(0,0,20);charge:=zombieAt(2,20,0);fast:=zombieAt(1,-20,0);far:=zombieAt(1,87,87)
+ wall:=addEntity(3,40,0,0);stone:=addEntity(4,-40,0,0);base:=addEntity(5,0,-20,0);spore:=addEntity(7,0,40,0)
+ detonate(0,0)
+ if hp[heavy]!=2 || entity[charge]!=12 || entity[fast]!=12 || entity[far]!=2 || kills!=2 {t.Fatal("blast damage or circular radius")}
+ if entity[wall]!=11 || entity[stone]!=4 || entity[base]!=5 || entity[spore]==7 || lives!=3 {t.Fatal("blast targets")}
+}
+func TestUltimateExplodesOnObstaclesAndBoundary(t *testing.T) {
+ for _,kind:=range []int{2,3,4,0} {
+  prepare();px[1]=-80;py[1]=0;facing[1]=1
+  if kind==2 {zombieAt(0,0,0)} else if kind>0 {addEntity(kind,0,0,0)}
+  castUltimate();for n:=0;n<36;n++ {updateGame()}
+  if count(9)!=0 {t.Fatal("ultimate never impacted",kind)}
+  if kind==3 && count(11)!=1 {t.Fatal("impact did not break hedge")}
+ }
+}
+func TestPauseFreezesAllTimers(t *testing.T) {
+ restart();keys=map[int]bool{};castUltimate();w:=addEntity(11,140,0,0);growth[w]=20;age[w]=310;paused=true
+ for n:=0;n<500;n++ {updateGame()}
+ if ticks!=0 || ultimateCooldown!=250 || growth[w]!=20 || age[w]!=310 {t.Fatal("pause advanced simulation")}
+}
+func TestSurvivalDoesNotEndAtTenKills(t *testing.T) {
+ prepare();for n:=0;n<12;n++ {i:=zombieAt(1,0,0);damageZombie(i,1)}
+ if state!=0 || kills!=12 {t.Fatal("old ten-kill win rule survived")}
+}
+func TestBaseAndLifeLossEndGame(t *testing.T) {
+ prepare();shield=0;lives=1;hitPlayer();if state!=-1 || entity[1]!=0 {t.Fatal("life loss")}
+ prepare();addEntity(5,0,0,0);addEntity(7,0,20,2);for n:=0;n<5;n++ {updateGame()};if state!=-1 {t.Fatal("base loss")}
+}
+
+func pickupAt(kind int,x,y float64) int {i:=addEntity(14,x,y,0);pickupType[i]=kind;return i}
+func TestRandomPickupsSpawnOnSafeOpenTilesAndRespectCap(t *testing.T) {
+ restart();seen:=map[int]bool{};positions:=map[[2]int]bool{}
+ for n:=0;n<80;n++ {
+  for i:=2;i<192;i++ {if entity[i]==14 {entity[i]=0}}
+  if !spawnPickup() {t.Fatal("pickup not spawned")}
+  for i:=2;i<192;i++ {if entity[i]==14 {
+   seen[pickupType[i]]=true;positions[[2]int{int(px[i]),int(py[i])}]=true
+   if blocked(px[i],py[i],i) || overlaps(px[i],py[i],1,50) {t.Fatal("pickup in blocked tile")}
+   for j:=2;j<192;j++ {if (entity[j]==11 || entity[j]==13) && overlaps(px[i],py[i],j,28) {t.Fatal("pickup overlaps growing wall or portal")}}
+  }}
+ }
+ if len(seen)!=4 || len(positions)<15 {t.Fatal("random pickup variety",seen,len(positions))}
+ spawnPickup();spawnPickup();if spawnPickup() || count(14)!=3 {t.Fatal("pickup cap")}
+}
+func TestPickupsAutoCollectAndExpire(t *testing.T) {
+ prepare();i:=pickupAt(2,px[1],py[1]);updateGame()
+ if entity[i]==14 || speedBuff!=400 || lastPickup!=2 || pickupNotice!=100 {t.Fatal("touch collection")}
+ far:=pickupAt(3,100,100);age[far]=899;updateGame();if entity[far]==14 {t.Fatal("stale pickup did not expire")}
+}
+func TestPickupTiming(t *testing.T) {
+ prepare();for n:=0;n<249;n++ {updateGame()};if count(14)!=0 {t.Fatal("pickup before 5s")}
+ updateGame();if count(14)!=1 || pickupTimer!=400 {t.Fatal("initial pickup missing")}
+ for n:=0;n<400;n++ {updateGame()};if count(14)!=2 {t.Fatal("8s pickup interval")}
+}
+func TestNutShieldAbsorbsThreeDistinctHits(t *testing.T) {
+ prepare();collectPickup(pickupAt(0,0,0));shield=0
+ for n:=0;n<3;n++ {
+  hitPlayer();if lives!=3 || shieldCharges!=2-n || shield!=25 {t.Fatal("shield absorption",n)}
+  hitPlayer();if shieldCharges!=2-n {t.Fatal("continuous collision consumed extra charge")};shield=0
+ }
+ hitPlayer();if lives!=2 || shieldBuff!=0 {t.Fatal("shield did not deplete")}
+}
+func TestCherryBombKillsHeavyAndProtectsFriendlies(t *testing.T) {
+ prepare();px[1]=0;py[1]=0;heavy:=zombieAt(0,0,75);outside:=zombieAt(1,90,90);base:=addEntity(5,30,30,0)
+ wall:=addEntity(3,-40,0,0);stone:=addEntity(4,0,-40,0);collectPickup(pickupAt(1,0,0))
+ if entity[heavy]!=12 || entity[outside]!=2 || entity[base]!=5 || entity[stone]!=4 || entity[wall]!=11 || count(15)!=1 || lives!=3 {t.Fatal("cherry damage, range or immunity")}
+}
+func TestMushroomSpeedAndCollision(t *testing.T) {
+ prepare();px[1]=0;py[1]=0;keys[KeyD]=true;collectPickup(pickupAt(2,0,0));updateGame()
+ if math.Abs(px[1]-4.185)>1e-6 {t.Fatal("speed not 55% higher")}
+ addEntity(4,32,0,0);for n:=0;n<20;n++ {updateGame()};if px[1]>=11 {t.Fatal("speed buff crossed wall")}
+}
+func TestPepperDamageAndProjectileSnapshot(t *testing.T) {
+ prepare();fire(1);old:=2;collectPickup(pickupAt(3,0,0));fire(1)
+ if projectileDamage[old]!=1 || incendiary[old] {t.Fatal("buff retroactively changed old bullet")}
+ found:=false;for i:=3;i<192;i++ {if entity[i]==6 {found=true;if projectileDamage[i]!=2 || !incendiary[i] {t.Fatal("fire damage")}}}
+ if !found {t.Fatal("missing buff shot")}
+ for i:=2;i<192;i++ {entity[i]=0};px[1]=-80;py[1]=0;facing[1]=1
+ target:=zombieAt(0,0,0);fire(1);pepperBuff=0
+ for n:=0;n<8;n++ {updateGame()};if hp[target]!=3 {t.Fatal("in-flight damage lost after buff expiry",hp[target])}
+}
+func TestBuffDurationsRefreshAndPause(t *testing.T) {
+ prepare();collectPickup(pickupAt(0,0,0));collectPickup(pickupAt(2,0,0));collectPickup(pickupAt(3,0,0))
+ paused=true;for n:=0;n<100;n++ {updateGame()};if shieldBuff!=500||speedBuff!=400||pepperBuff!=400 {t.Fatal("pause consumed buff")}
+ paused=false;pickupTimer=10000
+ for n:=0;n<400;n++ {updateGame()};if speedBuff!=0||pepperBuff!=0||shieldBuff!=100 {t.Fatal("buff duration")}
+ shieldCharges=1;collectPickup(pickupAt(0,0,0));if shieldBuff!=500||shieldCharges!=3 {t.Fatal("repeated pickup must refresh")}
+ for n:=0;n<500;n++ {updateGame()};if shieldCharges!=0||shieldBuff!=0 {t.Fatal("expired shield left charges")}
+ restart();if shieldBuff!=0||speedBuff!=0||pepperBuff!=0||count(14)!=0 {t.Fatal("restart retained buffs")}
+}
+func TestPepperCombinesWithFanUpgrade(t *testing.T) {
+ prepare();weaponLevel=1;pepperBuff=200;fire(1)
+ if count(6)!=3 {t.Fatal("fan lost with pepper")}
+ for i:=2;i<192;i++ {if entity[i]==6 && (!rocket[i]||!incendiary[i]||projectileDamage[i]!=2) {t.Fatal("fan missile not buffed")}}
+}
+
+type Item struct {ID,Kind,Facing,Age,Type,HP,Growth,Windup,PickupType int; X,Y,VX,VY,Dash float64; Rocket,Fire bool}
+type Snapshot struct {Label string;Tick,Score,Kills,Lives,Shield,ShotDelay,Cooldown,Weapon,Nut,Speed,Pepper int;Entities []Item}
+func snapshot(label string) Snapshot {
+ s:=Snapshot{Label:label,Tick:ticks,Score:score,Kills:kills,Lives:lives,Shield:shield,ShotDelay:shotDelay,Cooldown:ultimateCooldown,Weapon:weaponLevel,Nut:shieldBuff,Speed:speedBuff,Pepper:pepperBuff}
+ for i:=1;i<192;i++ {if entity[i]!=0 {s.Entities=append(s.Entities,Item{i,entity[i],facing[i],age[i],zombieType[i],hp[i],growth[i],dashWindup[i],pickupType[i],px[i],py[i],velx[i],vely[i],dashRemaining[i],rocket[i],incendiary[i]})}};return s
+}
+func TestPreviewSnapshots(t *testing.T) {
+ restart();keys=map[int]bool{};shield=0;ticks=25;frames:=[]Snapshot{}
+ for _,i:=range zombieSlots {entity[i]=0}
+ for k:=0;k<3;k++ {i:=zombieSlots[k];entity[i]=2;zombieType[i]=k;px[i]=float64(-96+k*96);py[i]=75;hp[i]=[]int{5,1,3}[k];maxHP[i]=hp[i];facing[i]=2;age[i]=10}
+ c:=zombieSlots[2];dashWindup[c]=8;frames=append(frames,snapshot("三种僵尸与冲刺预警"))
+ dashWindup[c]=0;dashRemaining[c]=54;facing[c]=1
+ // Real attack vectors and growth states, arranged for a readable feature preview.
+ for i:=2;i<192;i++ {if entity[i]==3 && px[i]==-72 && py[i]>0 {breakHedge(i);growth[i]=(int(py[i])/24)%5*10;age[i]=320}}
+ kills=3;score=300;weaponLevel=1;px[1]=-48;py[1]=-48;facing[1]=0;fire(1)
+ for i:=2;i<192;i++ {if entity[i]==6 {px[i]+=velx[i]*34;py[i]+=vely[i]*34}}
+ frames=append(frames,snapshot("三发扇形导弹与树篱生长"))
+ for k:=0;k<4;k++ {pickupAt(k,float64(-120+k*72),0)}
+ collectPickup(pickupAt(0,0,0));collectPickup(pickupAt(2,0,0));collectPickup(pickupAt(3,0,0))
+ for i:=2;i<192;i++ {if entity[i]==6 {entity[i]=0}}
+ fire(1);for i:=2;i<192;i++ {if entity[i]==6 {px[i]+=velx[i]*40;py[i]+=vely[i]*40}}
+ frames=append(frames,snapshot("随机道具与火焰扇形导弹"))
+ data,_:=json.MarshalIndent(frames,"","  ");if err:=os.WriteFile("/mnt/e/Code/tank/garden-survival/demo-frames.json",data,0644);err!=nil {t.Fatal(err)}
+}

@@ -1,0 +1,31 @@
+var panel int
+
+onStart => {
+    hide
+    for i := 0; i < 4; i++ { clone i }
+}
+onCloned data => {
+    panel = data.(int)
+    digits := []string{"0","1","2","3","4","5","6","7","8","9","10"}
+    forever => {
+        hide
+        setXpos float64((panel-1)*148)
+        setYpos -135
+        if state == 0 {
+            if panel == 0 && shieldBuff > 0 && shieldCharges > 0 {
+                setCostume "shield-"+digits[shieldCharges]+"-"+digits[(shieldBuff+49)/50]
+                show
+            }
+            if panel == 1 && speedBuff > 0 { setCostume "speed-"+digits[(speedBuff+49)/50]; show }
+            if panel == 2 && pepperBuff > 0 { setCostume "pepper-"+digits[(pepperBuff+49)/50]; show }
+            if panel == 3 && pickupNotice > 0 {
+                setXpos 0
+                setYpos 101
+                setCostume "picked-"+digits[lastPickup]
+                show
+            }
+        }
+        setLayer Front
+        wait 0.04
+    }
+}
