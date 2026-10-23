@@ -3,7 +3,6 @@ import json
 from functools import lru_cache
 from pathlib import Path
 from xml.etree import ElementTree as ET
-from zipfile import ZIP_DEFLATED, ZipFile
 
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.ttLib import TTFont

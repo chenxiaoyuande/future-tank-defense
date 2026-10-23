@@ -1,0 +1,42 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "scene-1",
+      "path": "scene-1.svg",
+      "x": 240.0,
+      "y": 180.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 480,
+      "imageHeight": 360
+    },
+    {
+      "name": "scene-2",
+      "path": "scene-2.svg",
+      "x": 240.0,
+      "y": 180.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 480,
+      "imageHeight": 360
+    },
+    {
+      "name": "scene-3",
+      "path": "scene-3.svg",
+      "x": 240.0,
+      "y": 180.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 480,
+      "imageHeight": 360
+    }
+  ]
+}

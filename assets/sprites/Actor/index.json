@@ -1867,6 +1867,256 @@
       "bitmapResolution": 1,
       "imageWidth": 220,
       "imageHeight": 220
+    },
+    {
+      "name": "partner-up-0",
+      "path": "partner-plant-up-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-up-1",
+      "path": "partner-plant-up-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-up-2",
+      "path": "partner-plant-up-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-up-3",
+      "path": "partner-plant-up-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-up-4",
+      "path": "partner-plant-up-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-up-5",
+      "path": "partner-plant-up-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-right-0",
+      "path": "partner-plant-right-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-right-1",
+      "path": "partner-plant-right-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-right-2",
+      "path": "partner-plant-right-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-right-3",
+      "path": "partner-plant-right-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-right-4",
+      "path": "partner-plant-right-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-right-5",
+      "path": "partner-plant-right-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-down-0",
+      "path": "partner-plant-down-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-down-1",
+      "path": "partner-plant-down-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-down-2",
+      "path": "partner-plant-down-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-down-3",
+      "path": "partner-plant-down-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-down-4",
+      "path": "partner-plant-down-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-down-5",
+      "path": "partner-plant-down-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-left-0",
+      "path": "partner-plant-left-0.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-left-1",
+      "path": "partner-plant-left-1.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-left-2",
+      "path": "partner-plant-left-2.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-left-3",
+      "path": "partner-plant-left-3.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-left-4",
+      "path": "partner-plant-left-4.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "partner-left-5",
+      "path": "partner-plant-left-5.svg",
+      "x": 20.0,
+      "y": 22.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 44
+    },
+    {
+      "name": "boss",
+      "path": "boss.svg",
+      "x": 36,
+      "y": 38,
+      "bitmapResolution": 1,
+      "imageWidth": 72,
+      "imageHeight": 76,
+      "faceRight": 0
     }
   ]
 }
