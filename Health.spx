@@ -10,7 +10,7 @@ onCloned data => {
     forever => {
         i := zombieSlots[ordinal]
         hide
-        if i > 0 && entity[i] == 2 {
+        if i > 0 && entity[i] == 2 && zombieType[i] != 3 {
             setCostume "hp-"+digits[zombieType[i]]+"-"+digits[hp[i]]
             setXpos px[i]
             setYpos py[i]+26

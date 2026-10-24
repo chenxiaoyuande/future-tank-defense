@@ -6,11 +6,11 @@ from PIL import Image
 from io import BytesIO
 
 root=Path(__file__).resolve().parent
-with ZipFile(root.parent/'暮光花园-僵尸进化生存版.xbp') as archive:
+with ZipFile(root.parent/'暮光花园-双人闯关版.xbp') as archive:
     assert archive.testzip() is None
     paths=set(archive.namelist())
     config=json.loads(archive.read('assets/index.json'))
-    assert config['zorder']==['Atmosphere','Actor','Health','Frame','Hud','Ability','Buff','Notice']
+    assert config['zorder']==['Scene','Atmosphere','Actor','Health','Frame','Hud','Ability','Buff','Campaign','Notice']
     for backdrop in config['backdrops']:
         assert isinstance(backdrop['bitmapResolution'],int)
         image=Image.open(BytesIO(archive.read('assets/'+backdrop['path'])))
@@ -65,6 +65,12 @@ with ZipFile(root.parent/'暮光花园-僵尸进化生存版.xbp') as archive:
             labels+=sum(bool(n.get('aria-label')) for n in doc.iter())
     assert labels>=25
     assert 'REAMD.md' in paths and 'README.md' in paths
-    assert '持续' in archive.read('REAMD.md').decode('utf-8')
+    assert '双人' in archive.read('REAMD.md').decode('utf-8')
+    assert 'boss' in names['Actor']
+    assert {f'menu-{m}-{n}' for m in [1,2] for n in [1,2,3]} <= names['Notice']
+    assert {f'scene-{n}' for n in [1,2,3]} == names['Scene']
+    for direction in ['up','right','down','left']:
+        assert {f'partner-{direction}-{n}' for n in range(6)} <= names['Actor']
+    assert {'clear','win','lose','pause'} <= names['Notice']
     assert '击退10只' not in archive.read('builder-meta.json').decode('utf-8')
     print(f'Checked {len(paths)} resources: three zombie models, HP, dash/growth, missiles, four pickups, all timers, docs, and {labels} outlined labels.')

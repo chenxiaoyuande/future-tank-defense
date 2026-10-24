@@ -1,0 +1,37 @@
+import "strconv"
+var part int
+onStart => {
+    hide
+    for i := 0; i < 5; i++ { clone i }
+}
+onCloned data => {
+    part = data.(int)
+    forever => {
+        hide
+        if state != 1 {
+            if part < 2 {
+                life := lives; cooldown := ultimateCooldown
+                setXpos -150; setYpos 130
+                if part == 1 { life = lives2; cooldown = ultimateCooldown2; setXpos 150 }
+                if part == 0 || twoPlayers {
+                    setCostume "p"+strconv.Itoa(part+1)+"-"+strconv.Itoa(life)+"-"+strconv.Itoa((cooldown+49)/50)
+                    show
+                }
+            }
+            if part == 2 {
+                setCostume "stage-"+strconv.Itoa(level)+"-"+strconv.Itoa(stageKills)
+                setXpos 105; setYpos -155; show
+            }
+            if part == 3 && bossStarted && !bossDefeated && bossSlot > 0 {
+                value := (hp[bossSlot]*10+maxHP[bossSlot]-1)/maxHP[bossSlot]
+                setCostume "boss-"+strconv.Itoa(value)
+                setXpos 0; setYpos 148; show
+            }
+            if part == 4 && bossStarted && !bossDefeated && bossSlot > 0 && dashWindup[bossSlot] > 0 {
+                setCostume "warning"; setXpos px[bossSlot]; setYpos py[bossSlot]+44; show
+            }
+        }
+        setLayer Front
+        wait 0.02
+    }
+}
