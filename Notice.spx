@@ -1,10 +1,14 @@
+import "strconv"
 onStart => {
     setXpos 0
     setYpos 0
     forever => {
         if state == 1 {
-            setCostume "win"
+            mode := 1; if twoPlayers { mode = 2 }
+            setCostume "menu-"+strconv.Itoa(mode)+"-"+strconv.Itoa(selectedLevel)
             show
+        } else if state == 2 { setCostume "clear"; show
+        } else if state == 3 { setCostume "win"; show
         } else if state == -1 {
             setCostume "lose"
             show

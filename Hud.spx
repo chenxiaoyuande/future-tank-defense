@@ -27,6 +27,7 @@ onCloned data => {
         if value < 0 { value = 0 }
         if value > 9 { value = 9 }
         setCostume names[value]
+        if bossStarted && !bossDefeated { hide } else { show }
         setLayer Front
         wait 0.05
     }

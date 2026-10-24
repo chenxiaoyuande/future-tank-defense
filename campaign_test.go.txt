@@ -1,0 +1,84 @@
+package main
+import ("testing";"encoding/json";"os")
+func campaignSetup(levelNumber int, coop bool) {
+ selectedLevel=levelNumber;twoPlayers=coop;restart();keys=map[int]bool{}
+}
+func TestCooperativeControlsAndSkills(t *testing.T) {
+ campaignSetup(1,true)
+ px[1]=-100;py[1]=-60;px[191]=100;py[191]=-60
+ for i:=2;i<191;i++ {entity[i]=0}
+ keys[KeyW]=true;keys[KeyRight]=true;keys[KeySpace]=true;keys[KeyJ]=true;keys[KeyE]=true;keys[KeyK]=true
+ updateGame()
+ if py[1]!=-57.3 || px[191]!=102.7 || facing[1]!=0 || facing[191]!=1 {t.Fatal("controls coupled")}
+ if shotDelay!=14 || shotDelay2!=14 || ultimateCooldown!=250 || ultimateCooldown2!=250 {t.Fatal("independent weapons failed")}
+ if count(6)!=2 || count(9)!=2 {t.Fatal("both players must fire")}
+ for n:=0;n<260;n++ {updateGame()}
+ if ultimateCooldown!=0 || ultimateCooldown2!=0 {t.Fatal("holding skill must not repeat")}
+}
+func TestCooperativeLivesAndPickups(t *testing.T) {
+ campaignSetup(1,true);shield=0;shield2=0
+ collectSecondPickup(pickupAt(0,100,0));collectSecondPickup(pickupAt(2,100,0));collectSecondPickup(pickupAt(3,100,0))
+ if shieldCharges2!=3 || speedBuff2!=400 || pepperBuff2!=400 || shieldBuff!=0 || speedBuff!=0 || pepperBuff!=0 {t.Fatal("pickups leaked to partner")}
+ hitSecondPlayer();if shieldCharges2!=2 || lives2!=3 {t.Fatal("partner shield failed")}
+ for n:=0;n<3;n++ {shield=0;hitPlayer()}
+ if entity[1]!=0 || state!=0 || entity[191]!=1 {t.Fatal("one death ended cooperation")}
+ shieldBuff2=0;for n:=0;n<3;n++ {shield2=0;hitSecondPlayer()}
+ if state!=-1 {t.Fatal("both deaths must end game")}
+}
+func TestRespawnAvoidsPartnerAndObstacles(t *testing.T) {
+ campaignSetup(1,true);px[191]=-48;py[191]=-120;shield=0
+ hitPlayer()
+ if blocked(px[1],py[1],1) {t.Fatal("respawn trapped player against partner or obstacle")}
+}
+func TestCampaignFiniteWavesAndBossProgression(t *testing.T) {
+ for n:=1;n<=3;n++ {
+  campaignSetup(n,true);shield=100000;shield2=100000
+  for tick:=0;tick<1800 && !bossStarted;tick++ {
+   for i:=2;i<191;i++ {if entity[i]==2 {damageZombie(i,99)};if entity[i]==7 {entity[i]=0}}
+   updateGame()
+  }
+  if !bossStarted || stageKills!=waveTarget || waveSpawned!=waveTarget {t.Fatal("wave not finite",n,stageKills,waveSpawned)}
+  if zombieType[bossSlot]!=3 || hp[bossSlot]!=22+n*6 {t.Fatal("boss scaling")}
+  damageZombie(bossSlot,999);updateGame()
+  want:=2;if n==3 {want=3};if state!=want {t.Fatal("clear or final victory missing",n,state)}
+  if n<3 {old:=score;nextLevel();if level!=n+1 || lives!=3 || lives2!=3 || score!=old || weaponLevel!=1 {t.Fatal("next stage progression")}}
+ }
+}
+func TestBossTelegraphAndEnrage(t *testing.T) {
+ campaignSetup(1,false);startBoss();i:=bossSlot
+ age[i]=100;updateBoss(i);if dashWindup[i]!=25 || count(7)!=0 {t.Fatal("missing warning")}
+ age[i]=125;updateBoss(i);if count(7)!=4 {t.Fatal("missing barrage")}
+ hp[i]=maxHP[i]/2;age[i]=145;updateBoss(i);if count(7)!=8 {t.Fatal("missing enraged volley")}
+}
+func TestCampaignMenuPauseAndRestart(t *testing.T) {
+ campaignSetup(1,false);state=1;menuDown=false;confirmDown=false
+ keys[Key2]=true;keys[KeyH]=true;updateControls()
+ if !twoPlayers || selectedLevel!=3 || state!=1 {t.Fatal("selection failed")}
+ keys[KeyEnter]=true;updateControls();if level!=3 || state!=0 || entity[191]!=1 {t.Fatal("start failed")}
+ paused=true;before:=ticks;cool:=ultimateCooldown2;updateGame()
+ if ticks!=before || ultimateCooldown2!=cool {t.Fatal("pause advanced")}
+ paused=false;keys=map[int]bool{KeyM:true};updateControls();before=ticks;updateGame()
+ if state!=1 || ticks!=before {t.Fatal("menu did not stop combat")}
+}
+func TestCooperativeFriendlyFire(t *testing.T) {
+ campaignSetup(1,true)
+ for i:=2;i<191;i++ {entity[i]=0}
+ px[1]=-100;py[1]=0;px[191]=0;py[191]=0;shield2=0
+ base:=addEntity(5,50,0,0)
+ bullet:=addEntity(6,-20,0,1);velx[bullet]=1;vely[bullet]=0
+ for n:=0;n<15;n++ {updateGame()}
+ if lives2!=3 || entity[base]!=5 || state!=0 {t.Fatal("friendly fire")}
+ bullet=addEntity(7,px[191]-18,py[191],1);velx[bullet]=1;vely[bullet]=0
+ updateGame();if lives2!=2 {t.Fatal("enemy projectile did not hit second player")}
+}
+func TestCampaignPreviewSnapshots(t *testing.T) {
+ frames:=[]Snapshot{}
+ for n:=1;n<=3;n++ {
+  campaignSetup(n,true);startBoss();ticks=30;shield=0;shield2=0
+  px[1]=-96;py[1]=-60;px[191]=96;py[191]=-60
+  stageKills=waveTarget;age[bossSlot]=110;updateBoss(bossSlot)
+  frames=append(frames,snapshot("双人领主战"))
+ }
+ data,_:=json.MarshalIndent(frames,"","  ")
+ if err:=os.WriteFile("/mnt/e/Code/tank/garden-survival/campaign-frames.json",data,0644);err!=nil {t.Fatal(err)}
+}

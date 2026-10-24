@@ -1,6 +1,5 @@
-"""Twilight botanical fantasy artwork and animation, with unchanged game rules."""
+"""Build the survival edition's artwork, animations, and XBuilder package."""
 import math
-import json
 import shutil
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile, ZIP_DEFLATED
@@ -231,7 +230,7 @@ for seconds in range(1,6):
 sprite('Ability',ability)
 
 notices=[]
-for name,title,subtitle,tint in [('win','花园的光，守住了','全部僵尸已击退，花房恢复了宁静。','#f4dfa3'),('lose','花园仍在等你','躲开孢子，守住花房，再出发一次。','#ebb7b5'),('pause','风停了一会儿','按 P 键，继续守护花园。','#b7e2ce')]:
+for name,title,subtitle,tint in [('lose','花园仍在等你','躲开孢子，守住花房，再出发一次。','#ebb7b5'),('pause','风停了一会儿','按 P 键，继续守护花园。','#b7e2ce')]:
     s=DEFS+'<rect x="6" y="10" width="326" height="166" rx="18" fill="#0c2430" opacity=".45"/><path d="M20 2H318l17 18v128l-17 18H20L2 148V20Z" fill="#2c4b50" stroke="#9f956c" stroke-width="1.5"/><path d="M22 8H316l12 15v121l-13 15H23L9 144V24Z" fill="#223b45" stroke="#627c70" stroke-width=".7"/>'
     s+='<path d="M14 35Q22 15 41 17M294 17q21-1 30 20M18 143q12 15 30 10m243 0q25 0 32-18" fill="none" stroke="#b4b27c" stroke-width="1"/>'
     s+=star(168,23,9,'#d9d69b')+text(168,63,title,23,tint,'middle')+text(168,94,subtitle,12,'#b6ccc2','middle')
@@ -296,12 +295,14 @@ bg+=text(48,21,'暮光花园',17,'#f5dfab')+text(459,19,'守住花房，让光�
 bg+=text(38,37,'得分',9,'#b9ccb9')+text(164,37,'生命',9,'#b9ccb9')+text(285,37,'击退僵尸',9,'#b9ccb9')
 bg+='<path d="M191 30c-4-5-8 1 0 6 8-5 4-11 0-6" fill="#d99d9e" stroke="#d9b8a3" stroke-width=".5"/>'
 bg+='<path d="M12 330h456l7 8v15l-8 5H13l-8-5v-15Z" fill="#2a454b" stroke="#6e8474" stroke-width=".8"/>'
-bg+=text(240,353,'方向键 / WASD 移动　空格射击　E 大招　P 暂停　R 重开',9,'#d8dfbd','middle')
+bg+=text(240,353,'1P WASD / 空格 / E　2P 方向键 / J / K　P 暂停　R 重开　M 选关',9,'#d8dfbd','middle')
 (ROOT/'assets/arena.svg').write_text(svg(480,360,bg),encoding='utf-8')
 sprite('Frame',[('frame',480,360,svg(480,360,bg))])
 image_width,image_height=Image.open(painted).size
 write_json('assets/index.json',{'backdrops':[{'name':'暮光花园','path':'painted-ground.png','x':image_width/2,'y':image_height/2,'bitmapResolution':max(1,round(image_width/480)),'imageWidth':image_width,'imageHeight':image_height}], 'backdropIndex':0,'map':{'width':480,'height':360},'run':{'width':480,'height':360},'physics':False,'stretchMode':True,'maxFPS':60,'fontPreferences':['garden-chinese','default'],'zorder':['Atmosphere','Actor','Health','Frame','Hud','Ability','Buff','Notice']})
 write_json('builder-meta.json',{'displayName':'暮光花园 · 僵尸进化生存版','description':'三种专属造型僵尸持续随机刷新：重甲5血慢速、疾跑1血高速、冲锋3血每3秒冲刺3格。树篱破坏6秒后渐进生长，三杀解锁扇形导弹。新增随机坚果盾、樱桃炸弹、蘑菇和辣椒道具，具备专属造型、特效和中文增益提示。','instructions':'方向键 / WASD 移动；空格射击；E 爆裂种子（5秒冷却，范围伤害3点）；P 暂停；R 重开。靠近道具自动拾取：坚果盾抵挡3次伤害/10秒；樱桃立即范围伤害5点；蘑菇加速55%/8秒；辣椒普通攻击伤害+1/8秒，可叠加三发导弹。角色3条生命，生命耗尽或花房被毁时结束；持续生存，无固定通关数量。'})
+from campaign_art import extend
+extend(sprite, text)
 font_dir=ROOT/'assets/fonts/garden-chinese'
 font_dir.mkdir(parents=True,exist_ok=True)
 all_text='0123456789'
@@ -313,9 +314,9 @@ sub=subset.Subsetter(); sub.populate(text=all_text); sub.subset(font); font.save
 shutil.copyfile('/usr/share/doc/fonts-wqy-zenhei/copyright',font_dir/'LICENSE.txt')
 (font_dir/'NOTICE.txt').write_text('WenQuanYi Zen Hei subset; glyph outlines used in SVG artwork. Source: Ubuntu fonts-wqy-zenhei package. See LICENSE.txt for license and font embedding exception.\n')
 write_json('assets/fonts/garden-chinese/index.json',{'faces':[{'path':'font.ttf'}]})
-out=ROOT.parent/'暮光花园-僵尸进化生存版.xbp'
+out=ROOT.parent/'暮光花园-双人闯关版.xbp'
 with ZipFile(out,'w',ZIP_DEFLATED) as archive:
     for file in ROOT.rglob('*'):
-        if file.is_file() and file.suffix in {'.spx','.svg','.json','.ttf','.txt','.png','.md'} and not file.name.startswith(('preview-','demo-','logic_test')):
+        if file.is_file() and file.suffix in {'.spx','.svg','.json','.ttf','.txt','.png','.md'} and not file.name.startswith(('preview-','demo-','logic_test','campaign_test','campaign-frames')):
             archive.write(file,file.relative_to(ROOT).as_posix())
 print(out)
