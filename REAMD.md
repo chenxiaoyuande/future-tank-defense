@@ -265,9 +265,9 @@ SSH 克隆需要配置 GitHub 公钥，私有仓库还需访问权限。优先�
 - `build_survival.py`、`verify_package.py` 使用父目录包路径，与仓库内随附包的位置不同。
 - `verify_logic.py` 会在父目录创建测试材料，运行前应调整路径。
 - 打包应选取项目目录内部文件，避免增加外层目录；排除 `.git`、缓存等非游戏数据。
-- `preview-survival-*.png`、`preview-campaign-*.png` 由素材及逻辑快照合成，不等同于 XBuilder 实际运行截图：
+- `preview-survival-*.png`、`preview-campaign-1/2/3.png` 由素材及逻辑快照合成，不等同于 XBuilder 实际运行截图；`preview-campaign-menu.png` 为选关界面实机截图：
 
-![游戏素材合成预览](preview-campaign-1.png)
+![实机截图：选关界面](preview-campaign-menu.png)
 
 ## 验证情况
 
