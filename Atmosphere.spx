@@ -92,7 +92,7 @@ onCloned data => {
                 show
             }
         }
-        if effect == 30 && state == 0 && upgradeFlash > 0 {
+        if effect == 30 && state == 0 {
             if upgradeFlash > 0 { setCostume "upgrade" } else if weaponLevel == 1 { setCostume "weapon-ready" } else {
                 if kills == 0 { setCostume "weapon-0" } else if kills == 1 { setCostume "weapon-1" } else { setCostume "weapon-2" }
             }

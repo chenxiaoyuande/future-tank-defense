@@ -98,9 +98,9 @@ func towardPlayer(i int) int {
 }
 func spawnZombie(i int) bool {
     for attempt := 0; attempt < 48; attempt++ {
-        side := int(rand(0,4))%4
-        x := float64(int(rand(0,19))%19*24-216)
-        y := float64(120-int(rand(0,11))%11*24)
+        side := int(rand(0,4))
+        x := float64(int(rand(0,19))*24-216)
+        y := float64(120-int(rand(0,11))*24)
         if side == 0 { y = 120 }; if side == 1 { x = 214 }
         if side == 2 { y = -132 }; if side == 3 { x = -214 }
         dx := x-px[1]; dy := y-py[1]
@@ -184,15 +184,15 @@ func spawnPickup() bool {
     for i := 2; i < 192; i++ { if entity[i] == 14 { count++ } }
     if count >= 3 { return false }
     for attempt := 0; attempt < 60; attempt++ {
-        x := float64(int(rand(0,17))%17*24-192)
-        y := float64(108-int(rand(0,10))%10*24)
+        x := float64(int(rand(0,17))*24-192)
+        y := float64(108-int(rand(0,10))*24)
         occupied := blocked(x,y,0) || overlaps(x,y,1,50)
         for i := 2; i < 192; i++ {
             if (entity[i] == 11 || entity[i] == 13 || entity[i] == 14) && overlaps(x,y,i,28) { occupied = true }
         }
         if !occupied {
             i := addEntity(14,x,y,0)
-            if i > 0 { pickupType[i] = int(rand(0,4))%4; return true }
+            if i > 0 { pickupType[i] = int(rand(0,4)); return true }
             return false
         }
     }
