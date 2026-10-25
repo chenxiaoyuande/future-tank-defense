@@ -13,13 +13,14 @@ onCloned data => {
     digits := []string{"0","1","2","3","4","5","6","7","8","9"}
     previousKind := 0
     visualAge := 0
+    shown := false
     forever => {
         k := entity[slot]
         if k != previousKind { visualAge = 0; previousKind = k }
         if !paused { visualAge++ }
         protection := shield; if slot == 191 { protection = shield2 }
         if k == 0 || (k == 1 && protection > 0 && protection%10 < 4) || (k == 12 && (age[slot] >= 30 || zombieType[slot] == 3)) {
-            hide
+            if shown { hide; shown = false }
         } else {
             setHeading Right
             if k == 1 {
@@ -76,6 +77,7 @@ onCloned data => {
             setYpos py[slot]
             if k == 14 { setYpos py[slot]+sin(float64(ticks+slot*7)*0.12)*2 }
             show
+            shown = true
         }
         wait 0.02
     }

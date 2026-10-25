@@ -64,8 +64,8 @@ with ZipFile(root.parent/'暮光花园-双人闯关版.xbp') as archive:
             assert not list(doc.iter('{http://www.w3.org/2000/svg}text')), path
             labels+=sum(bool(n.get('aria-label')) for n in doc.iter())
     assert labels>=25
-    assert 'REAMD.md' in paths and 'README.md' in paths
-    assert '双人' in archive.read('REAMD.md').decode('utf-8')
+    assert 'README.md' in paths
+    assert '双人' in archive.read('README.md').decode('utf-8')
     assert 'boss' in names['Actor']
     assert {f'menu-{m}-{n}' for m in [1,2] for n in [1,2,3]} <= names['Notice']
     assert {f'scene-{n}' for n in [1,2,3]} == names['Scene']
