@@ -94,13 +94,28 @@ func TestRegrowthWaitsForPlayerAndZombies(t *testing.T) {
   if entity[i]!=3 {t.Fatal("wall never recovered")}
  }
 }
-func TestUpgradeOnThirdKillAndFanDirections(t *testing.T) {
+func TestCoinsAndManualWeaponPurchase(t *testing.T) {
  prepare()
  for n:=0;n<3;n++ {
   i:=zombieAt(1,0,80);damageZombie(i,1)
-  if n<2 && weaponLevel!=0 {t.Fatal("early upgrade")}
+  if coins!=(n+1)*100 || weaponLevel!=0 {t.Fatal("kills must grant coins without auto-upgrade")}
  }
- if weaponLevel!=1 || upgradeFlash!=100 {t.Fatal("no third-kill upgrade")}
+ shopOpen=true
+ tryBuy(1)
+ if coins!=0 || weaponLevel!=1 || shopMessage!="购买成功" {t.Fatal("level one purchase failed")}
+ tryBuy(1)
+ if coins!=0 || weaponLevel!=1 {t.Fatal("duplicate purchase changed weapon")}
+ coins=600
+ tryBuy(2)
+ if coins!=0 || weaponLevel!=2 {t.Fatal("level two purchase failed")}
+ coins=1000
+ tryBuy(3)
+ if coins!=0 || weaponLevel!=3 {t.Fatal("level three purchase failed")}
+ shopOpen=false
+ twoPlayers=true;entity[191]=1
+ shotDelay=0;shotDelay2=0;keys[KeySpace]=true;keys[KeyJ]=true;updateGame()
+ if shotDelay!=9 || shotDelay2!=9 {t.Fatal("level three fire interval")}
+ weaponLevel=1
  for d:=0;d<4;d++ {
   for i:=2;i<192;i++ {entity[i]=0};facing[1]=d;fire(1);shots:=0;cross:=[]float64{}
   for i:=2;i<192;i++ {if entity[i]==6 {
@@ -251,5 +266,5 @@ func TestPreviewSnapshots(t *testing.T) {
  for i:=2;i<192;i++ {if entity[i]==6 {entity[i]=0}}
  fire(1);for i:=2;i<192;i++ {if entity[i]==6 {px[i]+=velx[i]*40;py[i]+=vely[i]*40}}
  frames=append(frames,snapshot("随机道具与火焰扇形导弹"))
- data,_:=json.MarshalIndent(frames,"","  ");if err:=os.WriteFile("/mnt/e/Code/tank/garden-survival/demo-frames.json",data,0644);err!=nil {t.Fatal(err)}
+ data,_:=json.MarshalIndent(frames,"","  ");if err:=os.WriteFile("demo-frames.json",data,0644);err!=nil {t.Fatal(err)}
 }

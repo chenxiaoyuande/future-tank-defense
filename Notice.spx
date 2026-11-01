@@ -12,6 +12,18 @@ onStart => {
         } else if state == -1 {
             setCostume "lose"
             show
+        } else if shopOpen {
+            setCostume "pause"
+            show
+            if weaponLevel >= 3 {
+                say "武器商店 (B 关闭)\n金币: "+strconv.Itoa(coins)+"\n武器已满级\n"+shopMessage
+            } else {
+                next := weaponLevel + 1
+                effect := "三发扇形导弹"
+                if next == 2 { effect = "五发扇形导弹" }
+                if next == 3 { effect = "五发导弹、伤害提升、射速提升" }
+                say "武器商店 (B 关闭)\n金币: "+strconv.Itoa(coins)+"\n按"+strconv.Itoa(next)+"购买 Lv"+strconv.Itoa(next)+"："+strconv.Itoa(weaponPrice(next))+" 金币\n效果："+effect+"\n"+shopMessage
+            }
         } else if paused {
             setCostume "pause"
             show

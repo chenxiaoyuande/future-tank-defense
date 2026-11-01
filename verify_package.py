@@ -6,7 +6,10 @@ from PIL import Image
 from io import BytesIO
 
 root=Path(__file__).resolve().parent
-with ZipFile(root.parent/'暮光花园-双人闯关版.xbp') as archive:
+archive_path=root/'暮光花园-双人闯关版.xbp'
+if not archive_path.exists():
+    archive_path=root.parent/'暮光花园-双人闯关版.xbp'
+with ZipFile(archive_path) as archive:
     assert archive.testzip() is None
     paths=set(archive.namelist())
     config=json.loads(archive.read('assets/index.json'))

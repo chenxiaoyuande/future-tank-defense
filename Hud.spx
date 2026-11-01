@@ -2,7 +2,7 @@ var digit int
 
 onStart => {
     hide
-    for i := 0; i < 9; i++ { clone i }
+    for i := 0; i < 14; i++ { clone i }
 }
 
 onCloned data => {
@@ -11,7 +11,9 @@ onCloned data => {
     setYpos 148
     if digit < 5 { setXpos float64(-170+digit*10) }
     if digit == 5 { setXpos -35 }
-    if digit > 5 { setXpos float64(112+(digit-6)*10) }
+    if digit > 5 && digit < 9 { setXpos float64(112+(digit-6)*10) }
+    if digit >= 9 && digit <= 12 { setYpos 120; setXpos float64(-170+(digit-9)*10) }
+    if digit == 13 { setYpos 96; setXpos -170 }
     show
     forever => {
         value := 0
@@ -24,10 +26,15 @@ onCloned data => {
         if digit == 6 { value = (kills/100)%10 }
         if digit == 7 { value = (kills/10)%10 }
         if digit == 8 { value = kills%10 }
+        if digit == 9 { value = (coins/1000)%10 }
+        if digit == 10 { value = (coins/100)%10 }
+        if digit == 11 { value = (coins/10)%10 }
+        if digit == 12 { value = coins%10 }
+        if digit == 13 { value = weaponLevel }
         if value < 0 { value = 0 }
         if value > 9 { value = 9 }
         setCostume names[value]
-        if bossStarted && !bossDefeated { hide } else { show }
+        if digit < 9 && bossStarted && !bossDefeated { hide } else { show }
         setLayer Front
         wait 0.05
     }

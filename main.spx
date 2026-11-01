@@ -62,6 +62,12 @@ var (
     restartDown bool
     pauseDown bool
     paused bool
+    coins int
+    shopOpen bool
+    shopDown bool
+    purchaseDown bool
+    shopMessage string
+    shopMessageTimer int
 )
 
 func vx(d int) float64 { if d == 1 { return 1 }; if d == 3 { return -1 }; return 0 }
@@ -118,18 +124,26 @@ func spawnZombie(i int) bool {
 }
 func fire(i int) {
     shots := 1
-    if (i == 1 || i == 191) && weaponLevel == 1 { shots = 3 }
+    spread := 16.0
+    if (i == 1 || i == 191) && weaponLevel >= 1 {
+        if weaponLevel == 1 { shots = 3 }
+        if weaponLevel >= 2 { shots = 5 }
+    }
     for n := 0; n < shots; n++ {
         angle := 0.0
-        if shots == 3 { angle = float64(n-1)*16*math.Pi/180 }
+        if shots == 3 { angle = float64(n-1)*spread*math.Pi/180 }
+        if shots == 5 { angle = float64(n-2)*spread*math.Pi/180 }
         dx := vx(facing[i])*math.Cos(angle)-vy(facing[i])*math.Sin(angle)
         dy := vx(facing[i])*math.Sin(angle)+vy(facing[i])*math.Cos(angle)
         kind := 7
         if i == 1 || i == 191 { kind = 6 }
         slot := addEntity(kind,px[i]+dx*19,py[i]+dy*19,facing[i])
         if slot != 0 {
-            velx[slot] = dx; vely[slot] = dy; rocket[slot] = (i == 1 || i == 191) && weaponLevel == 1
-            if (i == 1 && pepperBuff > 0) || (i == 191 && pepperBuff2 > 0) { projectileDamage[slot] = 2; incendiary[slot] = true }
+            velx[slot] = dx; vely[slot] = dy; rocket[slot] = (i == 1 || i == 191) && weaponLevel >= 1
+            damage := 1
+            if (i == 1 || i == 191) && weaponLevel >= 3 { damage = 2 }
+            if (i == 1 && pepperBuff > 0) || (i == 191 && pepperBuff2 > 0) { damage++; incendiary[slot] = true }
+            projectileDamage[slot] = damage
         }
     }
 }
@@ -139,8 +153,8 @@ func damageZombie(i int, damage int) {
     if hp[i] <= 0 {
         hp[i] = 0; entity[i] = 12; age[i] = 0; dashRemaining[i] = 0; dashWindup[i] = 0
         score += 100; kills++
-        if zombieType[i] == 3 { bossDefeated = true; score += 900 } else { stageKills++ }
-        if kills >= 3 && weaponLevel == 0 { weaponLevel = 1; upgradeFlash = 100 }
+        if zombieType[i] == 3 { bossDefeated = true; score += 900; coins += 900 } else { stageKills++; coins += 100 }
+        if coins > 9999 { coins = 9999 }
     }
 }
 func breakHedge(i int) { if entity[i] == 3 { entity[i] = 11; age[i] = 0; growth[i] = 0 } }
@@ -266,6 +280,7 @@ func restart() {
     shieldCharges2 = 0; shieldBuff2 = 0; speedBuff2 = 0; pepperBuff2 = 0
     score = 0; kills = 0; lives = 3; ticks = 0; shotDelay = 0; shield = 100
     state = 0; weaponLevel = 0; upgradeFlash = 0; paused = false; ultimateCooldown = 0; ultimateDown = false
+    coins = 0; shopOpen = false; shopDown = false; purchaseDown = false; shopMessage = ""; shopMessageTimer = 0
     pickupTimer = 250; shieldCharges = 0; shieldBuff = 0; speedBuff = 0; pepperBuff = 0; pickupNotice = 0
     entity[1] = 1; px[1] = -48; py[1] = -120; facing[1] = 0
     if twoPlayers { entity[191] = 1; px[191] = 48; py[191] = -120; facing[191] = 0 }
@@ -290,7 +305,8 @@ func restart() {
     }
 }
 func updateGame() {
-    if state != 0 || paused { return }
+    updateShopInput()
+    if state != 0 || paused || shopOpen { return }
     ticks++
     updateSecondPlayer()
     if shieldBuff > 0 { shieldBuff--; if shieldBuff == 0 { shieldCharges = 0 } }
@@ -307,7 +323,7 @@ func updateGame() {
         if !blocked(nx,ny,1) { px[1] = nx; py[1] = ny }
     }
     updateUltimateInput()
-    if keyPressed(KeySpace) && entity[1] == 1 && shotDelay == 0 { fire(1); shotDelay = 14 }
+    if keyPressed(KeySpace) && entity[1] == 1 && shotDelay == 0 { fire(1); if weaponLevel >= 3 { shotDelay = 9 } else { shotDelay = 14 } }
     for i := 2; i < 192; i++ {
         if state != 0 { return }
         k := entity[i]; if k != 0 { age[i]++ }
@@ -396,7 +412,7 @@ func updateSecondPlayer() {
         x := px[191]+vx(d)*speed; y := py[191]+vy(d)*speed
         if !blocked(x,y,191) { px[191] = x; py[191] = y }
     }
-    if keyPressed(KeyJ) && shotDelay2 == 0 { fire(191); shotDelay2 = 14 }
+    if keyPressed(KeyJ) && shotDelay2 == 0 { fire(191); if weaponLevel >= 3 { shotDelay2 = 9 } else { shotDelay2 = 14 } }
     down := keyPressed(KeyK)
     if down && !ultimateDown2 && ultimateCooldown2 == 0 {
         d := facing[191]
@@ -431,15 +447,49 @@ func updateBoss(i int) {
     if entity[1] == 1 && overlaps(px[i],py[i],1,35) { hitPlayer() }
     if entity[191] == 1 && overlaps(px[i],py[i],191,35) { hitSecondPlayer() }
 }
+func weaponPrice(level int) int {
+    if level == 1 { return 300 }
+    if level == 2 { return 600 }
+    if level == 3 { return 1000 }
+    return 0
+}
+func tryBuy(level int) {
+    if !shopOpen { return }
+    if weaponLevel >= 3 { shopMessage = "武器已满级"; shopMessageTimer = 100; return }
+    if level != weaponLevel+1 { return }
+    price := weaponPrice(level)
+    if price == 0 { return }
+    if coins < price { shopMessage = "金币不足"; shopMessageTimer = 100; return }
+    coins -= price
+    weaponLevel = level
+    upgradeFlash = 100
+    shopMessage = "购买成功"
+    shopMessageTimer = 100
+}
+func updateShopInput() {
+    if shopMessageTimer > 0 { shopMessageTimer-- } else { shopMessage = "" }
+    b := keyPressed(KeyB)
+    if b && !shopDown && state == 0 && !paused { shopOpen = !shopOpen }
+    shopDown = b
+    if !shopOpen { purchaseDown = false; return }
+    pressed := keyPressed(Key1) || keyPressed(Key2) || keyPressed(Key3)
+    if pressed && !purchaseDown {
+        if keyPressed(Key1) { tryBuy(1) }
+        if keyPressed(Key2) { tryBuy(2) }
+        if keyPressed(Key3) { tryBuy(3) }
+    }
+    purchaseDown = pressed
+}
 func nextLevel() {
     if state != 2 { return }
     savedScore := score; savedKills := kills
-    selectedLevel = level+1; restart(); score = savedScore; kills = savedKills
-    if kills >= 3 { weaponLevel = 1 }
+    savedCoins := coins; savedWeapon := weaponLevel
+    selectedLevel = level+1; restart()
+    score = savedScore; kills = savedKills; coins = savedCoins; weaponLevel = savedWeapon
 }
 func updateControls() {
     m := keyPressed(KeyM)
-    if m && !menuDown { state = 1; paused = false }; menuDown = m
+    if m && !menuDown { state = 1; paused = false; shopOpen = false }; menuDown = m
     enter := keyPressed(KeyEnter)
     if state == 1 {
         if keyPressed(Key1) { twoPlayers = false }; if keyPressed(Key2) { twoPlayers = true }
@@ -448,7 +498,7 @@ func updateControls() {
     } else if state == 2 && enter && !confirmDown { nextLevel() }
     confirmDown = enter
     r := keyPressed(KeyR); if r && !restartDown && state != 1 { restart() }; restartDown = r
-    p := keyPressed(KeyP); if p && !pauseDown && state == 0 { paused = !paused }; pauseDown = p
+    p := keyPressed(KeyP); if p && !pauseDown && state == 0 && !shopOpen { paused = !paused }; pauseDown = p
 }
 onStart => {
     selectedLevel = 1; restart(); state = 1

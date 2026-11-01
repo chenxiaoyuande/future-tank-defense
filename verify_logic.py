@@ -5,7 +5,7 @@ destination=root.parent/'.xbuilder-setup/survival-logic'
 destination.mkdir(parents=True,exist_ok=True)
 stage=(root/'main.spx').read_text().split('onStart =>')[0]
 shim='''
-const (KeyW=iota;KeyUp;KeyD;KeyRight;KeyS;KeyDown;KeyA;KeyLeft;KeySpace;KeyE;KeyJ;KeyK;KeyM;KeyEnter;Key1;Key2;KeyF;KeyG;KeyH;KeyR;KeyP)
+const (KeyW=iota;KeyUp;KeyD;KeyRight;KeyS;KeyDown;KeyA;KeyLeft;KeySpace;KeyE;KeyJ;KeyK;KeyM;KeyEnter;Key1;Key2;KeyF;KeyG;KeyH;KeyR;KeyP;Key3;KeyB)
 var keys=map[int]bool{}
 func keyPressed(k int) bool {return keys[k]}
 var rng uint32=12345

@@ -41,7 +41,7 @@ func TestCampaignFiniteWavesAndBossProgression(t *testing.T) {
   if zombieType[bossSlot]!=3 || hp[bossSlot]!=22+n*6 {t.Fatal("boss scaling")}
   damageZombie(bossSlot,999);updateGame()
   want:=2;if n==3 {want=3};if state!=want {t.Fatal("clear or final victory missing",n,state)}
-  if n<3 {old:=score;nextLevel();if level!=n+1 || lives!=3 || lives2!=3 || score!=old || weaponLevel!=1 {t.Fatal("next stage progression")}}
+  if n<3 {old:=score;coins=777;weaponLevel=2;nextLevel();if level!=n+1 || lives!=3 || lives2!=3 || score!=old || coins!=777 || weaponLevel!=2 {t.Fatal("next stage progression")}}
  }
 }
 func TestBossTelegraphAndEnrage(t *testing.T) {
@@ -80,5 +80,5 @@ func TestCampaignPreviewSnapshots(t *testing.T) {
   frames=append(frames,snapshot("双人领主战"))
  }
  data,_:=json.MarshalIndent(frames,"","  ")
- if err:=os.WriteFile("/mnt/e/Code/tank/garden-survival/campaign-frames.json",data,0644);err!=nil {t.Fatal(err)}
+     if err:=os.WriteFile("campaign-frames.json",data,0644);err!=nil {t.Fatal(err)}
 }
