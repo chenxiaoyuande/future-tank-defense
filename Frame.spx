@@ -2,4 +2,9 @@ onStart => {
     setXpos 0
     setYpos 0
     show
+    forever => {
+        setCostume "frame"+langSuffix()
+        if frontEnd() { hide } else { show }
+        wait 0.1
+    }
 }

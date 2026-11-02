@@ -1,0 +1,12 @@
+onStart => {
+    setCostume "splash"
+    setSize 1.04
+    forever => {
+        if frontEnd() {
+            setXpos sin(float64(uiTicks)*0.006)*3
+            setYpos cos(float64(uiTicks)*0.005)*2
+            show
+        } else { hide }
+        wait 0.04
+    }
+}

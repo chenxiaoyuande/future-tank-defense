@@ -10,8 +10,10 @@ onCloned data => {
     forever => {
         i := zombieSlots[ordinal]
         hide
-        if i > 0 && entity[i] == 2 && zombieType[i] != 3 {
-            setCostume "hp-"+digits[zombieType[i]]+"-"+digits[hp[i]]
+        if !frontEnd() && i > 0 && entity[i] == 2 && zombieType[i] != 3 {
+            total := 1; if zombieType[i] == 0 { total = 5 }; if zombieType[i] == 2 { total = 3 }
+            value := (hp[i]*total+maxHP[i]-1)/maxHP[i]
+            setCostume "hp-"+digits[zombieType[i]]+"-"+digits[value]
             setXpos px[i]
             setYpos py[i]+26
             if hitFlash[i] > 0 { setSize 1.12 } else { setSize 1 }

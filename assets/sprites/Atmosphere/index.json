@@ -347,6 +347,366 @@
       "bitmapResolution": 1,
       "imageWidth": 62,
       "imageHeight": 62
+    },
+    {
+      "name": "evo-1-seed-trail",
+      "path": "evo-1-seed-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "evo-2-seed-trail",
+      "path": "evo-2-seed-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "evo-3-seed-trail",
+      "path": "evo-3-seed-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "evo-4-seed-trail",
+      "path": "evo-4-seed-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "evo-5-seed-trail",
+      "path": "evo-5-seed-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "evo-1-mega-trail",
+      "path": "evo-1-mega-trail.svg",
+      "x": 36.0,
+      "y": 14.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 72,
+      "imageHeight": 28
+    },
+    {
+      "name": "evo-2-mega-trail",
+      "path": "evo-2-mega-trail.svg",
+      "x": 36.0,
+      "y": 14.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 72,
+      "imageHeight": 28
+    },
+    {
+      "name": "evo-3-mega-trail",
+      "path": "evo-3-mega-trail.svg",
+      "x": 36.0,
+      "y": 14.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 72,
+      "imageHeight": 28
+    },
+    {
+      "name": "evo-4-mega-trail",
+      "path": "evo-4-mega-trail.svg",
+      "x": 36.0,
+      "y": 14.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 72,
+      "imageHeight": 28
+    },
+    {
+      "name": "evo-5-mega-trail",
+      "path": "evo-5-mega-trail.svg",
+      "x": 36.0,
+      "y": 14.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 72,
+      "imageHeight": 28
+    },
+    {
+      "name": "evo-1-missile-trail",
+      "path": "evo-1-missile-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "evo-2-missile-trail",
+      "path": "evo-2-missile-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "evo-3-missile-trail",
+      "path": "evo-3-missile-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "evo-4-missile-trail",
+      "path": "evo-4-missile-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "evo-5-missile-trail",
+      "path": "evo-5-missile-trail.svg",
+      "x": 20.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 40,
+      "imageHeight": 14
+    },
+    {
+      "name": "evo-1-fire-trail",
+      "path": "evo-1-fire-trail.svg",
+      "x": 24.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 20
+    },
+    {
+      "name": "evo-2-fire-trail",
+      "path": "evo-2-fire-trail.svg",
+      "x": 24.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 20
+    },
+    {
+      "name": "evo-3-fire-trail",
+      "path": "evo-3-fire-trail.svg",
+      "x": 24.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 20
+    },
+    {
+      "name": "evo-4-fire-trail",
+      "path": "evo-4-fire-trail.svg",
+      "x": 24.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 20
+    },
+    {
+      "name": "evo-5-fire-trail",
+      "path": "evo-5-fire-trail.svg",
+      "x": 24.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 48,
+      "imageHeight": 20
+    },
+    {
+      "name": "cooldown-0-en",
+      "path": "cooldown-0-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-1-en",
+      "path": "cooldown-1-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-2-en",
+      "path": "cooldown-2-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-3-en",
+      "path": "cooldown-3-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-4-en",
+      "path": "cooldown-4-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-5-en",
+      "path": "cooldown-5-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-6-en",
+      "path": "cooldown-6-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-7-en",
+      "path": "cooldown-7-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-8-en",
+      "path": "cooldown-8-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-9-en",
+      "path": "cooldown-9-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "cooldown-10-en",
+      "path": "cooldown-10-en.svg",
+      "x": 110.0,
+      "y": 6.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 12
+    },
+    {
+      "name": "upgrade-en",
+      "path": "upgrade-en.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "weapon-ready-en",
+      "path": "weapon-ready-en.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "weapon-0-en",
+      "path": "weapon-0-en.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "weapon-1-en",
+      "path": "weapon-1-en.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "weapon-2-en",
+      "path": "weapon-2-en.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "currentVersion": "1.5.0",
+  "releases": [
+    {"version":"1.0.0","name":"僵尸进化生存版","legacyFilename":"暮光花园-僵尸进化生存版.xbp","summary":"三类僵尸、武器升级、道具和树篱再生"},
+    {"version":"1.1.0","name":"双人闯关版","legacyFilename":"暮光花园-双人闯关版.xbp","summary":"本地双人、选关、有限波次与过关流程"},
+    {"version":"1.2.0","name":"20关四境远征版","legacyFilename":"暮光花园-20关四境远征版.xbp","summary":"二十张地图、四主题 Boss、独立预警与 Boss 精修"},
+    {"version":"1.3.0","name":"20关五阶进化版","legacyFilename":"暮光花园-20关五阶进化版.xbp","summary":"永久金币、五档进化、本机存档与备份恢复"},
+    {"version":"1.4.0","name":"20关中英文存档版","legacyFilename":"暮光花园-20关中英文存档版.xbp","summary":"关卡起点存档、中英文切换与 TG2 兼容"},
+    {"version":"1.5.0","name":"三职业觉醒版","legacyFilename":"暮光花园-三职业觉醒版.xbp","summary":"三职业独立进化、动态首页、顺序锁关、接触伤害、脑子与三秒屏障"}
+  ]
+}

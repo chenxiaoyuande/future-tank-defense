@@ -13,15 +13,15 @@ onCloned data => {
         setYpos -135
         if state == 0 {
             if panel == 0 && shieldBuff > 0 && shieldCharges > 0 {
-                setCostume "shield-"+digits[shieldCharges]+"-"+digits[(shieldBuff+49)/50]
+                setCostume "shield-"+digits[shieldCharges]+"-"+digits[(shieldBuff+49)/50]+langSuffix()
                 show
             }
-            if panel == 1 && speedBuff > 0 { setCostume "speed-"+digits[(speedBuff+49)/50]; show }
-            if panel == 2 && pepperBuff > 0 { setCostume "pepper-"+digits[(pepperBuff+49)/50]; show }
+            if panel == 1 && speedBuff > 0 { setCostume "speed-"+digits[(speedBuff+49)/50]+langSuffix(); show }
+            if panel == 2 && pepperBuff > 0 { setCostume "pepper-"+digits[(pepperBuff+49)/50]+langSuffix(); show }
             if panel == 3 && pickupNotice > 0 {
                 setXpos 0
                 setYpos 101
-                setCostume "picked-"+digits[lastPickup]
+                setCostume "picked-"+digits[lastPickup]+langSuffix()
                 show
             }
         }

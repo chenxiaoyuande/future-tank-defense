@@ -1,0 +1,50 @@
+import "strconv"
+var component int
+onStart => {
+    hide
+    for i := 0; i < 19; i++ { clone i }
+}
+onCloned data => {
+    component = data.(int)
+    digits := []string{"0","1","2","3","4","5","6","7","8","9"}
+    forever => {
+        hide
+        if component < 14 {
+            value := coins; ordinal := component
+            if component >= 7 { value = lifetimeCoins; ordinal = component-7 }
+            if (component < 7 && (state == 0 || state == 2 || state == 3 || state == -1 || state == 4 || state == 5)) || state == 5 {
+                divisor := 1; for n := 0; n < 6-ordinal; n++ { divisor *= 10 }
+                setCostume "coin-"+digits[(value/divisor)%10]
+                if state == 4 {
+                    setXpos float64(110+ordinal*10); setYpos 125
+                } else if state == 5 {
+                    setXpos float64(-100+ordinal*10); setYpos -36
+                    if component >= 7 { setYpos -60 }
+                } else {
+                    setXpos float64(-19+ordinal*10); setYpos 130
+                }
+                show
+            }
+        }
+        if component == 14 && !frontEnd() {
+            setCostume "coin-label-"+strconv.Itoa(saveStatus)+langSuffix(); setXpos -48; setYpos 130
+            if state == 1 { setXpos 96; setYpos 148 }
+            show
+        }
+        if component == 15 && (state == 4 || state == 5) {
+            setCostume "save-"+strconv.Itoa(saveStatus)+langSuffix(); setXpos 0; setYpos -82; show
+            if state == 4 { setYpos -100 }
+        }
+        if component == 16 && (state == 4 || state == 5 || metaNoticeTicks > 0) && evolveNotice > 0 {
+            if state == 4 || state == 5 {
+                setCostume "notice-"+strconv.Itoa(evolveNotice)+langSuffix(); setYpos -112
+                if state == 4 { setYpos -118 } else { setYpos -103 }
+            } else {
+                setCostume "notice-toast-"+strconv.Itoa(evolveNotice)+langSuffix(); setYpos -106
+            }
+            setXpos 0; show
+        }
+        setLayer Front
+        wait 0.02
+    }
+}

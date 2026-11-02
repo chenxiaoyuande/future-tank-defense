@@ -2,33 +2,33 @@ import "strconv"
 onStart => {
     setXpos 0
     setYpos 0
+    previous := -100
+    wasPaused := false
     forever => {
-        if state == 1 {
-            mode := 1; if twoPlayers { mode = 2 }
-            setCostume "menu-"+strconv.Itoa(mode)+"-"+strconv.Itoa(selectedLevel)
+        if state == 5 {
+            mode := 1; if checkpointCoop { mode = 2 }
+            setCostume "savepanel-"+strconv.Itoa(mode)+"-"+strconv.Itoa(checkpointLevel)+langSuffix(); show
+        } else if state == 4 {
+            setCostume "class-lab-"+strconv.Itoa(labClass)+"-"+strconv.Itoa(routeTier(labClass))+langSuffix(); show
+        } else if state == 1 {
+            setCostume "stage-view-"+strconv.Itoa(selectedLevel)+langSuffix()
             show
-        } else if state == 2 { setCostume "clear"; show
-        } else if state == 3 { setCostume "win"; show
+        } else if state == 6 { setCostume "home"+langSuffix(); show
+        } else if state == 7 { setCostume "class-select"+langSuffix(); show
+        } else if state == 8 { setCostume "settings"+langSuffix(); show
+        } else if state == 2 { setCostume "clear"+langSuffix(); show
+        } else if state == 3 { setCostume "win"+langSuffix(); show
         } else if state == -1 {
-            setCostume "lose"
+            setCostume "lose"+langSuffix()
             show
-        } else if shopOpen {
-            setCostume "pause"
-            show
-            if weaponLevel >= 3 {
-                say "武器商店 (B 关闭)\n金币: "+strconv.Itoa(coins)+"\n武器已满级\n"+shopMessage
-            } else {
-                next := weaponLevel + 1
-                effect := "三发扇形导弹"
-                if next == 2 { effect = "五发扇形导弹" }
-                if next == 3 { effect = "五发导弹、伤害提升、射速提升" }
-                say "武器商店 (B 关闭)\n金币: "+strconv.Itoa(coins)+"\n按"+strconv.Itoa(next)+"购买 Lv"+strconv.Itoa(next)+"："+strconv.Itoa(weaponPrice(next))+" 金币\n效果："+effect+"\n"+shopMessage
-            }
         } else if paused {
-            setCostume "pause"
+            setCostume "pause"+langSuffix()
             show
         } else { hide }
-        setLayer Front
+        if state != previous || paused != wasPaused {
+            setLayer Front
+            previous = state; wasPaused = paused
+        }
         wait 0.1
     }
 }

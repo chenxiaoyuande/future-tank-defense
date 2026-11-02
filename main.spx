@@ -1,4 +1,7 @@
 import "math"
+import "strconv"
+import "strings"
+import "syscall/js"
 
 var (
     twoPlayers bool
@@ -12,6 +15,13 @@ var (
     bossDefeated bool
     menuDown bool
     confirmDown bool
+    menuDirection int
+    bossTheme int
+    bossAttack int
+    hazardKind [192]int
+    hazardWarmup [192]int
+    hazardDuration [192]int
+    summoned [192]bool
     lives2 int
     shield2 int
     shotDelay2 int
@@ -63,11 +73,72 @@ var (
     pauseDown bool
     paused bool
     coins int
-    shopOpen bool
-    shopDown bool
-    purchaseDown bool
-    shopMessage string
-    shopMessageTimer int
+    lifetimeCoins int
+    evolution int
+    profileLoaded bool
+    profileDirty bool
+    profileDamaged bool
+    profileReadPending bool
+    saveStatus int
+    saveRetry int
+    evolutionDown bool
+    buyDown bool
+    backupDown bool
+    restoreDown bool
+    evolveNotice int
+    evolutionReturnState int
+    projectileTier [192]int
+    language int
+    languageDown bool
+    continueDown bool
+    saveDown bool
+    savePanelDown bool
+    saveReturnState int
+    checkpointLevel int
+    checkpointScore int
+    checkpointKills int
+    checkpointCoop bool
+    clearedLevel int
+    runEntryScore int
+    runEntryKills int
+    checkpointDirty bool
+    languageDirty bool
+    decodedStage int
+    decodedScore int
+    decodedKills int
+    decodedCoop bool
+    decodedCleared int
+    decodedLanguage int
+    metaNoticeTicks int
+    playerClass int
+    playerClass2 int
+    pendingClass int
+    pendingClass2 int
+    classMember int
+    labClass int
+    routeTiers [3]int
+    checkpointClass int
+    checkpointClass2 int
+    decodedClass int
+    decodedClass2 int
+    decodedMushroom int
+    decodedMelon int
+    uiTicks int
+    homeChoice int
+    uiConfirmDown bool
+    uiNavDown int
+    roleOneDown bool
+    roleTwoDown bool
+    roleThreeDown bool
+    uiTabDown bool
+    projectileClass [192]int
+    pierceRemaining [192]int
+    lastHitTarget [192]int
+    sporeHits [192][4]int
+    landingX [192]float64
+    landingY [192]float64
+    lobDuration [192]int
+    chillTicks [192]int
 )
 
 func vx(d int) float64 { if d == 1 { return 1 }; if d == 3 { return -1 }; return 0 }
@@ -80,6 +151,10 @@ func addEntity(k int, x float64, y float64, d int) int {
         if entity[i] == 0 {
             entity[i] = k; px[i] = x; py[i] = y; facing[i] = d; age[i] = 0
             hp[i] = 0; maxHP[i] = 0; hitFlash[i] = 0; growth[i] = 0
+            if k == 5 { hp[i] = 150; maxHP[i] = 150 }
+            summoned[i] = false; hazardKind[i] = 0; hazardWarmup[i] = 0; hazardDuration[i] = 0
+            projectileTier[i] = 0
+            projectileClass[i] = 0; pierceRemaining[i] = 0; lastHitTarget[i] = 0; sporeHits[i] = [4]int{}; landingX[i] = 0; landingY[i] = 0; lobDuration[i] = 0; chillTicks[i] = 0
             dashCooldown[i] = 0; dashWindup[i] = 0; dashRemaining[i] = 0
             rocket[i] = false; incendiary[i] = false; projectileDamage[i] = 1; velx[i] = vx(d); vely[i] = vy(d)
             return i
@@ -104,9 +179,9 @@ func towardPlayer(i int) int {
 }
 func spawnZombie(i int) bool {
     for attempt := 0; attempt < 48; attempt++ {
-        side := int(rand(0,4))
-        x := float64(int(rand(0,19))*24-216)
-        y := float64(120-int(rand(0,11))*24)
+        side := int(rand(0,4))%4
+        x := float64(int(rand(0,19))%19*24-216)
+        y := float64(120-int(rand(0,11))%11*24)
         if side == 0 { y = 120 }; if side == 1 { x = 214 }
         if side == 2 { y = -132 }; if side == 3 { x = -214 }
         dx := x-px[1]; dy := y-py[1]
@@ -114,6 +189,7 @@ func spawnZombie(i int) bool {
             px[i] = x; py[i] = y; entity[i] = 13; age[i] = 0
             health := 1
             if zombieType[i] == 0 { health = 5 }; if zombieType[i] == 2 { health = 3 }
+            health += (level-1)/5
             hp[i] = health; maxHP[i] = health
             dashCooldown[i] = 150; dashRemaining[i] = 0; dashWindup[i] = 0
             hitFlash[i] = 0; facing[i] = towardPlayer(i)
@@ -123,27 +199,27 @@ func spawnZombie(i int) bool {
     return false
 }
 func fire(i int) {
+    if (i != 1 && i != 191) || entity[i] != 1 { return }
+    role := roleOf(i); tier := tierOf(i)
+    if (i == 1 || i == 191) && role == 2 { fireMelon(i,false); return }
     shots := 1
-    spread := 16.0
-    if (i == 1 || i == 191) && weaponLevel >= 1 {
-        if weaponLevel == 1 { shots = 3 }
-        if weaponLevel >= 2 { shots = 5 }
-    }
+    if (i == 1 || i == 191) && weaponLevel == 1 && role == 0 { shots = 3 }
+    if (i == 1 || i == 191) && role == 0 && tier >= 2 && shots == 1 { shots = 2 }
+    if (i == 1 || i == 191) && role == 1 && tier >= 3 { shots = 2 }
     for n := 0; n < shots; n++ {
         angle := 0.0
-        if shots == 3 { angle = float64(n-1)*spread*math.Pi/180 }
-        if shots == 5 { angle = float64(n-2)*spread*math.Pi/180 }
+        if shots > 1 { angle = (float64(n)-float64(shots-1)/2)*16*math.Pi/180 }
         dx := vx(facing[i])*math.Cos(angle)-vy(facing[i])*math.Sin(angle)
         dy := vx(facing[i])*math.Sin(angle)+vy(facing[i])*math.Cos(angle)
-        kind := 7
-        if i == 1 || i == 191 { kind = 6 }
+        kind := 6
         slot := addEntity(kind,px[i]+dx*19,py[i]+dy*19,facing[i])
         if slot != 0 {
-            velx[slot] = dx; vely[slot] = dy; rocket[slot] = (i == 1 || i == 191) && weaponLevel >= 1
-            damage := 1
-            if (i == 1 || i == 191) && weaponLevel >= 3 { damage = 2 }
-            if (i == 1 && pepperBuff > 0) || (i == 191 && pepperBuff2 > 0) { damage++; incendiary[slot] = true }
-            projectileDamage[slot] = damage
+            if kind == 6 {
+                projectileTier[slot] = tier; projectileClass[slot] = role; projectileDamage[slot] = 1+tier/2
+                if role == 1 { pierceRemaining[slot] = 1+tier/2 }
+            }
+            velx[slot] = dx; vely[slot] = dy; rocket[slot] = (i == 1 || i == 191) && weaponLevel == 1
+            if (i == 1 && pepperBuff > 0) || (i == 191 && pepperBuff2 > 0) { projectileDamage[slot]++; incendiary[slot] = true }
         }
     }
 }
@@ -153,8 +229,13 @@ func damageZombie(i int, damage int) {
     if hp[i] <= 0 {
         hp[i] = 0; entity[i] = 12; age[i] = 0; dashRemaining[i] = 0; dashWindup[i] = 0
         score += 100; kills++
-        if zombieType[i] == 3 { bossDefeated = true; score += 900; coins += 900 } else { stageKills++; coins += 100 }
-        if coins > 9999 { coins = 9999 }
+        reward := 10
+        if zombieType[i] == 0 { reward = 15 }; if zombieType[i] == 2 { reward = 12 }
+        if summoned[i] { reward = 2 }
+        if zombieType[i] == 3 { reward = 100+bossTheme*50 }
+        awardCoins(reward)
+        if zombieType[i] == 3 { bossDefeated = true; score += 900 } else if !summoned[i] { stageKills++ }
+        if kills >= 3 && weaponLevel == 0 { weaponLevel = 1; upgradeFlash = 100 }
     }
 }
 func breakHedge(i int) { if entity[i] == 3 { entity[i] = 11; age[i] = 0; growth[i] = 0 } }
@@ -174,14 +255,16 @@ func updateHedge(i int) {
 }
 func castUltimate() bool {
     if state != 0 || paused || entity[1] != 1 || ultimateCooldown > 0 { return false }
-    d := facing[1]
-    slot := addEntity(9,px[1]+vx(d)*24,py[1]+vy(d)*24,d)
-    if slot == 0 { return false }
-    ultimateCooldown = 250; return true
+    if !castClassUltimate(1) { return false }
+    ultimateCooldown = classUltimateDelay(1); return true
 }
 func detonate(x float64, y float64) {
+    detonateTier(x,y,0)
+}
+func detonateTier(x float64, y float64, tier int) {
     blast(x,y,3,88)
-    addEntity(10,x,y,0)
+    slot := addEntity(10,x,y,0)
+    if slot > 0 { projectileTier[slot] = tier }
 }
 func blast(x float64, y float64, damage int, radius float64) {
     for i := 2; i < 192; i++ {
@@ -198,15 +281,15 @@ func spawnPickup() bool {
     for i := 2; i < 192; i++ { if entity[i] == 14 { count++ } }
     if count >= 3 { return false }
     for attempt := 0; attempt < 60; attempt++ {
-        x := float64(int(rand(0,17))*24-192)
-        y := float64(108-int(rand(0,10))*24)
+        x := float64(int(rand(0,17))%17*24-192)
+        y := float64(108-int(rand(0,10))%10*24)
         occupied := blocked(x,y,0) || overlaps(x,y,1,50)
         for i := 2; i < 192; i++ {
             if (entity[i] == 11 || entity[i] == 13 || entity[i] == 14) && overlaps(x,y,i,28) { occupied = true }
         }
         if !occupied {
             i := addEntity(14,x,y,0)
-            if i > 0 { pickupType[i] = int(rand(0,4)); return true }
+            if i > 0 { pickupType[i] = int(rand(0,4))%4; return true }
             return false
         }
     }
@@ -243,14 +326,50 @@ func stepZombie(i int, distance float64) bool {
     if blocked(nx,ny,i) { return false }
     px[i] = nx; py[i] = ny; return true
 }
+func zombieContact(i int, radius float64) {
+    if entity[1] == 1 && overlaps(px[i],py[i],1,radius) { hitPlayer() }
+    if entity[191] == 1 && overlaps(px[i],py[i],191,radius) { hitSecondPlayer() }
+}
+func brainContact(i int, target int) bool {
+    if entity[i] != 2 || entity[target] != 5 { return false }
+    radius := 26.0; if zombieType[i] == 3 { radius = 35 }
+    return overlaps(px[i],py[i],target,radius)
+}
+func bitingBrain(i int) bool {
+    for j := 2; j < 191; j++ {
+        if brainContact(i,j) { return true }
+    }
+    return false
+}
+func updateBrainDefenses() {
+    if state != 0 || paused { return }
+    for target := 2; target < 191; target++ {
+        if entity[target] == 5 {
+            gnawing := false
+            for i := 2; i < 191 && !gnawing; i++ { if brainContact(i,target) { gnawing = true } }
+            if gnawing {
+                if hp[target] > 0 {
+                    // One tick per frame, even when several zombies bite together.
+                    hp[target]--
+                    if hp[target] == 0 { addEntity(8,px[target],py[target],0) }
+                } else {
+                    x := px[target]; y := py[target]; entity[target] = 0
+                    state = -1; addEntity(8,x,y,0); return
+                }
+            }
+        }
+    }
+}
 func updateZombie(i int) {
     kind := zombieType[i]
     if kind == 3 { updateBoss(i); return }
+    if chillTicks[i] > 0 { chillTicks[i]-- }
     if hitFlash[i] > 0 { hitFlash[i]-- }
+    if bitingBrain(i) { zombieContact(i,26); return }
     if kind == 2 {
         dashCooldown[i]--
         if dashCooldown[i] == 12 && dashRemaining[i] <= 0 { facing[i] = towardPlayer(i); dashWindup[i] = 12 }
-        if dashCooldown[i] <= 0 { dashCooldown[i] = 150; dashWindup[i] = 0; dashRemaining[i] = 72 }
+        if dashCooldown[i] <= 0 { dashCooldown[i] = 150-(level-1)*2; dashWindup[i] = 0; dashRemaining[i] = 72 }
     }
     if kind == 2 && dashRemaining[i] > 0 {
         for sub := 0; sub < 3 && dashRemaining[i] > 0; sub++ {
@@ -262,51 +381,48 @@ func updateZombie(i int) {
         if age[i]%80 == 0 { facing[i] = towardPlayer(i) }
         speed := 1.15
         if kind == 0 { speed = 0.65 }; if kind == 1 { speed = 2.25 }
+        speed *= 1+float64(level-1)*0.025
+        if chillTicks[i] > 0 { speed *= 0.55 }
         if !stepZombie(i,speed) { facing[i] = (facing[i]+1+int(rand(0,3)))%4 }
     }
-    if entity[1] == 1 && overlaps(px[i],py[i],1,26) { hitPlayer() }
-    if entity[191] == 1 && overlaps(px[i],py[i],191,26) { hitSecondPlayer() }
-    if age[i]%(100+kind*15) == 35 && dashRemaining[i] <= 0 && dashWindup[i] == 0 { fire(i) }
+    zombieContact(i,26)
 }
 func restart() {
+    runEntryScore = 0; runEntryKills = 0
     for i := 0; i < 192; i++ {
         entity[i] = 0; age[i] = 0; hp[i] = 0; maxHP[i] = 0; growth[i] = 0
         dashCooldown[i] = 0; dashRemaining[i] = 0; dashWindup[i] = 0; hitFlash[i] = 0; rocket[i] = false; incendiary[i] = false
+        summoned[i] = false; hazardKind[i] = 0; hazardWarmup[i] = 0; hazardDuration[i] = 0
     }
     level = selectedLevel
-    if level < 1 || level > 3 { level = 1; selectedLevel = 1 }
-    stageKills = 0; waveSpawned = 3; waveTarget = 3+level*3; bossSlot = 0; bossStarted = false; bossDefeated = false
+    for t := 0; t < 3; t++ { zombieSlots[t] = 0 }
+    if level < 1 || level > 20 { level = 1; selectedLevel = 1 }
+    bossTheme = (level-1)/5; bossAttack = 0
+    stageKills = 0; waveSpawned = 3; waveTarget = 5+level; bossSlot = 0; bossStarted = false; bossDefeated = false
+    if level%5 == 0 { waveSpawned = 0; waveTarget = 0 }
     lives2 = 3; shield2 = 100; shotDelay2 = 0; ultimateCooldown2 = 0; ultimateDown2 = false
     shieldCharges2 = 0; shieldBuff2 = 0; speedBuff2 = 0; pepperBuff2 = 0
     score = 0; kills = 0; lives = 3; ticks = 0; shotDelay = 0; shield = 100
     state = 0; weaponLevel = 0; upgradeFlash = 0; paused = false; ultimateCooldown = 0; ultimateDown = false
-    coins = 0; shopOpen = false; shopDown = false; purchaseDown = false; shopMessage = ""; shopMessageTimer = 0
     pickupTimer = 250; shieldCharges = 0; shieldBuff = 0; speedBuff = 0; pepperBuff = 0; pickupNotice = 0
     entity[1] = 1; px[1] = -48; py[1] = -120; facing[1] = 0
     if twoPlayers { entity[191] = 1; px[191] = 48; py[191] = -120; facing[191] = 0 }
     addEntity(5,0,-120,0)
     for col := 0; col < 19; col++ {
         for row := 2; row <= 9; row++ {
-            wall := (col == 2 || col == 6 || col == 12 || col == 16) && row != 6
-            if row == 5 && (col == 8 || col == 9 || col == 10) { wall = true }
-            if row == 8 && (col == 8 || col == 10) { wall = true }
-            if level == 2 { wall = (row == 3 || row == 7) && col > 1 && col < 17 && col%4 != 1 && col != 9 }
-            if level == 3 { wall = (col == 4 || col == 14) && row != 5 && row != 8 || row == 5 && col >= 7 && col <= 11 && col != 9 }
-            if wall {
-                k := 3; if row == 5 && (col == 6 || col == 12) { k = 4 }
-                addEntity(k,float64(col*24-216),float64(132-row*24),0)
-            }
+            k := mapTile(level,col,row)
+            if k != 0 { addEntity(k,float64(col*24-216),float64(132-row*24),0) }
         }
     }
     addEntity(3,-24,-120,0); addEntity(3,24,-120,0); addEntity(3,-24,-96,0); addEntity(3,0,-96,0); addEntity(3,24,-96,0)
+    if level%5 == 0 { startBoss(); return }
     for t := 0; t < 3; t++ {
         i := addEntity(12,0,0,0); zombieSlots[t] = i; zombieType[i] = t
         age[i] = 50; spawnZombie(i)
     }
 }
 func updateGame() {
-    updateShopInput()
-    if state != 0 || paused || shopOpen { return }
+    if state != 0 || paused { return }
     ticks++
     updateSecondPlayer()
     if shieldBuff > 0 { shieldBuff--; if shieldBuff == 0 { shieldCharges = 0 } }
@@ -319,17 +435,22 @@ func updateGame() {
     if keyPressed(KeyS) || (!twoPlayers && keyPressed(KeyDown)) { d = 2 }; if keyPressed(KeyA) || (!twoPlayers && keyPressed(KeyLeft)) { d = 3 }
     if d >= 0 && entity[1] == 1 {
         facing[1] = d; speed := 2.7; if speedBuff > 0 { speed = 4.185 }
+        if onIce(1) { speed *= 0.5 }
         nx := px[1]+vx(d)*speed; ny := py[1]+vy(d)*speed
         if !blocked(nx,ny,1) { px[1] = nx; py[1] = ny }
     }
     updateUltimateInput()
-    if keyPressed(KeySpace) && entity[1] == 1 && shotDelay == 0 { fire(1); if weaponLevel >= 3 { shotDelay = 9 } else { shotDelay = 14 } }
+    if keyPressed(KeySpace) && entity[1] == 1 && shotDelay == 0 { fire(1); shotDelay = classShotDelay(1) }
     for i := 2; i < 192; i++ {
         if state != 0 { return }
         k := entity[i]; if k != 0 { age[i]++ }
         if k == 2 { updateZombie(i) }
         if k == 11 { updateHedge(i) }
         if k == 12 && age[i] >= 50 && !bossStarted && waveSpawned < waveTarget { if spawnZombie(i) { waveSpawned++ } }
+        if k == 12 && summoned[i] && age[i] >= 30 { entity[i] = 0 }
+        if k == 16 { updateHazard(i) }
+        if k == 17 { updateSporeCloud(i) }
+        if k == 18 { updateMelon(i) }
         if k == 13 && age[i] >= 20 && !blocked(px[i],py[i],i) { entity[i] = 2; age[i] = 0 }
         if k == 14 {
             if entity[1] == 1 && overlaps(px[i],py[i],1,23) { collectPickup(i) } else if entity[191] == 1 && overlaps(px[i],py[i],191,23) { collectSecondPickup(i) } else if age[i] >= 900 { entity[i] = 0 }
@@ -341,21 +462,26 @@ func updateGame() {
                 edge := px[i] < -227 || px[i] > 227 || py[i] < -145 || py[i] > 134
                 if edge {
                     x := px[i]; y := py[i]; entity[i] = 0; flying = false
-                    if k == 9 { detonate(x,y) }
+                    if k == 9 { detonateTier(x,y,projectileTier[i]) }
                 }
                 for j := 1; j < 192 && flying; j++ {
                     target := entity[j]; valid := target > 0 && target < 6
                     if (k == 6 || k == 9) && target == 1 { valid = false }
                     if k == 7 && target == 2 { valid = false }
+                    if k == 6 && projectileClass[i] == 1 && sporeAlreadyHit(i,j) { valid = false }
                     if (k == 6 || k == 9) && target == 5 { valid = false }
                     radius := 14.0; if k == 9 { radius = 22 }; if target == 2 && zombieType[j] == 3 { radius = 26 }
                     if valid && overlaps(px[i],py[i],j,radius) {
+                        if k == 6 && projectileClass[i] == 1 && target == 2 && pierceRemaining[i] > 0 {
+                            rememberSporeHit(i,j); pierceRemaining[i]--; damageZombie(j,projectileDamage[i]); addEntity(8,px[j],py[j],0)
+                        } else {
                         flying = false; x := px[i]; y := py[i]; entity[i] = 0
-                        if k == 9 { detonate(x,y) } else {
+                        if k == 9 { detonateTier(x,y,projectileTier[i]) } else {
                             if target == 3 { breakHedge(j); addEntity(8,px[j],py[j],0) }
                             if target == 2 { damageZombie(j,projectileDamage[i]); addEntity(8,px[j],py[j],0) }
                             if target == 1 { if j == 191 { hitSecondPlayer() } else { hitPlayer() } }
-                            if target == 5 { entity[j] = 0; state = -1; addEntity(8,px[j],py[j],0) }
+                            if target == 5 && hp[j] <= 0 { entity[j] = 0; state = -1; addEntity(8,px[j],py[j],0) }
+                        }
                         }
                     }
                 }
@@ -365,8 +491,13 @@ func updateGame() {
         if k == 10 && age[i] > 30 { entity[i] = 0 }
         if k == 15 && age[i] > 30 { entity[i] = 0 }
     }
-    if state == 0 && stageKills >= waveTarget && !bossStarted { startBoss() }
-    if state == 0 && bossDefeated { state = 2; if level == 3 { state = 3 } }
+    updateBrainDefenses()
+    if state == 0 && ((!bossStarted && stageKills >= waveTarget) || bossDefeated) {
+        clearBossEffects()
+        state = 2; if level == 20 { state = 3 }
+        if level > clearedLevel && profileLoaded { clearedLevel = level }
+        if level < 20 { recordCheckpoint(level+1,score,kills,twoPlayers) } else { recordCheckpoint(20,runEntryScore,runEntryKills,twoPlayers) }
+    }
 }
 
 // Player two owns independent cooldowns, lives and pickup effects.
@@ -409,99 +540,558 @@ func updateSecondPlayer() {
     if keyPressed(KeyDown) { d = 2 }; if keyPressed(KeyLeft) { d = 3 }
     if d >= 0 {
         facing[191] = d; speed := 2.7; if speedBuff2 > 0 { speed = 4.185 }
+        if onIce(191) { speed *= 0.5 }
         x := px[191]+vx(d)*speed; y := py[191]+vy(d)*speed
         if !blocked(x,y,191) { px[191] = x; py[191] = y }
     }
-    if keyPressed(KeyJ) && shotDelay2 == 0 { fire(191); if weaponLevel >= 3 { shotDelay2 = 9 } else { shotDelay2 = 14 } }
+    if keyPressed(KeyJ) && shotDelay2 == 0 { fire(191); shotDelay2 = classShotDelay(191) }
     down := keyPressed(KeyK)
     if down && !ultimateDown2 && ultimateCooldown2 == 0 {
-        d := facing[191]
-        if addEntity(9,px[191]+vx(d)*24,py[191]+vy(d)*24,d) != 0 { ultimateCooldown2 = 250 }
+        if castClassUltimate(191) { ultimateCooldown2 = classUltimateDelay(191) }
     }
     ultimateDown2 = down
 }
 func startBoss() {
+    if level%5 != 0 { return }
     bossStarted = true
     for i := 2; i < 191; i++ { if entity[i] == 12 { entity[i] = 0 } }
     // Clear a landing zone so the large boss never appears inside a hedge.
     for i := 2; i < 191; i++ { if (entity[i] == 3 || entity[i] == 4 || entity[i] == 11) && math.Abs(px[i]) < 55 && py[i] > 50 { entity[i] = 0 } }
     bossSlot = addEntity(2,0,100,2)
     if bossSlot == 0 { bossStarted = false; return }
-    zombieType[bossSlot] = 3; hp[bossSlot] = 12+level*6; if twoPlayers { hp[bossSlot] += 10 }
+    zombieType[bossSlot] = 3; hp[bossSlot] = 24+bossTheme*12; if twoPlayers { hp[bossSlot] += 16 }
     maxHP[bossSlot] = hp[bossSlot]; zombieSlots[0] = bossSlot
 }
 func updateBoss(i int) {
+    if chillTicks[i] > 0 { chillTicks[i]-- }
     if hitFlash[i] > 0 { hitFlash[i]-- }
-    cycle := age[i]%150
-    if cycle == 1 { facing[i] = towardPlayer(i) }
-    if cycle < 100 {
-        speed := 0.6; if hp[i]*2 <= maxHP[i] { speed = 1.1 }
+    period := 240-bossTheme*15
+    if hp[i]*2 <= maxHP[i] { period -= 30 }
+    // A countdown avoids changing phase mid-attack when the boss crosses half HP.
+    if dashCooldown[i] > 0 { dashCooldown[i]-- }
+    if dashCooldown[i] == 0 {
+        bossAttack++; planBossAttack(i); dashCooldown[i] = period
+    }
+    dashWindup[i] = 0
+    for j := 2; j < 191; j++ {
+        if entity[j] == 16 && age[j] < hazardWarmup[j] && hazardWarmup[j]-age[j] > dashWindup[i] { dashWindup[i] = hazardWarmup[j]-age[j] }
+    }
+    if age[i]%50 == 1 { facing[i] = towardPlayer(i) }
+    if dashWindup[i] == 0 && !bitingBrain(i) {
+        speed := 0.55+float64(bossTheme)*0.1; if hp[i]*2 <= maxHP[i] { speed += 0.3 }
+        if chillTicks[i] > 0 { speed *= 0.55 }
         if !stepZombie(i,speed) { facing[i] = (facing[i]+1)%4 }
     }
-    // A visible charge from tick 100, then a four-direction barrage.
-    if cycle >= 100 && cycle < 125 { dashWindup[i] = 125-cycle } else { dashWindup[i] = 0 }
-    if cycle == 125 || (hp[i]*2 <= maxHP[i] && cycle == 145) {
-        old := facing[i]
-        for d := 0; d < 4; d++ { facing[i] = d; fire(i) }; facing[i] = old
+    zombieContact(i,35)
+}
+// Twenty deterministic layouts: five structures, each reconfigured per theme.
+// Crossroads and border lanes remain open for traversal and safe spawns.
+func mapTile(stage int, col int, row int) int {
+    if row < 2 || row > 9 || col < 2 || col > 16 { return 0 }
+    theme := (stage-1)/5; layout := (stage-1)%5
+    if col == 5 || col == 9 || col == 13 || row == 6 || row == 9 { return 0 }
+    wall := false
+    if layout == 0 { wall = (col+theme)%4 == 2 && row != 4+theme%3 }
+    if layout == 1 { wall = (row == 3+theme%2 || row == 7+theme%2) && (col+theme)%4 != 0 }
+    if layout == 2 { wall = (col+row+theme)%5 == 0 || row%3 == 0 && col%4 == theme }
+    if layout == 3 { wall = ((col == 3+theme || col == 15-theme) && row >= 3 && row <= 8) || ((row == 3 || row == 8) && col >= 3+theme && col <= 15-theme) }
+    if layout == 4 { wall = ((col == 3+theme || col == 15-theme) && (row == 3 || row == 7)) || row == 8 && (col+theme)%3 == 0 }
+    if !wall { return 0 }
+    if (col*3+row+theme)%7 == 0 { return 4 }; return 3
+}
+func clampArena(value float64, low float64, high float64) float64 {
+    if value < low { return low }; if value > high { return high }; return value
+}
+func addHazard(kind int, x float64, y float64) int {
+    // No invisible effect: only a successfully allocated, visible marker can attack.
+    i := addEntity(16,clampArena(x,-190,190),clampArena(y,-108,96),0)
+    if i == 0 { return 0 }
+    hazardKind[i] = kind
+    hazardWarmup[i] = 75; hazardDuration[i] = 150
+    if kind == 0 { hazardDuration[i] = 1 }
+    if kind == 2 { hazardWarmup[i] = 60; hazardDuration[i] = 100 }
+    if kind == 3 { hazardWarmup[i] = 85; hazardDuration[i] = 16 }
+    return i
+}
+func minionCount() int {
+    count := 0
+    for i := 2; i < 191; i++ { if summoned[i] && (entity[i] == 2 || entity[i] == 13) { count++ } }
+    return count
+}
+func planBossAttack(i int) {
+    enraged := hp[i]*2 <= maxHP[i]
+    if bossTheme == 0 {
+        limit := 4; if enraged { limit = 6 }
+        pending := 0
+        for j := 2; j < 191; j++ { if entity[j] == 16 && hazardKind[j] == 0 { pending++ } }
+        amount := 2; if enraged { amount = 3 }
+        for n := 0; n < amount && minionCount()+pending < limit; n++ {
+            // Search free ground before committing the summon marker.
+            for attempt := 0; attempt < 40; attempt++ {
+                x := float64(int(rand(0,15))*24-168); y := float64(int(rand(0,7))*24-48)
+                safe := !blocked(x,y,0) && (entity[1] != 1 || math.Hypot(x-px[1],y-py[1]) > 50) && (entity[191] != 1 || math.Hypot(x-px[191],y-py[191]) > 50)
+                for j := 2; j < 191; j++ { if entity[j] == 16 && overlaps(x,y,j,30) { safe = false } }
+                if safe {
+                    if addHazard(0,x,y) > 0 { pending++ }
+                    break
+                }
+            }
+        }
+        return
     }
-    if entity[1] == 1 && overlaps(px[i],py[i],1,35) { hitPlayer() }
-    if entity[191] == 1 && overlaps(px[i],py[i],191,35) { hitSecondPlayer() }
-}
-func weaponPrice(level int) int {
-    if level == 1 { return 300 }
-    if level == 2 { return 600 }
-    if level == 3 { return 1000 }
-    return 0
-}
-func tryBuy(level int) {
-    if !shopOpen { return }
-    if weaponLevel >= 3 { shopMessage = "武器已满级"; shopMessageTimer = 100; return }
-    if level != weaponLevel+1 { return }
-    price := weaponPrice(level)
-    if price == 0 { return }
-    if coins < price { shopMessage = "金币不足"; shopMessageTimer = 100; return }
-    coins -= price
-    weaponLevel = level
-    upgradeFlash = 100
-    shopMessage = "购买成功"
-    shopMessageTimer = 100
-}
-func updateShopInput() {
-    if shopMessageTimer > 0 { shopMessageTimer-- } else { shopMessage = "" }
-    b := keyPressed(KeyB)
-    if b && !shopDown && state == 0 && !paused { shopOpen = !shopOpen }
-    shopDown = b
-    if !shopOpen { purchaseDown = false; return }
-    pressed := keyPressed(Key1) || keyPressed(Key2) || keyPressed(Key3)
-    if pressed && !purchaseDown {
-        if keyPressed(Key1) { tryBuy(1) }
-        if keyPressed(Key2) { tryBuy(2) }
-        if keyPressed(Key3) { tryBuy(3) }
+    for player := 0; player < 2; player++ {
+        target := 1; if player == 1 { target = 191 }
+        if entity[target] != 1 {
+            continue
+        }
+        x := px[target]; y := py[target]
+        if bossTheme == 1 {
+            addHazard(1,x,y)
+            if enraged { addHazard(1,x+64,y+48) }
+        }
+        if bossTheme == 2 {
+            // Alternating horizontal/vertical fire lanes leave clear escape directions.
+            for n := -1; n <= 1; n++ {
+                dx := float64(n*48); dy := 0.0
+                if bossAttack%2 == 0 { dy = dx; dx = 0 }
+                addHazard(2,x+dx,y+dy)
+            }
+            if enraged { addHazard(2,x+72,y+72) }
+        }
+        if bossTheme == 3 {
+            addHazard(3,x,y)
+            addHazard(3,x+68,y+48)
+            if enraged { addHazard(3,x-68,y-48) }
+        }
     }
-    purchaseDown = pressed
+}
+func onIce(player int) bool {
+    for i := 2; i < 191; i++ {
+        if entity[i] == 16 && hazardKind[i] == 1 && age[i] >= hazardWarmup[i] && age[i] < hazardWarmup[i]+hazardDuration[i] && math.Hypot(px[player]-px[i],py[player]-py[i]) < 36 { return true }
+    }
+    return false
+}
+func updateHazard(i int) {
+    warmup := hazardWarmup[i]; kind := hazardKind[i]
+    if age[i] < warmup { return }
+    if age[i] >= warmup+hazardDuration[i] { entity[i] = 0; return }
+    if kind == 0 {
+        if !blocked(px[i],py[i],0) && minionCount() < 6 {
+            slot := addEntity(2,px[i],py[i],2)
+            if slot > 0 {
+                summoned[slot] = true; zombieType[slot] = bossAttack%3
+                hp[slot] = 2; if zombieType[slot] == 0 { hp[slot] = 4 }
+                maxHP[slot] = hp[slot]; dashCooldown[slot] = 150
+            }
+        }
+        entity[i] = 0; return
+    }
+    damaging := kind == 2 && (age[i]-warmup)%20 == 0 || kind == 3 && age[i] == warmup
+    if !damaging { return }
+    for player := 0; player < 2; player++ {
+        target := 1; if player == 1 { target = 191 }
+        if entity[target] != 1 {
+            continue
+        }
+        hit := math.Hypot(px[target]-px[i],py[target]-py[i]) < 30
+        if kind == 2 { hit = overlaps(px[target],py[target],i,25) }
+        if hit { if target == 1 { hitPlayer() } else { hitSecondPlayer() } }
+    }
+}
+func clearBossEffects() {
+    for i := 2; i < 191; i++ {
+        if entity[i] == 16 || summoned[i] || entity[i] == 7 || entity[i] == 17 || entity[i] == 18 { entity[i] = 0 }
+    }
 }
 func nextLevel() {
     if state != 2 { return }
     savedScore := score; savedKills := kills
-    savedCoins := coins; savedWeapon := weaponLevel
-    selectedLevel = level+1; restart()
-    score = savedScore; kills = savedKills; coins = savedCoins; weaponLevel = savedWeapon
+    selectedLevel = level+1; restart(); score = savedScore; kills = savedKills
+    if kills >= 3 { weaponLevel = 1 }
+    runEntryScore = score; runEntryKills = kills
+    recordCheckpoint(level,score,kills,twoPlayers)
+}
+func roleOf(player int) int { if player == 191 { return playerClass2 }; return playerClass }
+func sporeAlreadyHit(projectile int, target int) bool { for n := 0; n < 4; n++ { if sporeHits[projectile][n] == target { return true } }; return false }
+func rememberSporeHit(projectile int, target int) { for n := 0; n < 4; n++ { if sporeHits[projectile][n] == 0 { sporeHits[projectile][n] = target; return } } }
+func routeTier(role int) int { if role == 0 { return evolution }; return routeTiers[role] }
+func tierOf(player int) int { return routeTier(roleOf(player)) }
+func classShotDelay(player int) int {
+    role := roleOf(player); tier := tierOf(player)
+    if role == 1 { return 22-tier }; if role == 2 { return 38-tier*3 }
+    if tier >= 2 { return 10-tier }; return 14-tier
+}
+func classUltimateDelay(player int) int {
+    role := roleOf(player); tier := tierOf(player)
+    if role == 1 { return 300-tier*15 }; if role == 2 { return 350-tier*20 }; return 250-tier*15
+}
+func castClassUltimate(player int) bool {
+    role := roleOf(player); tier := tierOf(player); d := facing[player]
+    if role == 2 { return fireMelon(player,true) }
+    kind := 9; offset := 24.0; if role == 1 { kind = 17; offset = 60 }
+    slot := addEntity(kind,clampArena(px[player]+vx(d)*offset,-200,200),clampArena(py[player]+vy(d)*offset,-120,110),d)
+    if slot == 0 { return false }
+    projectileClass[slot] = role; projectileTier[slot] = tier; return true
+}
+func fireMelon(player int, ultimate bool) bool {
+    d := facing[player]; tier := tierOf(player)
+    targetX := clampArena(px[player]+vx(d)*142,-210,210); targetY := clampArena(py[player]+vy(d)*142,-125,115)
+    nearest := 185.0
+    for j := 2; j < 191; j++ {
+        dx := px[j]-px[player]; dy := py[j]-py[player]; distance := math.Hypot(dx,dy)
+        if entity[j] == 2 && distance < nearest && dx*vx(d)+dy*vy(d) > 0 {
+            nearest = distance; targetX = px[j]; targetY = py[j]
+        }
+    }
+    slot := addEntity(18,px[player]+vx(d)*18,py[player]+vy(d)*18,d)
+    if slot == 0 { return false }
+    projectileClass[slot] = 2; projectileTier[slot] = tier; rocket[slot] = ultimate
+    lobDuration[slot] = 30; projectileDamage[slot] = 3+tier/2
+    if ultimate { lobDuration[slot] = 40; projectileDamage[slot] = 8+tier } else {
+        if (player == 1 && pepperBuff > 0) || (player == 191 && pepperBuff2 > 0) { projectileDamage[slot]++; incendiary[slot] = true }
+    }
+    landingX[slot] = targetX; landingY[slot] = targetY
+    velx[slot] = (targetX-px[slot])/float64(lobDuration[slot]); vely[slot] = (targetY-py[slot])/float64(lobDuration[slot])
+    return true
+}
+func updateMelon(i int) {
+    px[i] += velx[i]; py[i] += vely[i]
+    if age[i] < lobDuration[i] { return }
+    x := landingX[i]; y := landingY[i]; tier := projectileTier[i]; damage := projectileDamage[i]
+    heavy := rocket[i]; radius := float64(30+tier*4); if heavy { radius = float64(65+tier*4) }
+    entity[i] = 0; blast(x,y,damage,radius)
+    if tier >= 4 {
+        for j := 2; j < 191; j++ { if entity[j] == 2 && math.Hypot(px[j]-x,py[j]-y) <= radius { chillTicks[j] = 80 } }
+    }
+    slot := addEntity(10,x,y,0)
+    if slot > 0 { projectileClass[slot] = 2; projectileTier[slot] = tier; rocket[slot] = heavy }
+}
+func updateSporeCloud(i int) {
+    if age[i] >= 150 { entity[i] = 0; return }
+    if age[i]%25 == 1 { blast(px[i],py[i],1+projectileTier[i]/3,float64(42+projectileTier[i]*3)) }
+}
+func unlockedLevel() int { if clearedLevel >= 19 { return 20 }; if clearedLevel < 0 { return 1 }; return clearedLevel+1 }
+func frontEnd() bool { return state == 1 || state == 4 || state == 5 || state == 6 || state == 7 || state == 8 }
+func ultimateBar() int { maximum := classUltimateDelay(1); value := 10-(ultimateCooldown*10+maximum-1)/maximum; if value < 0 { return 0 }; if value > 10 { return 10 }; return value }
+func canStartStage(stage int) bool { return stage >= 1 && stage <= 20 && stage <= unlockedLevel() }
+func openClassSelect() {
+    if !canStartStage(selectedLevel) { evolveNotice = 9; metaNoticeTicks = 150; return }
+    pendingClass = playerClass; pendingClass2 = playerClass2; classMember = 0; evolveNotice = 0; metaNoticeTicks = 0; state = 7
+}
+func chooseClass(role int) {
+    if role < 0 || role > 2 { return }
+    if state == 7 { if classMember == 0 { pendingClass = role } else { pendingClass2 = role } }
+    if state == 4 { labClass = role; evolveNotice = 0 }
+}
+func startWithClasses() {
+    if !canStartStage(selectedLevel) { evolveNotice = 9; metaNoticeTicks = 150; state = 1; return }
+    playerClass = pendingClass; playerClass2 = pendingClass2
+    restart(); runEntryScore = 0; runEntryKills = 0; recordCheckpoint(level,0,0,twoPlayers)
+}
+func uiAction(action int) {
+    if state == 6 {
+        if action == 0 { selectedLevel = 1; state = 1 }
+        if action == 1 { saveReturnState = 6; state = 5; evolveNotice = 0 }
+        if action == 2 { state = 8 }
+        if action == 3 { evolutionReturnState = 6; labClass = playerClass; state = 4; evolveNotice = 0 }
+        return
+    }
+    if state == 1 {
+        if action == 0 { openClassSelect() }; if action == 1 { state = 6 }; return
+    }
+    if state == 7 {
+        if action < 3 { chooseClass(action) }
+        if action == 3 { twoPlayers = !twoPlayers; classMember = 0 }
+        if action == 4 && twoPlayers { classMember = 1-classMember }
+        if action == 5 { startWithClasses() }; if action == 6 { state = 1 }; return
+    }
+    if state == 8 {
+        if action < 2 { language = action; languageDirty = true; profileDirty = true; persistProfile() }
+        if action == 2 { state = 6 }; return
+    }
+    if state == 4 {
+        if action < 3 { chooseClass(action) }; if action == 3 { buyEvolution() }; if action == 4 { state = evolutionReturnState }; return
+    }
+    if state == 5 {
+        if action == 0 { continueCheckpoint() }; if action == 1 { backupProgress(encodeSave()) }; if action == 2 { code := restoreProgress(); if code != "" { importProfile(code) } }; if action == 3 { state = saveReturnState }
+    }
 }
 func updateControls() {
+    uiTicks++
+    if metaNoticeTicks > 0 { metaNoticeTicks-- }
+    updateProfile()
+    t := keyPressed(KeyT)
+    if t && !languageDown { language = 1-language; languageDirty = true; profileDirty = true; persistProfile() }; languageDown = t
+    s := keyPressed(KeyS)
+    if s && !savePanelDown && (state == 6 || state == 1 || state == 2 || state == 3 || state == -1) { saveReturnState = state; state = 5; paused = false; evolveNotice = 0 }; savePanelDown = s
+    n := keyPressed(KeyN)
+    if n && !continueDown && (state == 6 || state == 1 || state == 5) { if !continueCheckpoint() && state != 5 { saveReturnState = state; state = 5 } }; continueDown = n
+    o := keyPressed(KeyO)
+    if o && !saveDown && state < 6 { manualCheckpoint() }; saveDown = o
     m := keyPressed(KeyM)
-    if m && !menuDown { state = 1; paused = false; shopOpen = false }; menuDown = m
+    if m && !menuDown {
+        if state == 4 { state = evolutionReturnState } else if state == 5 { state = saveReturnState } else if state == 7 { state = 1 } else { state = 6 }
+        paused = false
+    }; menuDown = m
     enter := keyPressed(KeyEnter)
+    e := keyPressed(KeyB)
+    if e && !evolutionDown && (state == 6 || state == 1 || state == 2 || state == 3 || state == -1) { evolutionReturnState = state; labClass = playerClass; state = 4; paused = false; evolveNotice = 0 }
+    evolutionDown = e
+    u := keyPressed(KeyU)
+    if state == 4 && u && !buyDown { buyEvolution() }; buyDown = u
+    c := keyPressed(KeyC)
+    if (state == 4 || state == 5) && c && !backupDown { backupProgress(encodeSave()) }; backupDown = c
+    v := keyPressed(KeyV)
+    if (state == 4 || state == 5) && v && !restoreDown { code := restoreProgress(); if code != "" { importProfile(code) } }; restoreDown = v
+    one := keyPressed(Key1); two := keyPressed(Key2); three := keyPressed(Key3)
+    if state == 4 || state == 7 {
+        if one && !roleOneDown { chooseClass(0) }; if two && !roleTwoDown { chooseClass(1) }; if three && !roleThreeDown { chooseClass(2) }
+    }
+    roleOneDown = one; roleTwoDown = two; roleThreeDown = three
+    if state == 6 || state == 7 || state == 8 {
+        direction := 0
+        if keyPressed(KeyUp) || keyPressed(KeyLeft) { direction = -1 }; if keyPressed(KeyDown) || keyPressed(KeyRight) { direction = 1 }
+        if direction != 0 && direction != uiNavDown {
+            if state == 6 { homeChoice = (homeChoice+direction+4)%4 }
+            if state == 7 { role := pendingClass; if classMember == 1 { role = pendingClass2 }; chooseClass((role+direction+3)%3) }
+            if state == 8 { language = 1-language; languageDirty = true; profileDirty = true; persistProfile() }
+        }; uiNavDown = direction
+        tab := keyPressed(KeyTab)
+        if state == 7 && tab && !uiTabDown && twoPlayers { classMember = 1-classMember }; uiTabDown = tab
+        if enter && !confirmDown {
+            if state == 6 { uiAction(homeChoice) } else if state == 7 { startWithClasses() } else { state = 6 }
+        }; confirmDown = enter
+        return
+    }
+    uiNavDown = 0
     if state == 1 {
-        if keyPressed(Key1) { twoPlayers = false }; if keyPressed(Key2) { twoPlayers = true }
-        if keyPressed(KeyF) { selectedLevel = 1 }; if keyPressed(KeyG) { selectedLevel = 2 }; if keyPressed(KeyH) { selectedLevel = 3 }
-        if enter && !confirmDown { restart() }
-    } else if state == 2 && enter && !confirmDown { nextLevel() }
-    confirmDown = enter
-    r := keyPressed(KeyR); if r && !restartDown && state != 1 { restart() }; restartDown = r
-    p := keyPressed(KeyP); if p && !pauseDown && state == 0 && !shopOpen { paused = !paused }; pauseDown = p
+        if one { twoPlayers = false }; if two { twoPlayers = true }
+        if keyPressed(KeyF) { selectedLevel = 1 }; if keyPressed(KeyG) { selectedLevel = 6 }; if keyPressed(KeyH) { selectedLevel = 11 }; if keyPressed(KeyL) { selectedLevel = 16 }
+        direction := 0
+        if keyPressed(KeyLeft) { direction = -1 }; if keyPressed(KeyRight) { direction = 1 }
+        if keyPressed(KeyUp) { direction = -5 }; if keyPressed(KeyDown) { direction = 5 }
+        if direction != 0 && direction != menuDirection { selectedLevel += direction }; menuDirection = direction
+        if selectedLevel < 1 { selectedLevel = 1 }; if selectedLevel > 20 { selectedLevel = 20 }
+        if enter && !confirmDown { openClassSelect() }
+    } else {
+        menuDirection = 0
+        if state == 2 && enter && !confirmDown { nextLevel() }
+    }; confirmDown = enter
+    r := keyPressed(KeyR)
+    if r && !restartDown && (state == 0 || state == 2 || state == 3 || state == -1) { restart(); runEntryScore = 0; runEntryKills = 0; recordCheckpoint(level,0,0,twoPlayers) }; restartDown = r
+    p := keyPressed(KeyP); if p && !pauseDown && state == 0 { paused = !paused }; pauseDown = p
 }
+func evolutionCost(tier int) int {
+    costs := []int{100,250,500,900,1500}
+    if tier < 0 || tier >= 5 { return 0 }; return costs[tier]
+}
+func spentCoins(tier int) int {
+    total := 0
+    for i := 0; i < tier && i < 5; i++ { total += evolutionCost(i) }; return total
+}
+func profileCode(money int, tier int, total int) string {
+    checksum := (money*31+tier*97+total*13+61101)%1000003
+    return "TG1|"+strconv.Itoa(money)+"|"+strconv.Itoa(tier)+"|"+strconv.Itoa(total)+"|"+strconv.Itoa(checksum)
+}
+func decodeProfile(raw string) (int, int, int, bool) {
+    fields := strings.Split(strings.TrimSpace(raw),"|")
+    if len(fields) != 5 || fields[0] != "TG1" { return 0,0,0,false }
+    money, err1 := strconv.Atoi(fields[1]); tier, err2 := strconv.Atoi(fields[2]); total, err3 := strconv.Atoi(fields[3])
+    if err1 != nil || err2 != nil || err3 != nil { return 0,0,0,false }
+    if money < 0 || money > 9999999 || tier < 0 || tier > 5 || total < money+spentCoins(tier) || total > 9999999 { return 0,0,0,false }
+    if profileCode(money,tier,total) != strings.TrimSpace(raw) { return 0,0,0,false }
+    return money,tier,total,true
+}
+func tr(zh string, en string) string { if language == 1 { return en }; return zh }
+func langSuffix() string { if language == 1 { return "-en" }; return "" }
+func encodeSaveValues(money int, tier int, total int, stage int, entryScore int, entryKills int, coop bool, cleared int, lang int) string {
+    mode := 0; if coop { mode = 1 }
+    sum := (money*31+tier*97+total*13+stage*101+entryScore*7+entryKills*19+mode*41+cleared*53+lang*89+61102)%1000003
+    return "TG2|"+strconv.Itoa(money)+"|"+strconv.Itoa(tier)+"|"+strconv.Itoa(total)+"|"+strconv.Itoa(stage)+"|"+strconv.Itoa(entryScore)+"|"+strconv.Itoa(entryKills)+"|"+strconv.Itoa(mode)+"|"+strconv.Itoa(cleared)+"|"+strconv.Itoa(lang)+"|"+strconv.Itoa(sum)
+}
+func encodeSave() string {
+    return encodeRosterSave(coins,evolution,lifetimeCoins,checkpointLevel,checkpointScore,checkpointKills,checkpointCoop,clearedLevel,language,routeTiers[1],routeTiers[2],checkpointClass,checkpointClass2)
+}
+func rosterHash(body string) int {
+    hash := 61103
+    for i := 0; i < len(body); i++ { hash = (hash*33+int(body[i]))%1000003 }; return hash
+}
+func encodeRosterSave(money int, tier int, total int, stage int, entryScore int, entryKills int, coop bool, cleared int, lang int, mushroom int, melon int, class1 int, class2 int) string {
+    base := encodeSaveValues(money,tier,total,stage,entryScore,entryKills,coop,cleared,lang)
+    body := "TG3"+base[3:strings.LastIndex(base,"|")]+"|"+strconv.Itoa(mushroom)+"|"+strconv.Itoa(melon)+"|"+strconv.Itoa(class1)+"|"+strconv.Itoa(class2)
+    return body+"|"+strconv.Itoa(rosterHash(body))
+}
+func decodeRosterSave(raw string) (int, int, int, bool) {
+    fields := strings.Split(raw,"|")
+    if len(fields) != 15 { return 0,0,0,false }
+    values := []int{0,0,0,0,0,0,0,0,0,0,0,0,0}
+    for i := 0; i < 13; i++ { value,err := strconv.Atoi(fields[i+1]); if err != nil { return 0,0,0,false }; values[i] = value }
+    if values[9] < 0 || values[9] > 5 || values[10] < 0 || values[10] > 5 || values[11] < 0 || values[11] > 2 || values[12] < 0 || values[12] > 2 { return 0,0,0,false }
+    if raw != encodeRosterSave(values[0],values[1],values[2],values[3],values[4],values[5],values[6]==1,values[7],values[8],values[9],values[10],values[11],values[12]) { return 0,0,0,false }
+    if values[6] < 0 || values[6] > 1 || values[2] < values[0]+spentCoins(values[1])+spentCoins(values[9])+spentCoins(values[10]) { return 0,0,0,false }
+    money,tier,total,ok := decodeSave(encodeSaveValues(values[0],values[1],values[2],values[3],values[4],values[5],values[6]==1,values[7],values[8]))
+    if !ok { return 0,0,0,false }
+    decodedMushroom = values[9]; decodedMelon = values[10]; decodedClass = values[11]; decodedClass2 = values[12]
+    return money,tier,total,true
+}
+func decodeSave(raw string) (int, int, int, bool) {
+    decodedStage = 0; decodedScore = 0; decodedKills = 0; decodedCoop = false; decodedCleared = 0; decodedLanguage = language
+    decodedMushroom = 0; decodedMelon = 0; decodedClass = 0; decodedClass2 = 0
+    raw = strings.TrimSpace(raw)
+    if strings.HasPrefix(raw,"TG3|") { return decodeRosterSave(raw) }
+    if strings.HasPrefix(raw,"TG1|") { return decodeProfile(raw) }
+    fields := strings.Split(raw,"|")
+    if len(fields) != 11 || fields[0] != "TG2" { return 0,0,0,false }
+    values := []int{0,0,0,0,0,0,0,0,0}
+    for i := 0; i < 9; i++ { value,err := strconv.Atoi(fields[i+1]); if err != nil { return 0,0,0,false }; values[i] = value }
+    money := values[0]; tier := values[1]; total := values[2]; stage := values[3]; entryScore := values[4]; entryKills := values[5]; mode := values[6]; cleared := values[7]; lang := values[8]
+    if money < 0 || money > 9999999 || tier < 0 || tier > 5 || total < money+spentCoins(tier) || total > 9999999 { return 0,0,0,false }
+    if stage < 0 || stage > 20 || entryScore < 0 || entryScore > 99999999 || entryKills < 0 || entryKills > 999999 || mode < 0 || mode > 1 || cleared < 0 || cleared > 20 || lang < 0 || lang > 1 { return 0,0,0,false }
+    if stage == 0 && (entryScore != 0 || entryKills != 0) { return 0,0,0,false }
+    if raw != encodeSaveValues(money,tier,total,stage,entryScore,entryKills,mode==1,cleared,lang) { return 0,0,0,false }
+    decodedStage = stage; decodedScore = entryScore; decodedKills = entryKills; decodedCoop = mode == 1; decodedCleared = cleared; decodedLanguage = lang
+    return money,tier,total,true
+}
+func applyDecodedCheckpoint() {
+    checkpointLevel = decodedStage; checkpointScore = decodedScore; checkpointKills = decodedKills; checkpointCoop = decodedCoop; clearedLevel = decodedCleared; language = decodedLanguage
+    routeTiers[1] = decodedMushroom; routeTiers[2] = decodedMelon
+    playerClass = decodedClass; playerClass2 = decodedClass2; checkpointClass = decodedClass; checkpointClass2 = decodedClass2; labClass = playerClass
+    if checkpointLevel > unlockedLevel() { checkpointLevel = unlockedLevel(); checkpointScore = 0; checkpointKills = 0 }
+}
+func recordCheckpoint(stage int, entryScore int, entryKills int, coop bool) bool {
+    if !profileLoaded || stage < 1 || stage > 20 { return false }
+    checkpointLevel = stage; checkpointScore = entryScore; checkpointKills = entryKills; checkpointCoop = coop
+    checkpointClass = playerClass; checkpointClass2 = playerClass2
+    if checkpointScore < 0 { checkpointScore = 0 }; if checkpointScore > 99999999 { checkpointScore = 99999999 }
+    if checkpointKills < 0 { checkpointKills = 0 }; if checkpointKills > 999999 { checkpointKills = 999999 }
+    checkpointDirty = true; profileDirty = true
+    return persistProfile()
+}
+func continueCheckpoint() bool {
+    if !profileLoaded || profileReadPending || profileDamaged { evolveNotice = 5; return false }
+    if checkpointLevel < 1 { evolveNotice = 8; return false }
+    selectedLevel = checkpointLevel; twoPlayers = checkpointCoop
+    if checkpointLevel > unlockedLevel() { evolveNotice = 9; metaNoticeTicks = 150; return false }
+    playerClass = checkpointClass; playerClass2 = checkpointClass2
+    savedScore := checkpointScore; savedKills := checkpointKills
+    restart(); score = savedScore; kills = savedKills
+    runEntryScore = score; runEntryKills = kills
+    if kills >= 3 { weaponLevel = 1 }
+    evolveNotice = 0; return true
+}
+func manualCheckpoint() {
+    ok := false
+    if state == 0 || state == -1 { ok = recordCheckpoint(level,runEntryScore,runEntryKills,twoPlayers) }
+    if state == 1 || (state == 5 && saveReturnState == 1) { if !canStartStage(selectedLevel) { evolveNotice = 9; metaNoticeTicks = 150; return }; ok = recordCheckpoint(selectedLevel,0,0,twoPlayers) }
+    if state == 2 || state == 3 || (state == 5 && saveReturnState != 1) { ok = persistProfile() }
+    if ok { evolveNotice = 7 } else { evolveNotice = 5 }
+    metaNoticeTicks = 150
+}
+func loadProfile() {
+    if profileLoaded { return }
+    profileLoaded = true; coins = 0; lifetimeCoins = 0; evolution = 0
+    profileDirty = false; profileDamaged = false; profileReadPending = false; saveRetry = 0
+    checkpointLevel = 0; checkpointScore = 0; checkpointKills = 0; checkpointCoop = false; clearedLevel = 0; language = 0; checkpointDirty = false; languageDirty = false
+    routeTiers[1] = 0; routeTiers[2] = 0; playerClass = 0; playerClass2 = 0; labClass = 0; checkpointClass = 0; checkpointClass2 = 0
+    raw, available := storageRead()
+    if !available { profileReadPending = true; saveStatus = 2; saveRetry = 150; return }
+    if raw == "" { saveStatus = 1; return }
+    money,tier,total,ok := decodeSave(raw)
+    if !ok { profileDamaged = true; saveStatus = 3; return }
+    coins = money; evolution = tier; lifetimeCoins = total; saveStatus = 1
+    applyDecodedCheckpoint()
+}
+func persistProfile() bool {
+    if !profileLoaded || profileDamaged || profileReadPending { return false }
+    if storageWrite(encodeSave()) {
+        profileDirty = false; checkpointDirty = false; languageDirty = false; saveStatus = 1; return true
+    }
+    profileDirty = true; saveStatus = 2; saveRetry = 150; return false
+}
+func awardCoins(amount int) {
+    if !profileLoaded || amount <= 0 { return }
+    if amount > 9999999-lifetimeCoins { amount = 9999999-lifetimeCoins }
+    coins += amount; lifetimeCoins += amount; profileDirty = true
+    persistProfile()
+}
+func buyEvolution() bool {
+    if state != 4 { return false }
+    if !profileLoaded || profileReadPending { evolveNotice = 5; return false }
+    if profileDamaged { evolveNotice = 4; return false }
+    tier := routeTier(labClass)
+    if tier >= 5 { evolveNotice = 3; return false }
+    price := evolutionCost(tier)
+    if coins < price { evolveNotice = 2; return false }
+    coins -= price
+    if labClass == 0 { evolution++ } else { routeTiers[labClass]++ }
+    profileDirty = true; persistProfile(); evolveNotice = 1
+    return true
+}
+func importProfile(raw string) bool {
+    money,tier,total,valid := decodeSave(raw)
+    if !valid { evolveNotice = 4; return false }
+    if !storageWrite(encodeRosterSave(money,tier,total,decodedStage,decodedScore,decodedKills,decodedCoop,decodedCleared,decodedLanguage,decodedMushroom,decodedMelon,decodedClass,decodedClass2)) { saveStatus = 2; evolveNotice = 5; return false }
+    coins = money; evolution = tier; lifetimeCoins = total
+    profileLoaded = true; profileDamaged = false; profileReadPending = false; profileDirty = false; saveStatus = 1; evolveNotice = 6
+    applyDecodedCheckpoint(); checkpointDirty = false; languageDirty = false
+    return true
+}
+func updateProfile() {
+    if saveRetry > 0 { saveRetry-- }
+    if profileReadPending && saveRetry == 0 {
+        raw, available := storageRead()
+        saveRetry = 150
+        if available {
+            money := 0; tier := 0; total := 0; valid := true
+            decodedStage = 0; decodedScore = 0; decodedKills = 0; decodedCoop = false; decodedCleared = 0; decodedLanguage = language
+            decodedMushroom = 0; decodedMelon = 0; decodedClass = 0; decodedClass2 = 0
+            if raw != "" { money,tier,total,valid = decodeSave(raw) }
+            profileReadPending = false
+            if !valid { profileDamaged = true; saveStatus = 3 } else {
+                pending := lifetimeCoins; if pending > 9999999-total { pending = 9999999-total }
+                coins = money+pending; lifetimeCoins = total+pending; evolution = tier; profileDirty = true
+                if !checkpointDirty { checkpointLevel = decodedStage; checkpointScore = decodedScore; checkpointKills = decodedKills; checkpointCoop = decodedCoop; checkpointClass = decodedClass; checkpointClass2 = decodedClass2; playerClass = decodedClass; playerClass2 = decodedClass2 }
+                routeTiers[1] = decodedMushroom; routeTiers[2] = decodedMelon
+                if decodedCleared > clearedLevel { clearedLevel = decodedCleared }
+                if checkpointLevel > unlockedLevel() { checkpointLevel = unlockedLevel(); checkpointScore = 0; checkpointKills = 0 }
+                if !languageDirty { language = decodedLanguage }
+                persistProfile()
+            }
+        }
+    }
+    if profileDirty && !profileDamaged && saveRetry == 0 { persistProfile() }
+}
+// Browser persistence bridge. The native logic harness replaces only this block.
+// BEGIN_BROWSER_STORAGE
+func storageRead() (raw string, ok bool) {
+    defer func() { if recover() != nil { raw = ""; ok = false } }()
+    storage := js.Global().Get("Reflect").Call("get",js.Global(),"localStorage")
+    if storage.IsUndefined() || storage.IsNull() { return "",false }
+    value := storage.Call("getItem","twilight-garden.progress.v1")
+    if value.IsNull() || value.IsUndefined() { return "",true }
+    return value.String(),true
+}
+func storageWrite(raw string) (ok bool) {
+    defer func() { if recover() != nil { ok = false } }()
+    storage := js.Global().Get("Reflect").Call("get",js.Global(),"localStorage")
+    if storage.IsUndefined() || storage.IsNull() { return false }
+    storage.Call("setItem","twilight-garden.progress.v1",raw)
+    return storage.Call("getItem","twilight-garden.progress.v1").String() == raw
+}
+func backupProgress(raw string) {
+    defer func() { if recover() != nil { evolveNotice = 5 } }()
+    js.Global().Call("prompt",tr("复制备份码。恢复会替换金币、进化、闯关进度和语言。","Copy this backup. Restore replaces coins, evolution, checkpoint and language."),raw)
+}
+func restoreProgress() (raw string) {
+    defer func() { if recover() != nil { raw = ""; evolveNotice = 5 } }()
+    value := js.Global().Call("prompt",tr("粘贴备份码，确认后替换本机进度。","Paste a backup code to replace local progress."),"")
+    if value.IsNull() || value.IsUndefined() { return "" }; return value.String()
+}
+// END_BROWSER_STORAGE
 onStart => {
-    selectedLevel = 1; restart(); state = 1
+    loadProfile()
+    selectedLevel = 1
+    restart(); state = 6
     forever => {
         updateControls()
         updateGame()

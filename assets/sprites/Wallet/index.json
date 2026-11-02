@@ -1,0 +1,618 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "coin-0",
+      "path": "coin-0.svg",
+      "x": 5.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-1",
+      "path": "coin-1.svg",
+      "x": 5.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-2",
+      "path": "coin-2.svg",
+      "x": 5.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-3",
+      "path": "coin-3.svg",
+      "x": 5.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-4",
+      "path": "coin-4.svg",
+      "x": 5.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-5",
+      "path": "coin-5.svg",
+      "x": 5.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-6",
+      "path": "coin-6.svg",
+      "x": 5.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-7",
+      "path": "coin-7.svg",
+      "x": 5.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-8",
+      "path": "coin-8.svg",
+      "x": 5.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-9",
+      "path": "coin-9.svg",
+      "x": 5.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 10,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-label-0",
+      "path": "coin-label-0.svg",
+      "x": 23.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-label-1",
+      "path": "coin-label-1.svg",
+      "x": 23.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-label-2",
+      "path": "coin-label-2.svg",
+      "x": 23.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-label-3",
+      "path": "coin-label-3.svg",
+      "x": 23.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 18
+    },
+    {
+      "name": "save-0",
+      "path": "save-0.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "save-1",
+      "path": "save-1.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "save-2",
+      "path": "save-2.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "save-3",
+      "path": "save-3.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-0",
+      "path": "notice-0.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-1",
+      "path": "notice-1.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-2",
+      "path": "notice-2.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-3",
+      "path": "notice-3.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-4",
+      "path": "notice-4.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-5",
+      "path": "notice-5.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-6",
+      "path": "notice-6.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-7",
+      "path": "notice-7.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-8",
+      "path": "notice-8.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-1",
+      "path": "notice-toast-1.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-2",
+      "path": "notice-toast-2.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-3",
+      "path": "notice-toast-3.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-4",
+      "path": "notice-toast-4.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-5",
+      "path": "notice-toast-5.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-6",
+      "path": "notice-toast-6.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-7",
+      "path": "notice-toast-7.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-8",
+      "path": "notice-toast-8.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-9",
+      "path": "notice-9.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-9",
+      "path": "notice-toast-9.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-9-en",
+      "path": "notice-9-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-9-en",
+      "path": "notice-toast-9-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "coin-label-0-en",
+      "path": "coin-label-0-en.svg",
+      "x": 23.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-label-1-en",
+      "path": "coin-label-1-en.svg",
+      "x": 23.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-label-2-en",
+      "path": "coin-label-2-en.svg",
+      "x": 23.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 18
+    },
+    {
+      "name": "coin-label-3-en",
+      "path": "coin-label-3-en.svg",
+      "x": 23.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 46,
+      "imageHeight": 18
+    },
+    {
+      "name": "save-0-en",
+      "path": "save-0-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "save-1-en",
+      "path": "save-1-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "save-2-en",
+      "path": "save-2-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "save-3-en",
+      "path": "save-3-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-1-en",
+      "path": "notice-1-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-2-en",
+      "path": "notice-2-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-3-en",
+      "path": "notice-3-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-4-en",
+      "path": "notice-4-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-5-en",
+      "path": "notice-5-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-6-en",
+      "path": "notice-6-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 430,
+      "imageHeight": 18
+    },
+    {
+      "name": "notice-7-en",
+      "path": "notice-7-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-8-en",
+      "path": "notice-8-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-1-en",
+      "path": "notice-toast-1-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-2-en",
+      "path": "notice-toast-2-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-3-en",
+      "path": "notice-toast-3-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-4-en",
+      "path": "notice-toast-4-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-5-en",
+      "path": "notice-toast-5-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-6-en",
+      "path": "notice-toast-6-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-7-en",
+      "path": "notice-toast-7-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    },
+    {
+      "name": "notice-toast-8-en",
+      "path": "notice-toast-8-en.svg",
+      "x": 215.0,
+      "y": 9.0,
+      "imageWidth": 430,
+      "imageHeight": 18,
+      "bitmapResolution": 1
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "twilight-garden-dev-tools",
+  "private": true,
+  "scripts": {
+    "render": "node render_frontend.cjs",
+    "render:campaign": "node render_campaign.cjs",
+    "render:bosses": "node render_docs_media.cjs"
+  },
+  "dependencies": {"sharp": "0.35.5"}
+}

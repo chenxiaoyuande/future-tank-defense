@@ -1,0 +1,22 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "mote",
+      "path": "mote.svg",
+      "x": 9.0,
+      "y": 9.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 18,
+      "imageHeight": 18
+    }
+  ]
+}

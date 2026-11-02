@@ -1,0 +1,55 @@
+import "strconv"
+var action int
+onStart => {
+    hide
+    for n := 0; n < 7; n++ { clone n }
+}
+onClick => { uiAction(action) }
+onCloned data => {
+    action = data.(int)
+    forever => {
+        hide
+        if state == 6 && action < 4 {
+            active := 0; if action == homeChoice { active = 1 }
+            setCostume "home-"+strconv.Itoa(action)+"-"+strconv.Itoa(active)+langSuffix()
+            setXpos -125; setYpos float64(40-action*45); show
+        }
+        if state == 1 && action < 2 {
+            if action == 0 { setCostume "stage-start"+langSuffix(); setXpos 85 } else { setCostume "back"+langSuffix(); setXpos -130 }
+            setYpos -148; show
+        }
+        if state == 7 {
+            if action < 3 {
+                bits := 0; if pendingClass == action { bits++ }; if twoPlayers && pendingClass2 == action { bits += 2 }
+                setCostume "class-"+strconv.Itoa(action)+"-"+strconv.Itoa(routeTier(action))+"-"+strconv.Itoa(bits)+langSuffix()
+                setXpos float64((action-1)*145); setYpos 12; show
+            }
+            mode := 1; if twoPlayers { mode = 2 }
+            if action == 3 { setCostume "mode-"+strconv.Itoa(mode)+langSuffix(); setXpos -100; setYpos -101; show }
+            if action == 4 && twoPlayers { setCostume "member-"+strconv.Itoa(classMember+1)+langSuffix(); setXpos 100; setYpos -101; show }
+            if action == 5 { setCostume "battle"+langSuffix(); setXpos 85; setYpos -150; show }
+            if action == 6 { setCostume "back"+langSuffix(); setXpos -130; setYpos -150; show }
+        }
+        if state == 8 && action < 3 {
+            if action < 2 {
+                active := 0; if language == action { active = 1 }
+                setCostume "language-"+strconv.Itoa(action)+"-"+strconv.Itoa(active)+langSuffix()
+                setXpos float64((action*2-1)*95); setYpos 15
+            } else { setCostume "back"+langSuffix(); setXpos 0; setYpos -135 }
+            show
+        }
+        if state == 4 && action < 5 {
+            if action < 3 {
+                active := 0; if labClass == action { active = 1 }
+                setCostume "tab-"+strconv.Itoa(action)+"-"+strconv.Itoa(active)+langSuffix(); setXpos float64((action-1)*145); setYpos 92
+            } else if action == 3 { setCostume "buy"+langSuffix(); setXpos 85; setYpos -149 } else { setCostume "back"+langSuffix(); setXpos -130; setYpos -149 }
+            show
+        }
+        if state == 5 && action < 4 {
+            if action < 3 { setCostume "load-"+strconv.Itoa(action)+langSuffix() } else { setCostume "back"+langSuffix() }
+            setXpos float64(-162+action*108); setYpos -126; show
+        }
+        setLayer Front
+        wait 0.02
+    }
+}

@@ -13,41 +13,40 @@ onCloned data => {
     digits := []string{"0","1","2","3","4","5","6","7","8","9"}
     previousKind := 0
     visualAge := 0
-    shown := false
     forever => {
         k := entity[slot]
         if k != previousKind { visualAge = 0; previousKind = k }
         if !paused { visualAge++ }
         protection := shield; if slot == 191 { protection = shield2 }
-        if k == 0 || (k == 1 && protection > 0 && protection%10 < 4) || (k == 12 && (age[slot] >= 30 || zombieType[slot] == 3)) {
-            if shown { hide; shown = false }
+        if k == 0 || k == 5 || (k == 1 && protection > 0 && protection%10 < 4) || (k == 12 && (age[slot] >= 30 || zombieType[slot] == 3)) {
+            hide
         } else {
             setHeading Right
+            setSize 1
             if k == 1 {
                 f := (ticks/5)%4
-                if shotDelay > 10 { f = 4 } else if shotDelay > 7 { f = 5 }
-                prefix := "plant-"; if slot == 191 { prefix = "partner-" }
-                if slot == 191 { f = (ticks/5)%4; if shotDelay2 > 10 { f = 4 } else if shotDelay2 > 7 { f = 5 } }
-                setCostume prefix+directions[facing[slot]]+"-"+digits[f]
+                delay := shotDelay; player := "1"; if slot == 191 { delay = shotDelay2; player = "2" }
+                if delay > classShotDelay(slot)-3 { f = 4 } else if delay > classShotDelay(slot)-6 { f = 5 }
+                setCostume "hero-"+digits[roleOf(slot)]+"-"+digits[tierOf(slot)]+"-p"+player+"-"+directions[facing[slot]]+"-"+digits[f]
             }
             if k == 2 {
                 f := (age[slot]/5)%4
-                if age[slot]%(100+zombieType[slot]*15) >= 30 && age[slot]%(100+zombieType[slot]*15) < 35 { f = 4 }
                 if hitFlash[slot] > 0 { f = 5 }
                 if dashWindup[slot] > 0 { f = 6 }
                 if dashRemaining[slot] > 0 { f = 7 }
-                if zombieType[slot] == 3 { setCostume "boss" } else { setCostume "zombie-"+digits[zombieType[slot]]+"-"+directions[facing[slot]]+"-"+digits[f] }
+                if zombieType[slot] == 3 {
+                    pose := "idle"; frame := (ticks/10)%4
+                    if hp[slot]*2 <= maxHP[slot] { pose = "rage" }
+                    if dashWindup[slot] > 0 { pose = "cast"; frame = (ticks/7)%2 }
+                    if hitFlash[slot] > 0 { pose = "hit"; frame = 0 }
+                    setCostume "boss-"+digits[bossTheme]+"-"+pose+"-"+digits[frame]
+                } else { setCostume "zombie-"+digits[zombieType[slot]]+"-"+directions[facing[slot]]+"-"+digits[f] }
             }
             if k == 3 { setCostume "hedge" }
             if k == 4 { setCostume "stone" }
-            if k == 5 { setCostume "house" }
             if k == 6 {
-                if rocket[slot] {
-                    if incendiary[slot] { setCostume "fire-missile-"+digits[ticks%2] } else { setCostume "missile-"+digits[ticks%2] }
-                    setHeading 90-math.Atan2(vely[slot],velx[slot])*180/math.Pi
-                } else {
-                    if incendiary[slot] { setCostume "fire-seed-"+digits[ticks%2] } else { setCostume "seed-"+digits[ticks%2] }
-                }
+                setCostume "role-shot-"+digits[projectileClass[slot]]+"-"+digits[projectileTier[slot]]+"-"+digits[ticks%2]
+                setHeading 90-math.Atan2(vely[slot],velx[slot])*180/math.Pi
             }
             if k == 7 { setCostume "spore-"+digits[ticks%2] }
             if k == 8 {
@@ -56,13 +55,15 @@ onCloned data => {
                 setCostume "pop-"+digits[f]
             }
             if k == 9 {
-                setCostume "mega-"+digits[(age[slot]/2)%4]
+                prefix := ""; if projectileTier[slot] > 0 { prefix = "evo-"+digits[projectileTier[slot]]+"-" }
+                setCostume prefix+"mega-"+digits[(age[slot]/2)%4]
                 setHeading float64(facing[slot]*90)
             }
             if k == 10 {
                 f := visualAge/3
                 if f > 9 { f = 9 }
-                setCostume "burst-"+digits[f]
+                setCostume "role-burst-"+digits[projectileClass[slot]]+"-"+digits[projectileTier[slot]]+"-"+digits[f]
+                if projectileClass[slot] == 2 && !rocket[slot] { setSize 0.55 }
             }
             if k == 11 {
                 f := growth[slot]/10
@@ -73,12 +74,22 @@ onCloned data => {
             if k == 13 { setCostume "portal-"+digits[(age[slot]/4)%5] }
             if k == 14 { setCostume "pickup-"+digits[pickupType[slot]]+"-"+digits[(ticks/6)%2] }
             if k == 15 { setCostume "cherry-burst-"+digits[age[slot]/4] }
+            if k == 16 {
+                phase := "active"; if age[slot] < hazardWarmup[slot] { phase = "warn" }
+                setCostume "zone-"+digits[hazardKind[slot]]+"-"+phase+"-"+digits[(ticks/8)%2]
+            }
+            if k == 17 { setCostume "role-cloud-"+digits[projectileTier[slot]]+"-"+digits[(age[slot]/8)%4]; setSize float64(42+projectileTier[slot]*3)/60 }
+            if k == 18 {
+                if rocket[slot] { setCostume "role-heavy-"+digits[projectileTier[slot]]+"-"+digits[ticks%2] } else { setCostume "role-shot-2-"+digits[projectileTier[slot]]+"-"+digits[ticks%2] }
+                setHeading float64(age[slot]*9)
+            }
             setXpos px[slot]
             setYpos py[slot]
             if k == 14 { setYpos py[slot]+sin(float64(ticks+slot*7)*0.12)*2 }
+            if k == 18 { setYpos py[slot]+sin(float64(age[slot])/float64(lobDuration[slot])*math.Pi)*38 }
             show
-            shown = true
         }
+        if frontEnd() { hide }
         wait 0.02
     }
 }

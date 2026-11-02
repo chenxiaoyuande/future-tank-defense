@@ -17,6 +17,16 @@
       "bitmapResolution": 1,
       "imageWidth": 480,
       "imageHeight": 360
+    },
+    {
+      "name": "frame-en",
+      "path": "frame-en.svg",
+      "x": 240.0,
+      "y": 180.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 480,
+      "imageHeight": 360
     }
   ]
 }

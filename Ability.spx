@@ -6,8 +6,8 @@ onStart => {
     forever => {
         seconds := (ultimateCooldown+49)/50
         if seconds > 5 { seconds = 5 }
-        setCostume labels[seconds]
-        if seconds == 0 && (ticks/12)%2 == 0 { setCostume "ready-lit" }
+        setCostume labels[seconds]+langSuffix()
+        if seconds == 0 && (ticks/12)%2 == 0 { setCostume "ready-lit"+langSuffix() }
         setLayer Front
         wait 0.04
     }

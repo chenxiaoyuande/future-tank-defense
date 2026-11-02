@@ -1,0 +1,2032 @@
+{
+  "x": 0,
+  "y": 0,
+  "heading": 90,
+  "size": 1,
+  "visible": false,
+  "rotationStyle": "none",
+  "physicsMode": "no",
+  "collisionShapeType": "none",
+  "costumes": [
+    {
+      "name": "home-0-0",
+      "path": "home-0-0.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-0-1",
+      "path": "home-0-1.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-1-0",
+      "path": "home-1-0.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-1-1",
+      "path": "home-1-1.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-2-0",
+      "path": "home-2-0.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-2-1",
+      "path": "home-2-1.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-3-0",
+      "path": "home-3-0.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-3-1",
+      "path": "home-3-1.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "stage-start",
+      "path": "stage-start.svg",
+      "x": 90.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 180,
+      "imageHeight": 34
+    },
+    {
+      "name": "back",
+      "path": "back.svg",
+      "x": 50.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 100,
+      "imageHeight": 34
+    },
+    {
+      "name": "battle",
+      "path": "battle.svg",
+      "x": 90.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 180,
+      "imageHeight": 34
+    },
+    {
+      "name": "load-0",
+      "path": "load-0.svg",
+      "x": 49.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 98,
+      "imageHeight": 34
+    },
+    {
+      "name": "load-1",
+      "path": "load-1.svg",
+      "x": 49.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 98,
+      "imageHeight": 34
+    },
+    {
+      "name": "load-2",
+      "path": "load-2.svg",
+      "x": 49.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 98,
+      "imageHeight": 34
+    },
+    {
+      "name": "class-0-0-0",
+      "path": "class-0-0-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-0-1",
+      "path": "class-0-0-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-0-2",
+      "path": "class-0-0-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-0-3",
+      "path": "class-0-0-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-1-0",
+      "path": "class-0-1-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-1-1",
+      "path": "class-0-1-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-1-2",
+      "path": "class-0-1-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-1-3",
+      "path": "class-0-1-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-2-0",
+      "path": "class-0-2-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-2-1",
+      "path": "class-0-2-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-2-2",
+      "path": "class-0-2-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-2-3",
+      "path": "class-0-2-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-3-0",
+      "path": "class-0-3-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-3-1",
+      "path": "class-0-3-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-3-2",
+      "path": "class-0-3-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-3-3",
+      "path": "class-0-3-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-4-0",
+      "path": "class-0-4-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-4-1",
+      "path": "class-0-4-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-4-2",
+      "path": "class-0-4-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-4-3",
+      "path": "class-0-4-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-5-0",
+      "path": "class-0-5-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-5-1",
+      "path": "class-0-5-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-5-2",
+      "path": "class-0-5-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-5-3",
+      "path": "class-0-5-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "tab-0-0",
+      "path": "tab-0-0.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "tab-0-1",
+      "path": "tab-0-1.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "class-1-0-0",
+      "path": "class-1-0-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-0-1",
+      "path": "class-1-0-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-0-2",
+      "path": "class-1-0-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-0-3",
+      "path": "class-1-0-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-1-0",
+      "path": "class-1-1-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-1-1",
+      "path": "class-1-1-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-1-2",
+      "path": "class-1-1-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-1-3",
+      "path": "class-1-1-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-2-0",
+      "path": "class-1-2-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-2-1",
+      "path": "class-1-2-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-2-2",
+      "path": "class-1-2-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-2-3",
+      "path": "class-1-2-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-3-0",
+      "path": "class-1-3-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-3-1",
+      "path": "class-1-3-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-3-2",
+      "path": "class-1-3-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-3-3",
+      "path": "class-1-3-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-4-0",
+      "path": "class-1-4-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-4-1",
+      "path": "class-1-4-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-4-2",
+      "path": "class-1-4-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-4-3",
+      "path": "class-1-4-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-5-0",
+      "path": "class-1-5-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-5-1",
+      "path": "class-1-5-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-5-2",
+      "path": "class-1-5-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-5-3",
+      "path": "class-1-5-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "tab-1-0",
+      "path": "tab-1-0.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "tab-1-1",
+      "path": "tab-1-1.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "class-2-0-0",
+      "path": "class-2-0-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-0-1",
+      "path": "class-2-0-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-0-2",
+      "path": "class-2-0-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-0-3",
+      "path": "class-2-0-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-1-0",
+      "path": "class-2-1-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-1-1",
+      "path": "class-2-1-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-1-2",
+      "path": "class-2-1-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-1-3",
+      "path": "class-2-1-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-2-0",
+      "path": "class-2-2-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-2-1",
+      "path": "class-2-2-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-2-2",
+      "path": "class-2-2-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-2-3",
+      "path": "class-2-2-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-3-0",
+      "path": "class-2-3-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-3-1",
+      "path": "class-2-3-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-3-2",
+      "path": "class-2-3-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-3-3",
+      "path": "class-2-3-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-4-0",
+      "path": "class-2-4-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-4-1",
+      "path": "class-2-4-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-4-2",
+      "path": "class-2-4-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-4-3",
+      "path": "class-2-4-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-5-0",
+      "path": "class-2-5-0.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-5-1",
+      "path": "class-2-5-1.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-5-2",
+      "path": "class-2-5-2.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-5-3",
+      "path": "class-2-5-3.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "tab-2-0",
+      "path": "tab-2-0.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "tab-2-1",
+      "path": "tab-2-1.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "mode-1",
+      "path": "mode-1.svg",
+      "x": 75.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 150,
+      "imageHeight": 30
+    },
+    {
+      "name": "member-1",
+      "path": "member-1.svg",
+      "x": 75.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 150,
+      "imageHeight": 30
+    },
+    {
+      "name": "mode-2",
+      "path": "mode-2.svg",
+      "x": 75.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 150,
+      "imageHeight": 30
+    },
+    {
+      "name": "member-2",
+      "path": "member-2.svg",
+      "x": 75.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 150,
+      "imageHeight": 30
+    },
+    {
+      "name": "language-0-0",
+      "path": "language-0-0.svg",
+      "x": 85.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 170,
+      "imageHeight": 42
+    },
+    {
+      "name": "language-0-1",
+      "path": "language-0-1.svg",
+      "x": 85.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 170,
+      "imageHeight": 42
+    },
+    {
+      "name": "language-1-0",
+      "path": "language-1-0.svg",
+      "x": 85.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 170,
+      "imageHeight": 42
+    },
+    {
+      "name": "language-1-1",
+      "path": "language-1-1.svg",
+      "x": 85.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 170,
+      "imageHeight": 42
+    },
+    {
+      "name": "buy",
+      "path": "buy.svg",
+      "x": 90.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 180,
+      "imageHeight": 34
+    },
+    {
+      "name": "home-0-0-en",
+      "path": "home-0-0-en.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-0-1-en",
+      "path": "home-0-1-en.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-1-0-en",
+      "path": "home-1-0-en.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-1-1-en",
+      "path": "home-1-1-en.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-2-0-en",
+      "path": "home-2-0-en.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-2-1-en",
+      "path": "home-2-1-en.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-3-0-en",
+      "path": "home-3-0-en.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "home-3-1-en",
+      "path": "home-3-1-en.svg",
+      "x": 95.0,
+      "y": 18.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 190,
+      "imageHeight": 36
+    },
+    {
+      "name": "stage-start-en",
+      "path": "stage-start-en.svg",
+      "x": 90.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 180,
+      "imageHeight": 34
+    },
+    {
+      "name": "back-en",
+      "path": "back-en.svg",
+      "x": 50.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 100,
+      "imageHeight": 34
+    },
+    {
+      "name": "battle-en",
+      "path": "battle-en.svg",
+      "x": 90.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 180,
+      "imageHeight": 34
+    },
+    {
+      "name": "load-0-en",
+      "path": "load-0-en.svg",
+      "x": 49.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 98,
+      "imageHeight": 34
+    },
+    {
+      "name": "load-1-en",
+      "path": "load-1-en.svg",
+      "x": 49.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 98,
+      "imageHeight": 34
+    },
+    {
+      "name": "load-2-en",
+      "path": "load-2-en.svg",
+      "x": 49.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 98,
+      "imageHeight": 34
+    },
+    {
+      "name": "class-0-0-0-en",
+      "path": "class-0-0-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-0-1-en",
+      "path": "class-0-0-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-0-2-en",
+      "path": "class-0-0-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-0-3-en",
+      "path": "class-0-0-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-1-0-en",
+      "path": "class-0-1-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-1-1-en",
+      "path": "class-0-1-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-1-2-en",
+      "path": "class-0-1-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-1-3-en",
+      "path": "class-0-1-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-2-0-en",
+      "path": "class-0-2-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-2-1-en",
+      "path": "class-0-2-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-2-2-en",
+      "path": "class-0-2-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-2-3-en",
+      "path": "class-0-2-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-3-0-en",
+      "path": "class-0-3-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-3-1-en",
+      "path": "class-0-3-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-3-2-en",
+      "path": "class-0-3-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-3-3-en",
+      "path": "class-0-3-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-4-0-en",
+      "path": "class-0-4-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-4-1-en",
+      "path": "class-0-4-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-4-2-en",
+      "path": "class-0-4-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-4-3-en",
+      "path": "class-0-4-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-5-0-en",
+      "path": "class-0-5-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-5-1-en",
+      "path": "class-0-5-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-5-2-en",
+      "path": "class-0-5-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-0-5-3-en",
+      "path": "class-0-5-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "tab-0-0-en",
+      "path": "tab-0-0-en.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "tab-0-1-en",
+      "path": "tab-0-1-en.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "class-1-0-0-en",
+      "path": "class-1-0-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-0-1-en",
+      "path": "class-1-0-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-0-2-en",
+      "path": "class-1-0-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-0-3-en",
+      "path": "class-1-0-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-1-0-en",
+      "path": "class-1-1-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-1-1-en",
+      "path": "class-1-1-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-1-2-en",
+      "path": "class-1-1-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-1-3-en",
+      "path": "class-1-1-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-2-0-en",
+      "path": "class-1-2-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-2-1-en",
+      "path": "class-1-2-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-2-2-en",
+      "path": "class-1-2-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-2-3-en",
+      "path": "class-1-2-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-3-0-en",
+      "path": "class-1-3-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-3-1-en",
+      "path": "class-1-3-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-3-2-en",
+      "path": "class-1-3-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-3-3-en",
+      "path": "class-1-3-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-4-0-en",
+      "path": "class-1-4-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-4-1-en",
+      "path": "class-1-4-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-4-2-en",
+      "path": "class-1-4-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-4-3-en",
+      "path": "class-1-4-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-5-0-en",
+      "path": "class-1-5-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-5-1-en",
+      "path": "class-1-5-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-5-2-en",
+      "path": "class-1-5-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-1-5-3-en",
+      "path": "class-1-5-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "tab-1-0-en",
+      "path": "tab-1-0-en.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "tab-1-1-en",
+      "path": "tab-1-1-en.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "class-2-0-0-en",
+      "path": "class-2-0-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-0-1-en",
+      "path": "class-2-0-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-0-2-en",
+      "path": "class-2-0-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-0-3-en",
+      "path": "class-2-0-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-1-0-en",
+      "path": "class-2-1-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-1-1-en",
+      "path": "class-2-1-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-1-2-en",
+      "path": "class-2-1-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-1-3-en",
+      "path": "class-2-1-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-2-0-en",
+      "path": "class-2-2-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-2-1-en",
+      "path": "class-2-2-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-2-2-en",
+      "path": "class-2-2-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-2-3-en",
+      "path": "class-2-2-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-3-0-en",
+      "path": "class-2-3-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-3-1-en",
+      "path": "class-2-3-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-3-2-en",
+      "path": "class-2-3-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-3-3-en",
+      "path": "class-2-3-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-4-0-en",
+      "path": "class-2-4-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-4-1-en",
+      "path": "class-2-4-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-4-2-en",
+      "path": "class-2-4-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-4-3-en",
+      "path": "class-2-4-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-5-0-en",
+      "path": "class-2-5-0-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-5-1-en",
+      "path": "class-2-5-1-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-5-2-en",
+      "path": "class-2-5-2-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "class-2-5-3-en",
+      "path": "class-2-5-3-en.svg",
+      "x": 68.0,
+      "y": 85.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 136,
+      "imageHeight": 170
+    },
+    {
+      "name": "tab-2-0-en",
+      "path": "tab-2-0-en.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "tab-2-1-en",
+      "path": "tab-2-1-en.svg",
+      "x": 66.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 132,
+      "imageHeight": 30
+    },
+    {
+      "name": "mode-1-en",
+      "path": "mode-1-en.svg",
+      "x": 75.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 150,
+      "imageHeight": 30
+    },
+    {
+      "name": "member-1-en",
+      "path": "member-1-en.svg",
+      "x": 75.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 150,
+      "imageHeight": 30
+    },
+    {
+      "name": "mode-2-en",
+      "path": "mode-2-en.svg",
+      "x": 75.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 150,
+      "imageHeight": 30
+    },
+    {
+      "name": "member-2-en",
+      "path": "member-2-en.svg",
+      "x": 75.0,
+      "y": 15.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 150,
+      "imageHeight": 30
+    },
+    {
+      "name": "language-0-0-en",
+      "path": "language-0-0-en.svg",
+      "x": 85.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 170,
+      "imageHeight": 42
+    },
+    {
+      "name": "language-0-1-en",
+      "path": "language-0-1-en.svg",
+      "x": 85.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 170,
+      "imageHeight": 42
+    },
+    {
+      "name": "language-1-0-en",
+      "path": "language-1-0-en.svg",
+      "x": 85.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 170,
+      "imageHeight": 42
+    },
+    {
+      "name": "language-1-1-en",
+      "path": "language-1-1-en.svg",
+      "x": 85.0,
+      "y": 21.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 170,
+      "imageHeight": 42
+    },
+    {
+      "name": "buy-en",
+      "path": "buy-en.svg",
+      "x": 90.0,
+      "y": 17.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 180,
+      "imageHeight": 34
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="20" viewBox="0 0 32 20"><defs>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#a8e0c1"/><stop offset=".45" stop-color="#78bd98"/><stop offset="1" stop-color="#5d9375"/></linearGradient>
+<radialGradient id="face" cx=".3" cy=".2" r=".85"><stop stop-color="#a9e2c3"/><stop offset=".55" stop-color="#a1d6ba"/><stop offset="1" stop-color="#629c7d"/></radialGradient>
+<linearGradient id="gold" x2=".2" y2="1"><stop stop-color="#a9e2c3"/><stop offset=".4" stop-color="#a9e2c3"/><stop offset="1" stop-color="#77bc96"/></linearGradient>
+<linearGradient id="petal" x2=".2" y2="1"><stop stop-color="#a9e2c3"/><stop offset=".45" stop-color="#a9e2c3"/><stop offset="1" stop-color="#7dc59e"/></linearGradient>
+<radialGradient id="skin" cx=".3" cy=".2" r=".9"><stop stop-color="#a4d9bc"/><stop offset=".5" stop-color="#71b28e"/><stop offset="1" stop-color="#639c7d"/></radialGradient>
+<linearGradient id="coat" x2=".8" y2="1"><stop stop-color="#77bd97"/><stop offset=".5" stop-color="#67a382"/><stop offset="1" stop-color="#588c70"/></linearGradient>
+<radialGradient id="orb" cx=".35" cy=".3"><stop stop-color="#fff7f8"/><stop offset=".35" stop-color="#a6ddbf"/><stop offset="1" stop-color="#67a382"/></radialGradient>
+<linearGradient id="hedge" x2=".4" y2="1"><stop stop-color="#a2d7bb"/><stop offset=".25" stop-color="#6eaf8c"/><stop offset=".7" stop-color="#609779"/><stop offset="1" stop-color="#56886d"/></linearGradient>
+<linearGradient id="stone" x2=".8" y2="1"><stop stop-color="#75b994"/><stop offset=".5" stop-color="#67a483"/><stop offset="1" stop-color="#5c9275"/></linearGradient>
+</defs><path d="M1 10L10 5v10Z" fill="#a9e2c3" opacity=".7"/><path d="M8 10L22 4l8 6-8 6Z" fill="url(#gold)" stroke="#a9e2c3"/><path d="M12 8l-2-5 9 3m-7 6l-2 5 9-3" fill="#79c099" stroke="#a6dcbe"/><ellipse cx="24" cy="10" rx="4" ry="3" fill="#a9e2c3"/><path d="M0 10Q3 10 3 7Q3 10 6 10Q3 10 3 13Q3 10 0 10Z" fill="#a9e2c3" opacity="1"/><ellipse cx="16.0" cy="10.0" rx="4.4" ry="3.08" fill="none" stroke="#88d7ac" stroke-width="1"/></svg>

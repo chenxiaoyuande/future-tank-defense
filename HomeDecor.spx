@@ -1,0 +1,19 @@
+var particle int
+onStart => {
+    hide
+    for n := 0; n < 18; n++ { clone n }
+}
+onCloned data => {
+    particle = data.(int)
+    forever => {
+        hide
+        if state == 6 {
+            setCostume "mote"
+            setXpos float64((particle*71)%450-225)+sin(float64(uiTicks+particle*37)*0.014)*14
+            setYpos float64((particle*47)%290-145)+cos(float64(uiTicks+particle*23)*0.017)*11
+            setSize 0.5+(1+sin(float64(uiTicks+particle*31)*0.05))*0.4
+            show
+        }
+        wait 0.04
+    }
+}

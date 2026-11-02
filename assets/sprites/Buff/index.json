@@ -507,6 +507,506 @@
       "bitmapResolution": 1,
       "imageWidth": 220,
       "imageHeight": 20
+    },
+    {
+      "name": "shield-1-1-en",
+      "path": "shield-1-1-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-1-2-en",
+      "path": "shield-1-2-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-1-3-en",
+      "path": "shield-1-3-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-1-4-en",
+      "path": "shield-1-4-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-1-5-en",
+      "path": "shield-1-5-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-1-6-en",
+      "path": "shield-1-6-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-1-7-en",
+      "path": "shield-1-7-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-1-8-en",
+      "path": "shield-1-8-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-1-9-en",
+      "path": "shield-1-9-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-1-10-en",
+      "path": "shield-1-10-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-2-1-en",
+      "path": "shield-2-1-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-2-2-en",
+      "path": "shield-2-2-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-2-3-en",
+      "path": "shield-2-3-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-2-4-en",
+      "path": "shield-2-4-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-2-5-en",
+      "path": "shield-2-5-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-2-6-en",
+      "path": "shield-2-6-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-2-7-en",
+      "path": "shield-2-7-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-2-8-en",
+      "path": "shield-2-8-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-2-9-en",
+      "path": "shield-2-9-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-2-10-en",
+      "path": "shield-2-10-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-3-1-en",
+      "path": "shield-3-1-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-3-2-en",
+      "path": "shield-3-2-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-3-3-en",
+      "path": "shield-3-3-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-3-4-en",
+      "path": "shield-3-4-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-3-5-en",
+      "path": "shield-3-5-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-3-6-en",
+      "path": "shield-3-6-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-3-7-en",
+      "path": "shield-3-7-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-3-8-en",
+      "path": "shield-3-8-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-3-9-en",
+      "path": "shield-3-9-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "shield-3-10-en",
+      "path": "shield-3-10-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "speed-1-en",
+      "path": "speed-1-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "pepper-1-en",
+      "path": "pepper-1-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "speed-2-en",
+      "path": "speed-2-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "pepper-2-en",
+      "path": "pepper-2-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "speed-3-en",
+      "path": "speed-3-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "pepper-3-en",
+      "path": "pepper-3-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "speed-4-en",
+      "path": "speed-4-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "pepper-4-en",
+      "path": "pepper-4-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "speed-5-en",
+      "path": "speed-5-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "pepper-5-en",
+      "path": "pepper-5-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "speed-6-en",
+      "path": "speed-6-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "pepper-6-en",
+      "path": "pepper-6-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "speed-7-en",
+      "path": "speed-7-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "pepper-7-en",
+      "path": "pepper-7-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "speed-8-en",
+      "path": "speed-8-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "pepper-8-en",
+      "path": "pepper-8-en.svg",
+      "x": 72.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 144,
+      "imageHeight": 20
+    },
+    {
+      "name": "picked-0-en",
+      "path": "picked-0-en.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "picked-1-en",
+      "path": "picked-1-en.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "picked-2-en",
+      "path": "picked-2-en.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
+    },
+    {
+      "name": "picked-3-en",
+      "path": "picked-3-en.svg",
+      "x": 110.0,
+      "y": 10.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 220,
+      "imageHeight": 20
     }
   ]
 }

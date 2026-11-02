@@ -77,6 +77,76 @@
       "bitmapResolution": 1,
       "imageWidth": 210,
       "imageHeight": 14
+    },
+    {
+      "name": "ready-en",
+      "path": "ready-en.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "ready-lit-en",
+      "path": "ready-lit-en.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "wait-1-en",
+      "path": "wait-1-en.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "wait-2-en",
+      "path": "wait-2-en.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "wait-3-en",
+      "path": "wait-3-en.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "wait-4-en",
+      "path": "wait-4-en.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
+    },
+    {
+      "name": "wait-5-en",
+      "path": "wait-5-en.svg",
+      "x": 105.0,
+      "y": 7.0,
+      "faceRight": 0,
+      "bitmapResolution": 1,
+      "imageWidth": 210,
+      "imageHeight": 14
     }
   ]
 }

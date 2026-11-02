@@ -1,0 +1,16 @@
+import "strconv"
+onStart => {
+    forever => {
+        target := 0
+        for i := 2; i < 191; i++ { if entity[i] == 5 { target = i } }
+        if target == 0 || frontEnd() { hide } else {
+            frame := strconv.Itoa((ticks/10)%4)
+            if hp[target] > 0 {
+                strength := (hp[target]*10+149)/150
+                setCostume "brain-barrier-"+strconv.Itoa(strength)+"-"+frame
+            } else { setCostume "brain-open-"+frame }
+            setXpos px[target]; setYpos py[target]; show
+        }
+        wait 0.02
+    }
+}

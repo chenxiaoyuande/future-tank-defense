@@ -27,8 +27,11 @@ onCloned data => {
             for i := 2; i < 192; i++ {
                 if entity[i] == 6 || entity[i] == 7 || entity[i] == 9 {
                     if ordinal == effect-12 {
-                        if entity[i] == 6 { if rocket[i] { setCostume "missile-trail" } else { setCostume "seed-trail" } } else if entity[i] == 9 { setCostume "mega-trail" } else { setCostume "spore-trail" }
-                        if entity[i] == 6 && incendiary[i] { setCostume "fire-trail" }
+                        prefix := ""
+                        if entity[i] != 7 && projectileTier[i] > 0 { prefix = "evo-"+[]string{"0","1","2","3","4","5"}[projectileTier[i]]+"-" }
+                        if entity[i] == 6 { if rocket[i] { setCostume prefix+"missile-trail" } else { setCostume prefix+"seed-trail" } } else if entity[i] == 9 { setCostume prefix+"mega-trail" } else { setCostume "spore-trail" }
+                        if entity[i] == 6 && incendiary[i] { setCostume prefix+"fire-trail" }
+                        if entity[i] == 6 && projectileClass[i] == 1 { setCostume "spore-trail" }
                         setXpos px[i]-velx[i]*10
                         setYpos py[i]-vely[i]*10
                         setHeading 90-math.Atan2(vely[i],velx[i])*180/math.Pi
@@ -68,7 +71,7 @@ onCloned data => {
             }
         }
         if effect == 25 {
-            setCostume bars[10-(ultimateCooldown+24)/25]
+            setCostume bars[ultimateBar()]
             setXpos -112
             setYpos -155
             show
@@ -92,7 +95,7 @@ onCloned data => {
                 show
             }
         }
-        if effect == 30 && state == 0 {
+        if effect == 30 && state == 0 && upgradeFlash > 0 {
             if upgradeFlash > 0 { setCostume "upgrade" } else if weaponLevel == 1 { setCostume "weapon-ready" } else {
                 if kills == 0 { setCostume "weapon-0" } else if kills == 1 { setCostume "weapon-1" } else { setCostume "weapon-2" }
             }
@@ -112,6 +115,9 @@ onCloned data => {
             if effect == 32 && speedBuff > 0 { setCostume "speed-wake"; setHeading float64(facing[1]*90); show }
             if effect == 33 && pepperBuff > 0 { setCostume "pepper-aura"; show }
         }
+        if effect == 25 && language == 1 { setCostume bars[ultimateBar()]+langSuffix() }
+        if effect == 30 && state == 0 && upgradeFlash > 0 && language == 1 { setCostume "upgrade"+langSuffix() }
+        if frontEnd() || effect == 25 { hide }
         wait 0.04
     }
 }

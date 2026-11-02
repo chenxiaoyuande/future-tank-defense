@@ -27,15 +27,21 @@
     "default"
   ],
   "zorder": [
+    "Splash",
+    "HomeDecor",
     "Scene",
     "Atmosphere",
     "Actor",
+    "Brain",
     "Health",
     "Frame",
     "Hud",
     "Ability",
     "Buff",
     "Campaign",
-    "Notice"
+    "Notice",
+    "StageCard",
+    "UIAction",
+    "Wallet"
   ]
 }

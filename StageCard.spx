@@ -1,0 +1,30 @@
+import "strconv"
+var stageNumber int
+onStart => {
+    hide
+    for n := 1; n <= 20; n++ { clone n }
+}
+onClick => {
+    if state == 1 && stageNumber >= 1 {
+        selectedLevel = stageNumber
+        if !canStartStage(stageNumber) { evolveNotice = 9; metaNoticeTicks = 150 } else { evolveNotice = 0 }
+    }
+}
+onCloned data => {
+    stageNumber = data.(int)
+    forever => {
+        hide
+        if state == 1 {
+            status := 1
+            if stageNumber > unlockedLevel() { status = 0 }
+            if stageNumber <= clearedLevel { status = 3 }
+            if stageNumber == selectedLevel { if status == 0 { status = 4 } else { status = 2 } }
+            setCostume "stage-"+strconv.Itoa(stageNumber)+"-"+strconv.Itoa(status)+langSuffix()
+            setXpos float64(-124+((stageNumber-1)%5)*76)
+            setYpos float64(76-((stageNumber-1)/5)*52)
+            show
+        }
+        setLayer Front
+        wait 0.04
+    }
+}

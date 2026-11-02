@@ -1,0 +1,17 @@
+{
+  "costumes": [
+    {
+      "name": "splash",
+      "path": "splash.png",
+      "x": 724,
+      "y": 543,
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "bitmapResolution": 3
+    }
+  ],
+  "costumeIndex": 0,
+  "size": 1.04,
+  "rotationStyle": "none",
+  "visible": false
+}

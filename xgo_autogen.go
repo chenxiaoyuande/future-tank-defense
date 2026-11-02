@@ -6,6 +6,8 @@ import (
 	"github.com/goplus/spx/v3"
 	"math"
 	"strconv"
+	"strings"
+	"syscall/js"
 )
 
 const _ = true
@@ -23,6 +25,10 @@ type Atmosphere struct {
 	spx.SpriteImpl
 	*Game
 	effect int
+}
+type Brain struct {
+	spx.SpriteImpl
+	*Game
 }
 type Buff struct {
 	spx.SpriteImpl
@@ -43,6 +49,11 @@ type Health struct {
 	*Game
 	ordinal int
 }
+type HomeDecor struct {
+	spx.SpriteImpl
+	*Game
+	particle int
+}
 type Hud struct {
 	spx.SpriteImpl
 	*Game
@@ -56,1831 +67,4466 @@ type Scene struct {
 	spx.SpriteImpl
 	*Game
 }
+type Splash struct {
+	spx.SpriteImpl
+	*Game
+}
+type StageCard struct {
+	spx.SpriteImpl
+	*Game
+	stageNumber int
+}
+type UIAction struct {
+	spx.SpriteImpl
+	*Game
+	action int
+}
+type Wallet struct {
+	spx.SpriteImpl
+	*Game
+	component int
+}
 type Game struct {
 	spx.Game
-	Ability           *Ability
-	Actor             *Actor
-	Atmosphere        *Atmosphere
-	Buff              *Buff
-	Campaign          *Campaign
-	Frame             *Frame
-	Health            *Health
-	Hud               *Hud
-	Notice            *Notice
-	Scene             *Scene
-	twoPlayers        bool
-	selectedLevel     int
-	level             int
-	stageKills        int
-	waveSpawned       int
-	waveTarget        int
-	bossSlot          int
-	bossStarted       bool
-	bossDefeated      bool
-	menuDown          bool
-	confirmDown       bool
-	lives2            int
-	shield2           int
-	shotDelay2        int
-	ultimateCooldown2 int
-	ultimateDown2     bool
-	shieldCharges2    int
-	shieldBuff2       int
-	speedBuff2        int
-	pepperBuff2       int
-	px                [192]float64
-	py                [192]float64
-	facing            [192]int
-	entity            [192]int
-	age               [192]int
-	hp                [192]int
-	maxHP             [192]int
-	zombieType        [192]int
-	zombieSlots       [3]int
-	dashCooldown      [192]int
-	dashRemaining     [192]float64
-	dashWindup        [192]int
-	hitFlash          [192]int
-	growth            [192]int
-	velx              [192]float64
-	vely              [192]float64
-	rocket            [192]bool
-	incendiary        [192]bool
-	projectileDamage  [192]int
-	pickupType        [192]int
-	pickupTimer       int
-	shieldCharges     int
-	shieldBuff        int
-	speedBuff         int
-	pepperBuff        int
-	pickupNotice      int
-	lastPickup        int
-	score             int
-	kills             int
-	lives             int
-	ticks             int
-	shotDelay         int
-	shield            int
-	state             int
-	weaponLevel       int
-	upgradeFlash      int
-	ultimateCooldown  int
-	ultimateDown      bool
-	restartDown       bool
-	pauseDown         bool
-	paused            bool
+	Ability              *Ability
+	Actor                *Actor
+	Atmosphere           *Atmosphere
+	Brain                *Brain
+	Buff                 *Buff
+	Campaign             *Campaign
+	Frame                *Frame
+	Health               *Health
+	HomeDecor            *HomeDecor
+	Hud                  *Hud
+	Notice               *Notice
+	Scene                *Scene
+	Splash               *Splash
+	StageCard            *StageCard
+	UIAction             *UIAction
+	Wallet               *Wallet
+	twoPlayers           bool
+	selectedLevel        int
+	level                int
+	stageKills           int
+	waveSpawned          int
+	waveTarget           int
+	bossSlot             int
+	bossStarted          bool
+	bossDefeated         bool
+	menuDown             bool
+	confirmDown          bool
+	menuDirection        int
+	bossTheme            int
+	bossAttack           int
+	hazardKind           [192]int
+	hazardWarmup         [192]int
+	hazardDuration       [192]int
+	summoned             [192]bool
+	lives2               int
+	shield2              int
+	shotDelay2           int
+	ultimateCooldown2    int
+	ultimateDown2        bool
+	shieldCharges2       int
+	shieldBuff2          int
+	speedBuff2           int
+	pepperBuff2          int
+	px                   [192]float64
+	py                   [192]float64
+	facing               [192]int
+	entity               [192]int
+	age                  [192]int
+	hp                   [192]int
+	maxHP                [192]int
+	zombieType           [192]int
+	zombieSlots          [3]int
+	dashCooldown         [192]int
+	dashRemaining        [192]float64
+	dashWindup           [192]int
+	hitFlash             [192]int
+	growth               [192]int
+	velx                 [192]float64
+	vely                 [192]float64
+	rocket               [192]bool
+	incendiary           [192]bool
+	projectileDamage     [192]int
+	pickupType           [192]int
+	pickupTimer          int
+	shieldCharges        int
+	shieldBuff           int
+	speedBuff            int
+	pepperBuff           int
+	pickupNotice         int
+	lastPickup           int
+	score                int
+	kills                int
+	lives                int
+	ticks                int
+	shotDelay            int
+	shield               int
+	state                int
+	weaponLevel          int
+	upgradeFlash         int
+	ultimateCooldown     int
+	ultimateDown         bool
+	restartDown          bool
+	pauseDown            bool
+	paused               bool
+	coins                int
+	lifetimeCoins        int
+	evolution            int
+	profileLoaded        bool
+	profileDirty         bool
+	profileDamaged       bool
+	profileReadPending   bool
+	saveStatus           int
+	saveRetry            int
+	evolutionDown        bool
+	buyDown              bool
+	backupDown           bool
+	restoreDown          bool
+	evolveNotice         int
+	evolutionReturnState int
+	projectileTier       [192]int
+	language             int
+	languageDown         bool
+	continueDown         bool
+	saveDown             bool
+	savePanelDown        bool
+	saveReturnState      int
+	checkpointLevel      int
+	checkpointScore      int
+	checkpointKills      int
+	checkpointCoop       bool
+	clearedLevel         int
+	runEntryScore        int
+	runEntryKills        int
+	checkpointDirty      bool
+	languageDirty        bool
+	decodedStage         int
+	decodedScore         int
+	decodedKills         int
+	decodedCoop          bool
+	decodedCleared       int
+	decodedLanguage      int
+	metaNoticeTicks      int
+	playerClass          int
+	playerClass2         int
+	pendingClass         int
+	pendingClass2        int
+	classMember          int
+	labClass             int
+	routeTiers           [3]int
+	checkpointClass      int
+	checkpointClass2     int
+	decodedClass         int
+	decodedClass2        int
+	decodedMushroom      int
+	decodedMelon         int
+	uiTicks              int
+	homeChoice           int
+	uiConfirmDown        bool
+	uiNavDown            int
+	roleOneDown          bool
+	roleTwoDown          bool
+	roleThreeDown        bool
+	uiTabDown            bool
+	projectileClass      [192]int
+	pierceRemaining      [192]int
+	lastHitTarget        [192]int
+	sporeHits            [192][4]int
+	landingX             [192]float64
+	landingY             [192]float64
+	lobDuration          [192]int
+	chillTicks           [192]int
 }
-//line main.spx:67:1
+//line main.spx:144:1
 func (this *Game) vx(d int) float64 {
-//line main.spx:67:1
+//line main.spx:144:1
 	if d == 1 {
-//line main.spx:67:1
+//line main.spx:144:1
 		return 1
 	}
-//line main.spx:67:1
+//line main.spx:144:1
 	if d == 3 {
-//line main.spx:67:1
+//line main.spx:144:1
 		return -1
 	}
-//line main.spx:67:1
+//line main.spx:144:1
 	return 0
 }
-//line main.spx:68:1
+//line main.spx:145:1
 func (this *Game) vy(d int) float64 {
-//line main.spx:68:1
+//line main.spx:145:1
 	if d == 0 {
-//line main.spx:68:1
+//line main.spx:145:1
 		return 1
 	}
-//line main.spx:68:1
+//line main.spx:145:1
 	if d == 2 {
-//line main.spx:68:1
+//line main.spx:145:1
 		return -1
 	}
-//line main.spx:68:1
+//line main.spx:145:1
 	return 0
 }
-//line main.spx:69:1
+//line main.spx:146:1
 func (this *Game) overlaps(x float64, y float64, i int, radius float64) bool {
-//line main.spx:70:1
+//line main.spx:147:1
 	return math.Abs(x-this.px[i]) < radius && math.Abs(y-this.py[i]) < radius
 }
-//line main.spx:72:1
+//line main.spx:149:1
 func (this *Game) addEntity(k int, x float64, y float64, d int) int {
-//line main.spx:73:1
+//line main.spx:150:1
 	for
-//line main.spx:73:1
+//line main.spx:150:1
 	i := 2; i < 191;
-//line main.spx:73:1
+//line main.spx:150:1
 	i++ {
 		spx.Sched()
-//line main.spx:74:1
+//line main.spx:151:1
 		if this.entity[i] == 0 {
-//line main.spx:75:1
+//line main.spx:152:1
 			this.entity[i] = k
-//line main.spx:75:1
+//line main.spx:152:1
 			this.px[i] = x
-//line main.spx:75:1
+//line main.spx:152:1
 			this.py[i] = y
-//line main.spx:75:1
+//line main.spx:152:1
 			this.facing[i] = d
-//line main.spx:75:1
+//line main.spx:152:1
 			this.age[i] = 0
-//line main.spx:76:1
+//line main.spx:153:1
 			this.hp[i] = 0
-//line main.spx:76:1
+//line main.spx:153:1
 			this.maxHP[i] = 0
-//line main.spx:76:1
+//line main.spx:153:1
 			this.hitFlash[i] = 0
-//line main.spx:76:1
+//line main.spx:153:1
 			this.growth[i] = 0
-//line main.spx:77:1
+//line main.spx:154:1
+			if k == 5 {
+//line main.spx:154:1
+				this.hp[i] = 150
+//line main.spx:154:1
+				this.maxHP[i] = 150
+			}
+//line main.spx:155:1
+			this.summoned[i] = false
+//line main.spx:155:1
+			this.hazardKind[i] = 0
+//line main.spx:155:1
+			this.hazardWarmup[i] = 0
+//line main.spx:155:1
+			this.hazardDuration[i] = 0
+//line main.spx:156:1
+			this.projectileTier[i] = 0
+//line main.spx:157:1
+			this.projectileClass[i] = 0
+//line main.spx:157:1
+			this.pierceRemaining[i] = 0
+//line main.spx:157:1
+			this.lastHitTarget[i] = 0
+//line main.spx:157:1
+			this.sporeHits[i] = [4]int{}
+//line main.spx:157:1
+			this.landingX[i] = 0
+//line main.spx:157:1
+			this.landingY[i] = 0
+//line main.spx:157:1
+			this.lobDuration[i] = 0
+//line main.spx:157:1
+			this.chillTicks[i] = 0
+//line main.spx:158:1
 			this.dashCooldown[i] = 0
-//line main.spx:77:1
+//line main.spx:158:1
 			this.dashWindup[i] = 0
-//line main.spx:77:1
+//line main.spx:158:1
 			this.dashRemaining[i] = 0
-//line main.spx:78:1
+//line main.spx:159:1
 			this.rocket[i] = false
-//line main.spx:78:1
+//line main.spx:159:1
 			this.incendiary[i] = false
-//line main.spx:78:1
+//line main.spx:159:1
 			this.projectileDamage[i] = 1
-//line main.spx:78:1
+//line main.spx:159:1
 			this.velx[i] = this.vx(d)
-//line main.spx:78:1
+//line main.spx:159:1
 			this.vely[i] = this.vy(d)
-//line main.spx:79:1
+//line main.spx:160:1
 			return i
 		}
 	}
-//line main.spx:82:1
+//line main.spx:163:1
 	return 0
 }
-//line main.spx:84:1
+//line main.spx:165:1
 func (this *Game) blocked(x float64, y float64, self int) bool {
-//line main.spx:85:1
+//line main.spx:166:1
 	if x < -214 || x > 214 || y < -132 || y > 120 {
-//line main.spx:85:1
+//line main.spx:166:1
 		return true
 	}
-//line main.spx:86:1
+//line main.spx:167:1
 	for
-//line main.spx:86:1
+//line main.spx:167:1
 	j := 1; j < 192;
-//line main.spx:86:1
+//line main.spx:167:1
 	j++ {
 		spx.Sched()
-//line main.spx:87:1
+//line main.spx:168:1
 		k := this.entity[j]
-//line main.spx:88:1
+//line main.spx:169:1
 		if j != self && k >= 1 && k <= 5 && this.overlaps(x, y, j, 22) {
-//line main.spx:88:1
+//line main.spx:169:1
 			return true
 		}
 	}
-//line main.spx:90:1
+//line main.spx:171:1
 	return false
 }
-//line main.spx:92:1
+//line main.spx:173:1
 func (this *Game) towardPlayer(i int) int {
-//line main.spx:93:1
+//line main.spx:174:1
 	target := 1
-//line main.spx:94:1
+//line main.spx:175:1
 	if this.entity[1] != 1 || this.entity[191] == 1 && math.Hypot(this.px[191]-this.px[i], this.py[191]-this.py[i]) < math.Hypot(this.px[1]-this.px[i], this.py[1]-this.py[i]) {
-//line main.spx:94:1
+//line main.spx:175:1
 		target = 191
 	}
-//line main.spx:95:1
+//line main.spx:176:1
 	dx := this.px[target] - this.px[i]
-//line main.spx:95:1
+//line main.spx:176:1
 	dy := this.py[target] - this.py[i]
-//line main.spx:96:1
+//line main.spx:177:1
 	if math.Abs(dx) > math.Abs(dy) {
-//line main.spx:96:1
+//line main.spx:177:1
 		if dx > 0 {
-//line main.spx:96:1
+//line main.spx:177:1
 			return 1
 		}
-//line main.spx:96:1
+//line main.spx:177:1
 		return 3
 	}
-//line main.spx:97:1
+//line main.spx:178:1
 	if dy > 0 {
-//line main.spx:97:1
+//line main.spx:178:1
 		return 0
 	}
-//line main.spx:97:1
+//line main.spx:178:1
 	return 2
 }
-//line main.spx:99:1
+//line main.spx:180:1
 func (this *Game) spawnZombie(i int) bool {
-//line main.spx:100:1
+//line main.spx:181:1
 	for
-//line main.spx:100:1
+//line main.spx:181:1
 	attempt := 0; attempt < 48;
-//line main.spx:100:1
+//line main.spx:181:1
 	attempt++ {
 		spx.Sched()
-//line main.spx:101:1
+//line main.spx:182:1
 		side := int(spx.Rand__0(0, 4)) % 4
-//line main.spx:102:1
+//line main.spx:183:1
 		x := float64(int(spx.Rand__0(0, 19))%19*24 - 216)
-//line main.spx:103:1
+//line main.spx:184:1
 		y := float64(120 - int(spx.Rand__0(0, 11))%11*24)
-//line main.spx:104:1
+//line main.spx:185:1
 		if side == 0 {
-//line main.spx:104:1
+//line main.spx:185:1
 			y = 120
 		}
-//line main.spx:104:1
+//line main.spx:185:1
 		if side == 1 {
-//line main.spx:104:1
+//line main.spx:185:1
 			x = 214
 		}
-//line main.spx:105:1
+//line main.spx:186:1
 		if side == 2 {
-//line main.spx:105:1
+//line main.spx:186:1
 			y = -132
 		}
-//line main.spx:105:1
+//line main.spx:186:1
 		if side == 3 {
-//line main.spx:105:1
+//line main.spx:186:1
 			x = -214
 		}
-//line main.spx:106:1
+//line main.spx:187:1
 		dx := x - this.px[1]
-//line main.spx:106:1
+//line main.spx:187:1
 		dy := y - this.py[1]
-//line main.spx:107:1
+//line main.spx:188:1
 		if !this.blocked(x, y, i) && dx*dx+dy*dy > 110*110 && (this.entity[191] != 1 || math.Hypot(x-this.px[191], y-this.py[191]) > 110) && (math.Abs(x) > 70 || y > -60) {
-//line main.spx:108:1
+//line main.spx:189:1
 			this.px[i] = x
-//line main.spx:108:1
+//line main.spx:189:1
 			this.py[i] = y
-//line main.spx:108:1
+//line main.spx:189:1
 			this.entity[i] = 13
-//line main.spx:108:1
+//line main.spx:189:1
 			this.age[i] = 0
-//line main.spx:109:1
+//line main.spx:190:1
 			health := 1
-//line main.spx:110:1
+//line main.spx:191:1
 			if this.zombieType[i] == 0 {
-//line main.spx:110:1
+//line main.spx:191:1
 				health = 5
 			}
-//line main.spx:110:1
+//line main.spx:191:1
 			if this.zombieType[i] == 2 {
-//line main.spx:110:1
+//line main.spx:191:1
 				health = 3
 			}
-//line main.spx:111:1
-			this.hp[i] = health
-//line main.spx:111:1
-			this.maxHP[i] = health
-//line main.spx:112:1
-			this.dashCooldown[i] = 150
-//line main.spx:112:1
-			this.dashRemaining[i] = 0
-//line main.spx:112:1
-			this.dashWindup[i] = 0
-//line main.spx:113:1
-			this.hitFlash[i] = 0
-//line main.spx:113:1
-			this.facing[i] = this.towardPlayer(i)
-//line main.spx:114:1
-			return true
-		}
-	}
-//line main.spx:117:1
-	return false
-}
-//line main.spx:119:1
-func (this *Game) fire(i int) {
-//line main.spx:120:1
-	shots := 1
-//line main.spx:121:1
-	if (i == 1 || i == 191) && this.weaponLevel == 1 {
-//line main.spx:121:1
-		shots = 3
-	}
-//line main.spx:122:1
-	for
-//line main.spx:122:1
-	n := 0; n < shots;
-//line main.spx:122:1
-	n++ {
-		spx.Sched()
-//line main.spx:123:1
-		angle := 0.0
-//line main.spx:124:1
-		if shots == 3 {
-//line main.spx:124:1
-			angle = float64(n-1) * 16 * math.Pi / 180
-		}
-//line main.spx:125:1
-		dx := this.vx(this.facing[i])*math.Cos(angle) - this.vy(this.facing[i])*math.Sin(angle)
-//line main.spx:126:1
-		dy := this.vx(this.facing[i])*math.Sin(angle) + this.vy(this.facing[i])*math.Cos(angle)
-//line main.spx:127:1
-		kind := 7
-//line main.spx:128:1
-		if i == 1 || i == 191 {
-//line main.spx:128:1
-			kind = 6
-		}
-//line main.spx:129:1
-		slot := this.addEntity(kind, this.px[i]+dx*19, this.py[i]+dy*19, this.facing[i])
-//line main.spx:130:1
-		if slot != 0 {
-//line main.spx:131:1
-			this.velx[slot] = dx
-//line main.spx:131:1
-			this.vely[slot] = dy
-//line main.spx:131:1
-			this.rocket[slot] = (i == 1 || i == 191) && this.weaponLevel == 1
-//line main.spx:132:1
-			if i == 1 && this.pepperBuff > 0 || i == 191 && this.pepperBuff2 > 0 {
-//line main.spx:132:1
-				this.projectileDamage[slot] = 2
-//line main.spx:132:1
-				this.incendiary[slot] = true
-			}
-		}
-	}
-}
-//line main.spx:136:1
-func (this *Game) damageZombie(i int, damage int) {
-//line main.spx:137:1
-	if this.entity[i] != 2 {
-//line main.spx:137:1
-		return
-	}
-//line main.spx:138:1
-	this.hp[i] -= damage
-//line main.spx:138:1
-	this.hitFlash[i] = 7
-//line main.spx:139:1
-	if this.hp[i] <= 0 {
-//line main.spx:140:1
-		this.hp[i] = 0
-//line main.spx:140:1
-		this.entity[i] = 12
-//line main.spx:140:1
-		this.age[i] = 0
-//line main.spx:140:1
-		this.dashRemaining[i] = 0
-//line main.spx:140:1
-		this.dashWindup[i] = 0
-//line main.spx:141:1
-		this.score += 100
-//line main.spx:141:1
-		this.kills++
-//line main.spx:142:1
-		if this.zombieType[i] == 3 {
-//line main.spx:142:1
-			this.bossDefeated = true
-//line main.spx:142:1
-			this.score += 900
-		} else {
-//line main.spx:142:1
-			this.stageKills++
-		}
-//line main.spx:143:1
-		if this.kills >= 3 && this.weaponLevel == 0 {
-//line main.spx:143:1
-			this.weaponLevel = 1
-//line main.spx:143:1
-			this.upgradeFlash = 100
-		}
-	}
-}
-//line main.spx:146:1
-func (this *Game) breakHedge(i int) {
-//line main.spx:146:1
-	if this.entity[i] == 3 {
-//line main.spx:146:1
-		this.entity[i] = 11
-//line main.spx:146:1
-		this.age[i] = 0
-//line main.spx:146:1
-		this.growth[i] = 0
-	}
-}
-//line main.spx:147:1
-func (this *Game) growthBlocked(i int) bool {
-//line main.spx:148:1
-	if this.entity[1] == 1 && this.overlaps(this.px[i], this.py[i], 1, 27) {
-//line main.spx:148:1
-		return true
-	}
-//line main.spx:149:1
-	if this.entity[191] == 1 && this.overlaps(this.px[i], this.py[i], 191, 27) {
-//line main.spx:149:1
-		return true
-	}
-//line main.spx:150:1
-	for
-//line main.spx:150:1
-	j := 2; j < 192;
-//line main.spx:150:1
-	j++ {
-		spx.Sched()
-//line main.spx:151:1
-		if (this.entity[j] == 2 || this.entity[j] == 13) && this.overlaps(this.px[i], this.py[i], j, 27) {
-//line main.spx:151:1
-			return true
-		}
-	}
-//line main.spx:153:1
-	return false
-}
-//line main.spx:155:1
-func (this *Game) updateHedge(i int) {
-//line main.spx:156:1
-	if this.age[i] >= 300 {
-//line main.spx:157:1
-		if this.growthBlocked(i) {
-//line main.spx:157:1
-			this.growth[i] = 0
-		} else {
-//line main.spx:157:1
-			this.growth[i]++
-		}
-//line main.spx:158:1
-		if this.growth[i] >= 50 {
-//line main.spx:158:1
-			this.entity[i] = 3
-//line main.spx:158:1
-			this.age[i] = 0
-//line main.spx:158:1
-			this.growth[i] = 0
-		}
-	}
-}
-//line main.spx:161:1
-func (this *Game) castUltimate() bool {
-//line main.spx:162:1
-	if this.state != 0 || this.paused || this.entity[1] != 1 || this.ultimateCooldown > 0 {
-//line main.spx:162:1
-		return false
-	}
-//line main.spx:163:1
-	d := this.facing[1]
-//line main.spx:164:1
-	slot := this.addEntity(9, this.px[1]+this.vx(d)*24, this.py[1]+this.vy(d)*24, d)
-//line main.spx:165:1
-	if slot == 0 {
-//line main.spx:165:1
-		return false
-	}
-//line main.spx:166:1
-	this.ultimateCooldown = 250
-//line main.spx:166:1
-	return true
-}
-//line main.spx:168:1
-func (this *Game) detonate(x float64, y float64) {
-//line main.spx:169:1
-	this.blast(x, y, 3, 88)
-//line main.spx:170:1
-	this.addEntity(10, x, y, 0)
-}
-//line main.spx:172:1
-func (this *Game) blast(x float64, y float64, damage int, radius float64) {
-//line main.spx:173:1
-	for
-//line main.spx:173:1
-	i := 2; i < 192;
-//line main.spx:173:1
-	i++ {
-		spx.Sched()
-//line main.spx:174:1
-		dx := this.px[i] - x
-//line main.spx:174:1
-		dy := this.py[i] - y
-//line main.spx:175:1
-		if dx*dx+dy*dy <= radius*radius {
-//line main.spx:176:1
-			if this.entity[i] == 2 {
-//line main.spx:176:1
-				this.damageZombie(i, damage)
-			}
-//line main.spx:177:1
-			if this.entity[i] == 3 {
-//line main.spx:177:1
-				this.breakHedge(i)
-			}
-//line main.spx:178:1
-			if this.entity[i] == 7 {
-//line main.spx:178:1
-				this.entity[i] = 0
-			}
-		}
-	}
-}
-//line main.spx:182:1
-func (this *Game) spawnPickup() bool {
-//line main.spx:183:1
-	count := 0
-//line main.spx:184:1
-	for
-//line main.spx:184:1
-	i := 2; i < 192;
-//line main.spx:184:1
-	i++ {
-		spx.Sched()
-//line main.spx:184:1
-		if this.entity[i] == 14 {
-//line main.spx:184:1
-			count++
-		}
-	}
-//line main.spx:185:1
-	if count >= 3 {
-//line main.spx:185:1
-		return false
-	}
-//line main.spx:186:1
-	for
-//line main.spx:186:1
-	attempt := 0; attempt < 60;
-//line main.spx:186:1
-	attempt++ {
-		spx.Sched()
-//line main.spx:187:1
-		x := float64(int(spx.Rand__0(0, 17))%17*24 - 192)
-//line main.spx:188:1
-		y := float64(108 - int(spx.Rand__0(0, 10))%10*24)
-//line main.spx:189:1
-		occupied := this.blocked(x, y, 0) || this.overlaps(x, y, 1, 50)
-//line main.spx:190:1
-		for
-//line main.spx:190:1
-		i := 2; i < 192;
-//line main.spx:190:1
-		i++ {
-			spx.Sched()
-//line main.spx:191:1
-			if (this.entity[i] == 11 || this.entity[i] == 13 || this.entity[i] == 14) && this.overlaps(x, y, i, 28) {
-//line main.spx:191:1
-				occupied = true
-			}
-		}
+//line main.spx:192:1
+			health += (this.level - 1) / 5
 //line main.spx:193:1
-		if !occupied {
+			this.hp[i] = health
+//line main.spx:193:1
+			this.maxHP[i] = health
 //line main.spx:194:1
-			i := this.addEntity(14, x, y, 0)
+			this.dashCooldown[i] = 150
+//line main.spx:194:1
+			this.dashRemaining[i] = 0
+//line main.spx:194:1
+			this.dashWindup[i] = 0
 //line main.spx:195:1
-			if i > 0 {
+			this.hitFlash[i] = 0
 //line main.spx:195:1
-				this.pickupType[i] = int(spx.Rand__0(0, 4)) % 4
-//line main.spx:195:1
-				return true
-			}
+			this.facing[i] = this.towardPlayer(i)
 //line main.spx:196:1
-			return false
+			return true
 		}
 	}
 //line main.spx:199:1
 	return false
 }
 //line main.spx:201:1
-func (this *Game) collectPickup(i int) {
+func (this *Game) fire(i int) {
 //line main.spx:202:1
-	if this.entity[i] != 14 {
+	if i != 1 && i != 191 || this.entity[i] != 1 {
 //line main.spx:202:1
 		return
 	}
 //line main.spx:203:1
-	kind := this.pickupType[i]
+	role := this.roleOf(i)
 //line main.spx:203:1
-	this.entity[i] = 0
-//line main.spx:203:1
-	this.lastPickup = kind
-//line main.spx:203:1
-	this.pickupNotice = 100
+	tier := this.tierOf(i)
 //line main.spx:204:1
-	if kind == 0 {
+	if (i == 1 || i == 191) && role == 2 {
 //line main.spx:204:1
-		this.shieldCharges = 3
+		this.fireMelon(i, false)
 //line main.spx:204:1
-		this.shieldBuff = 500
+		return
 	}
 //line main.spx:205:1
-	if kind == 1 {
-//line main.spx:205:1
-		this.blast(this.px[1], this.py[1], 5, 100)
-//line main.spx:205:1
-		this.addEntity(15, this.px[1], this.py[1], 0)
-	}
+	shots := 1
 //line main.spx:206:1
-	if kind == 2 {
+	if (i == 1 || i == 191) && this.weaponLevel == 1 && role == 0 {
 //line main.spx:206:1
-		this.speedBuff = 400
+		shots = 3
 	}
 //line main.spx:207:1
-	if kind == 3 {
+	if (i == 1 || i == 191) && role == 0 && tier >= 2 && shots == 1 {
 //line main.spx:207:1
-		this.pepperBuff = 400
+		shots = 2
 	}
 //line main.spx:208:1
-	this.addEntity(8, this.px[1], this.py[1], 0)
-}
+	if (i == 1 || i == 191) && role == 1 && tier >= 3 {
+//line main.spx:208:1
+		shots = 2
+	}
+//line main.spx:209:1
+	for
+//line main.spx:209:1
+	n := 0; n < shots;
+//line main.spx:209:1
+	n++ {
+		spx.Sched()
 //line main.spx:210:1
-func (this *Game) updateUltimateInput() {
+		angle := 0.0
 //line main.spx:211:1
-	if this.ultimateCooldown > 0 {
+		if shots > 1 {
 //line main.spx:211:1
-		this.ultimateCooldown--
-	}
+			angle = (float64(n) - float64(shots-1)/2) * 16 * math.Pi / 180
+		}
 //line main.spx:212:1
-	down := this.KeyPressed(spx.KeyE)
+		dx := this.vx(this.facing[i])*math.Cos(angle) - this.vy(this.facing[i])*math.Sin(angle)
 //line main.spx:213:1
-	if down && !this.ultimateDown {
-//line main.spx:213:1
-		this.castUltimate()
-	}
+		dy := this.vx(this.facing[i])*math.Sin(angle) + this.vy(this.facing[i])*math.Cos(angle)
 //line main.spx:214:1
-	this.ultimateDown = down
-}
+		kind := 6
+//line main.spx:215:1
+		slot := this.addEntity(kind, this.px[i]+dx*19, this.py[i]+dy*19, this.facing[i])
 //line main.spx:216:1
-func (this *Game) hitPlayer() {
+		if slot != 0 {
 //line main.spx:217:1
-	if this.shield > 0 {
-//line main.spx:217:1
-		return
-	}
+			if kind == 6 {
 //line main.spx:218:1
-	if this.shieldBuff > 0 && this.shieldCharges > 0 {
+				this.projectileTier[slot] = tier
+//line main.spx:218:1
+				this.projectileClass[slot] = role
+//line main.spx:218:1
+				this.projectileDamage[slot] = 1 + tier/2
 //line main.spx:219:1
-		this.shieldCharges--
+				if role == 1 {
 //line main.spx:219:1
-		this.shield = 25
-//line main.spx:220:1
-		if this.shieldCharges == 0 {
-//line main.spx:220:1
-			this.shieldBuff = 0
-		}
+					this.pierceRemaining[slot] = 1 + tier/2
+				}
+			}
 //line main.spx:221:1
-		this.addEntity(8, this.px[1], this.py[1], 0)
+			this.velx[slot] = dx
 //line main.spx:221:1
-		return
-	}
-//line main.spx:223:1
-	this.addEntity(8, this.px[1], this.py[1], 0)
-//line main.spx:223:1
-	this.lives--
-//line main.spx:224:1
-	if this.lives <= 0 {
-//line main.spx:224:1
-		this.entity[1] = 0
-//line main.spx:224:1
-		if this.entity[191] != 1 {
-//line main.spx:224:1
-			this.state = -1
+			this.vely[slot] = dy
+//line main.spx:221:1
+			this.rocket[slot] = (i == 1 || i == 191) && this.weaponLevel == 1
+//line main.spx:222:1
+			if i == 1 && this.pepperBuff > 0 || i == 191 && this.pepperBuff2 > 0 {
+//line main.spx:222:1
+				this.projectileDamage[slot]++
+//line main.spx:222:1
+				this.incendiary[slot] = true
+			}
 		}
-//line main.spx:224:1
-		return
 	}
-//line main.spx:225:1
-	this.respawnPlayer(1)
-//line main.spx:225:1
-	this.facing[1] = 0
-//line main.spx:225:1
-	this.shield = 110
 }
+//line main.spx:226:1
+func (this *Game) damageZombie(i int, damage int) {
 //line main.spx:227:1
-func (this *Game) stepZombie(i int, distance float64) bool {
+	if this.entity[i] != 2 {
+//line main.spx:227:1
+		return
+	}
 //line main.spx:228:1
-	nx := this.px[i] + this.vx(this.facing[i])*distance
+	this.hp[i] -= damage
 //line main.spx:228:1
-	ny := this.py[i] + this.vy(this.facing[i])*distance
+	this.hitFlash[i] = 7
 //line main.spx:229:1
-	if this.blocked(nx, ny, i) {
-//line main.spx:229:1
+	if this.hp[i] <= 0 {
+//line main.spx:230:1
+		this.hp[i] = 0
+//line main.spx:230:1
+		this.entity[i] = 12
+//line main.spx:230:1
+		this.age[i] = 0
+//line main.spx:230:1
+		this.dashRemaining[i] = 0
+//line main.spx:230:1
+		this.dashWindup[i] = 0
+//line main.spx:231:1
+		this.score += 100
+//line main.spx:231:1
+		this.kills++
+//line main.spx:232:1
+		reward := 10
+//line main.spx:233:1
+		if this.zombieType[i] == 0 {
+//line main.spx:233:1
+			reward = 15
+		}
+//line main.spx:233:1
+		if this.zombieType[i] == 2 {
+//line main.spx:233:1
+			reward = 12
+		}
+//line main.spx:234:1
+		if this.summoned[i] {
+//line main.spx:234:1
+			reward = 2
+		}
+//line main.spx:235:1
+		if this.zombieType[i] == 3 {
+//line main.spx:235:1
+			reward = 100 + this.bossTheme*50
+		}
+//line main.spx:236:1
+		this.awardCoins(reward)
+//line main.spx:237:1
+		if this.zombieType[i] == 3 {
+//line main.spx:237:1
+			this.bossDefeated = true
+//line main.spx:237:1
+			this.score += 900
+		} else
+//line main.spx:237:1
+		if !this.summoned[i] {
+//line main.spx:237:1
+			this.stageKills++
+		}
+//line main.spx:238:1
+		if this.kills >= 3 && this.weaponLevel == 0 {
+//line main.spx:238:1
+			this.weaponLevel = 1
+//line main.spx:238:1
+			this.upgradeFlash = 100
+		}
+	}
+}
+//line main.spx:241:1
+func (this *Game) breakHedge(i int) {
+//line main.spx:241:1
+	if this.entity[i] == 3 {
+//line main.spx:241:1
+		this.entity[i] = 11
+//line main.spx:241:1
+		this.age[i] = 0
+//line main.spx:241:1
+		this.growth[i] = 0
+	}
+}
+//line main.spx:242:1
+func (this *Game) growthBlocked(i int) bool {
+//line main.spx:243:1
+	if this.entity[1] == 1 && this.overlaps(this.px[i], this.py[i], 1, 27) {
+//line main.spx:243:1
+		return true
+	}
+//line main.spx:244:1
+	if this.entity[191] == 1 && this.overlaps(this.px[i], this.py[i], 191, 27) {
+//line main.spx:244:1
+		return true
+	}
+//line main.spx:245:1
+	for
+//line main.spx:245:1
+	j := 2; j < 192;
+//line main.spx:245:1
+	j++ {
+		spx.Sched()
+//line main.spx:246:1
+		if (this.entity[j] == 2 || this.entity[j] == 13) && this.overlaps(this.px[i], this.py[i], j, 27) {
+//line main.spx:246:1
+			return true
+		}
+	}
+//line main.spx:248:1
+	return false
+}
+//line main.spx:250:1
+func (this *Game) updateHedge(i int) {
+//line main.spx:251:1
+	if this.age[i] >= 300 {
+//line main.spx:252:1
+		if this.growthBlocked(i) {
+//line main.spx:252:1
+			this.growth[i] = 0
+		} else {
+//line main.spx:252:1
+			this.growth[i]++
+		}
+//line main.spx:253:1
+		if this.growth[i] >= 50 {
+//line main.spx:253:1
+			this.entity[i] = 3
+//line main.spx:253:1
+			this.age[i] = 0
+//line main.spx:253:1
+			this.growth[i] = 0
+		}
+	}
+}
+//line main.spx:256:1
+func (this *Game) castUltimate() bool {
+//line main.spx:257:1
+	if this.state != 0 || this.paused || this.entity[1] != 1 || this.ultimateCooldown > 0 {
+//line main.spx:257:1
 		return false
 	}
-//line main.spx:230:1
-	this.px[i] = nx
-//line main.spx:230:1
-	this.py[i] = ny
-//line main.spx:230:1
+//line main.spx:258:1
+	if !this.castClassUltimate(1) {
+//line main.spx:258:1
+		return false
+	}
+//line main.spx:259:1
+	this.ultimateCooldown = this.classUltimateDelay(1)
+//line main.spx:259:1
 	return true
 }
-//line main.spx:232:1
-func (this *Game) updateZombie(i int) {
-//line main.spx:233:1
-	kind := this.zombieType[i]
-//line main.spx:234:1
-	if kind == 3 {
-//line main.spx:234:1
-		this.updateBoss(i)
-//line main.spx:234:1
+//line main.spx:261:1
+func (this *Game) detonate(x float64, y float64) {
+//line main.spx:262:1
+	this.detonateTier(x, y, 0)
+}
+//line main.spx:264:1
+func (this *Game) detonateTier(x float64, y float64, tier int) {
+//line main.spx:265:1
+	this.blast(x, y, 3, 88)
+//line main.spx:266:1
+	slot := this.addEntity(10, x, y, 0)
+//line main.spx:267:1
+	if slot > 0 {
+//line main.spx:267:1
+		this.projectileTier[slot] = tier
+	}
+}
+//line main.spx:269:1
+func (this *Game) blast(x float64, y float64, damage int, radius float64) {
+//line main.spx:270:1
+	for
+//line main.spx:270:1
+	i := 2; i < 192;
+//line main.spx:270:1
+	i++ {
+		spx.Sched()
+//line main.spx:271:1
+		dx := this.px[i] - x
+//line main.spx:271:1
+		dy := this.py[i] - y
+//line main.spx:272:1
+		if dx*dx+dy*dy <= radius*radius {
+//line main.spx:273:1
+			if this.entity[i] == 2 {
+//line main.spx:273:1
+				this.damageZombie(i, damage)
+			}
+//line main.spx:274:1
+			if this.entity[i] == 3 {
+//line main.spx:274:1
+				this.breakHedge(i)
+			}
+//line main.spx:275:1
+			if this.entity[i] == 7 {
+//line main.spx:275:1
+				this.entity[i] = 0
+			}
+		}
+	}
+}
+//line main.spx:279:1
+func (this *Game) spawnPickup() bool {
+//line main.spx:280:1
+	count := 0
+//line main.spx:281:1
+	for
+//line main.spx:281:1
+	i := 2; i < 192;
+//line main.spx:281:1
+	i++ {
+		spx.Sched()
+//line main.spx:281:1
+		if this.entity[i] == 14 {
+//line main.spx:281:1
+			count++
+		}
+	}
+//line main.spx:282:1
+	if count >= 3 {
+//line main.spx:282:1
+		return false
+	}
+//line main.spx:283:1
+	for
+//line main.spx:283:1
+	attempt := 0; attempt < 60;
+//line main.spx:283:1
+	attempt++ {
+		spx.Sched()
+//line main.spx:284:1
+		x := float64(int(spx.Rand__0(0, 17))%17*24 - 192)
+//line main.spx:285:1
+		y := float64(108 - int(spx.Rand__0(0, 10))%10*24)
+//line main.spx:286:1
+		occupied := this.blocked(x, y, 0) || this.overlaps(x, y, 1, 50)
+//line main.spx:287:1
+		for
+//line main.spx:287:1
+		i := 2; i < 192;
+//line main.spx:287:1
+		i++ {
+			spx.Sched()
+//line main.spx:288:1
+			if (this.entity[i] == 11 || this.entity[i] == 13 || this.entity[i] == 14) && this.overlaps(x, y, i, 28) {
+//line main.spx:288:1
+				occupied = true
+			}
+		}
+//line main.spx:290:1
+		if !occupied {
+//line main.spx:291:1
+			i := this.addEntity(14, x, y, 0)
+//line main.spx:292:1
+			if i > 0 {
+//line main.spx:292:1
+				this.pickupType[i] = int(spx.Rand__0(0, 4)) % 4
+//line main.spx:292:1
+				return true
+			}
+//line main.spx:293:1
+			return false
+		}
+	}
+//line main.spx:296:1
+	return false
+}
+//line main.spx:298:1
+func (this *Game) collectPickup(i int) {
+//line main.spx:299:1
+	if this.entity[i] != 14 {
+//line main.spx:299:1
 		return
 	}
-//line main.spx:235:1
+//line main.spx:300:1
+	kind := this.pickupType[i]
+//line main.spx:300:1
+	this.entity[i] = 0
+//line main.spx:300:1
+	this.lastPickup = kind
+//line main.spx:300:1
+	this.pickupNotice = 100
+//line main.spx:301:1
+	if kind == 0 {
+//line main.spx:301:1
+		this.shieldCharges = 3
+//line main.spx:301:1
+		this.shieldBuff = 500
+	}
+//line main.spx:302:1
+	if kind == 1 {
+//line main.spx:302:1
+		this.blast(this.px[1], this.py[1], 5, 100)
+//line main.spx:302:1
+		this.addEntity(15, this.px[1], this.py[1], 0)
+	}
+//line main.spx:303:1
+	if kind == 2 {
+//line main.spx:303:1
+		this.speedBuff = 400
+	}
+//line main.spx:304:1
+	if kind == 3 {
+//line main.spx:304:1
+		this.pepperBuff = 400
+	}
+//line main.spx:305:1
+	this.addEntity(8, this.px[1], this.py[1], 0)
+}
+//line main.spx:307:1
+func (this *Game) updateUltimateInput() {
+//line main.spx:308:1
+	if this.ultimateCooldown > 0 {
+//line main.spx:308:1
+		this.ultimateCooldown--
+	}
+//line main.spx:309:1
+	down := this.KeyPressed(spx.KeyE)
+//line main.spx:310:1
+	if down && !this.ultimateDown {
+//line main.spx:310:1
+		this.castUltimate()
+	}
+//line main.spx:311:1
+	this.ultimateDown = down
+}
+//line main.spx:313:1
+func (this *Game) hitPlayer() {
+//line main.spx:314:1
+	if this.shield > 0 {
+//line main.spx:314:1
+		return
+	}
+//line main.spx:315:1
+	if this.shieldBuff > 0 && this.shieldCharges > 0 {
+//line main.spx:316:1
+		this.shieldCharges--
+//line main.spx:316:1
+		this.shield = 25
+//line main.spx:317:1
+		if this.shieldCharges == 0 {
+//line main.spx:317:1
+			this.shieldBuff = 0
+		}
+//line main.spx:318:1
+		this.addEntity(8, this.px[1], this.py[1], 0)
+//line main.spx:318:1
+		return
+	}
+//line main.spx:320:1
+	this.addEntity(8, this.px[1], this.py[1], 0)
+//line main.spx:320:1
+	this.lives--
+//line main.spx:321:1
+	if this.lives <= 0 {
+//line main.spx:321:1
+		this.entity[1] = 0
+//line main.spx:321:1
+		if this.entity[191] != 1 {
+//line main.spx:321:1
+			this.state = -1
+		}
+//line main.spx:321:1
+		return
+	}
+//line main.spx:322:1
+	this.respawnPlayer(1)
+//line main.spx:322:1
+	this.facing[1] = 0
+//line main.spx:322:1
+	this.shield = 110
+}
+//line main.spx:324:1
+func (this *Game) stepZombie(i int, distance float64) bool {
+//line main.spx:325:1
+	nx := this.px[i] + this.vx(this.facing[i])*distance
+//line main.spx:325:1
+	ny := this.py[i] + this.vy(this.facing[i])*distance
+//line main.spx:326:1
+	if this.blocked(nx, ny, i) {
+//line main.spx:326:1
+		return false
+	}
+//line main.spx:327:1
+	this.px[i] = nx
+//line main.spx:327:1
+	this.py[i] = ny
+//line main.spx:327:1
+	return true
+}
+//line main.spx:329:1
+func (this *Game) zombieContact(i int, radius float64) {
+//line main.spx:330:1
+	if this.entity[1] == 1 && this.overlaps(this.px[i], this.py[i], 1, radius) {
+//line main.spx:330:1
+		this.hitPlayer()
+	}
+//line main.spx:331:1
+	if this.entity[191] == 1 && this.overlaps(this.px[i], this.py[i], 191, radius) {
+//line main.spx:331:1
+		this.hitSecondPlayer()
+	}
+}
+//line main.spx:333:1
+func (this *Game) brainContact(i int, target int) bool {
+//line main.spx:334:1
+	if this.entity[i] != 2 || this.entity[target] != 5 {
+//line main.spx:334:1
+		return false
+	}
+//line main.spx:335:1
+	radius := 26.0
+//line main.spx:335:1
+	if this.zombieType[i] == 3 {
+//line main.spx:335:1
+		radius = 35
+	}
+//line main.spx:336:1
+	return this.overlaps(this.px[i], this.py[i], target, radius)
+}
+//line main.spx:338:1
+func (this *Game) bitingBrain(i int) bool {
+//line main.spx:339:1
+	for
+//line main.spx:339:1
+	j := 2; j < 191;
+//line main.spx:339:1
+	j++ {
+		spx.Sched()
+//line main.spx:340:1
+		if this.brainContact(i, j) {
+//line main.spx:340:1
+			return true
+		}
+	}
+//line main.spx:342:1
+	return false
+}
+//line main.spx:344:1
+func (this *Game) updateBrainDefenses() {
+//line main.spx:345:1
+	if this.state != 0 || this.paused {
+//line main.spx:345:1
+		return
+	}
+//line main.spx:346:1
+	for
+//line main.spx:346:1
+	target := 2; target < 191;
+//line main.spx:346:1
+	target++ {
+		spx.Sched()
+//line main.spx:347:1
+		if this.entity[target] == 5 {
+//line main.spx:348:1
+			gnawing := false
+//line main.spx:349:1
+			for
+//line main.spx:349:1
+			i := 2; i < 191 && !gnawing;
+//line main.spx:349:1
+			i++ {
+				spx.Sched()
+//line main.spx:349:1
+				if this.brainContact(i, target) {
+//line main.spx:349:1
+					gnawing = true
+				}
+			}
+//line main.spx:350:1
+			if gnawing {
+//line main.spx:351:1
+				if this.hp[target] > 0 {
+//line main.spx:353:1
+					this.hp[target]--
+//line main.spx:354:1
+					if this.hp[target] == 0 {
+//line main.spx:354:1
+						this.addEntity(8, this.px[target], this.py[target], 0)
+					}
+				} else {
+//line main.spx:356:1
+					x := this.px[target]
+//line main.spx:356:1
+					y := this.py[target]
+//line main.spx:356:1
+					this.entity[target] = 0
+//line main.spx:357:1
+					this.state = -1
+//line main.spx:357:1
+					this.addEntity(8, x, y, 0)
+//line main.spx:357:1
+					return
+				}
+			}
+		}
+	}
+}
+//line main.spx:363:1
+func (this *Game) updateZombie(i int) {
+//line main.spx:364:1
+	kind := this.zombieType[i]
+//line main.spx:365:1
+	if kind == 3 {
+//line main.spx:365:1
+		this.updateBoss(i)
+//line main.spx:365:1
+		return
+	}
+//line main.spx:366:1
+	if this.chillTicks[i] > 0 {
+//line main.spx:366:1
+		this.chillTicks[i]--
+	}
+//line main.spx:367:1
 	if this.hitFlash[i] > 0 {
-//line main.spx:235:1
+//line main.spx:367:1
 		this.hitFlash[i]--
 	}
-//line main.spx:236:1
+//line main.spx:368:1
+	if this.bitingBrain(i) {
+//line main.spx:368:1
+		this.zombieContact(i, 26)
+//line main.spx:368:1
+		return
+	}
+//line main.spx:369:1
 	if kind == 2 {
-//line main.spx:237:1
+//line main.spx:370:1
 		this.dashCooldown[i]--
-//line main.spx:238:1
+//line main.spx:371:1
 		if this.dashCooldown[i] == 12 && this.dashRemaining[i] <= 0 {
-//line main.spx:238:1
+//line main.spx:371:1
 			this.facing[i] = this.towardPlayer(i)
-//line main.spx:238:1
+//line main.spx:371:1
 			this.dashWindup[i] = 12
 		}
-//line main.spx:239:1
+//line main.spx:372:1
 		if this.dashCooldown[i] <= 0 {
-//line main.spx:239:1
-			this.dashCooldown[i] = 150
-//line main.spx:239:1
+//line main.spx:372:1
+			this.dashCooldown[i] = 150 - (this.level-1)*2
+//line main.spx:372:1
 			this.dashWindup[i] = 0
-//line main.spx:239:1
+//line main.spx:372:1
 			this.dashRemaining[i] = 72
 		}
 	}
-//line main.spx:241:1
+//line main.spx:374:1
 	if kind == 2 && this.dashRemaining[i] > 0 {
-//line main.spx:242:1
+//line main.spx:375:1
 		for
-//line main.spx:242:1
+//line main.spx:375:1
 		sub := 0; sub < 3 && this.dashRemaining[i] > 0;
-//line main.spx:242:1
+//line main.spx:375:1
 		sub++ {
 			spx.Sched()
-//line main.spx:243:1
+//line main.spx:376:1
 			if this.stepZombie(i, 3) {
-//line main.spx:243:1
+//line main.spx:376:1
 				this.dashRemaining[i] -= 3
 			} else {
-//line main.spx:243:1
+//line main.spx:376:1
 				this.dashRemaining[i] = 0
 			}
 		}
 	} else
-//line main.spx:245:1
+//line main.spx:378:1
 	if this.dashWindup[i] > 0 {
-//line main.spx:246:1
+//line main.spx:379:1
 		this.dashWindup[i]--
 	} else {
-//line main.spx:248:1
+//line main.spx:381:1
 		if this.age[i]%80 == 0 {
-//line main.spx:248:1
+//line main.spx:381:1
 			this.facing[i] = this.towardPlayer(i)
 		}
-//line main.spx:249:1
+//line main.spx:382:1
 		speed := 1.15
-//line main.spx:250:1
+//line main.spx:383:1
 		if kind == 0 {
-//line main.spx:250:1
+//line main.spx:383:1
 			speed = 0.65
 		}
-//line main.spx:250:1
+//line main.spx:383:1
 		if kind == 1 {
-//line main.spx:250:1
+//line main.spx:383:1
 			speed = 2.25
 		}
-//line main.spx:251:1
+//line main.spx:384:1
+		speed *= 1 + float64(this.level-1)*0.025
+//line main.spx:385:1
+		if this.chillTicks[i] > 0 {
+//line main.spx:385:1
+			speed *= 0.55
+		}
+//line main.spx:386:1
 		if !this.stepZombie(i, speed) {
-//line main.spx:251:1
+//line main.spx:386:1
 			this.facing[i] = (this.facing[i] + 1 + int(spx.Rand__0(0, 3))) % 4
 		}
 	}
-//line main.spx:253:1
-	if this.entity[1] == 1 && this.overlaps(this.px[i], this.py[i], 1, 26) {
-//line main.spx:253:1
-		this.hitPlayer()
-	}
-//line main.spx:254:1
-	if this.entity[191] == 1 && this.overlaps(this.px[i], this.py[i], 191, 26) {
-//line main.spx:254:1
-		this.hitSecondPlayer()
-	}
-//line main.spx:255:1
-	if this.age[i]%(100+kind*15) == 35 && this.dashRemaining[i] <= 0 && this.dashWindup[i] == 0 {
-//line main.spx:255:1
-		this.fire(i)
-	}
+//line main.spx:388:1
+	this.zombieContact(i, 26)
 }
-//line main.spx:257:1
+//line main.spx:390:1
 func (this *Game) restart() {
-//line main.spx:258:1
+//line main.spx:391:1
+	this.runEntryScore = 0
+//line main.spx:391:1
+	this.runEntryKills = 0
+//line main.spx:392:1
 	for
-//line main.spx:258:1
+//line main.spx:392:1
 	i := 0; i < 192;
-//line main.spx:258:1
+//line main.spx:392:1
 	i++ {
 		spx.Sched()
-//line main.spx:259:1
+//line main.spx:393:1
 		this.entity[i] = 0
-//line main.spx:259:1
+//line main.spx:393:1
 		this.age[i] = 0
-//line main.spx:259:1
+//line main.spx:393:1
 		this.hp[i] = 0
-//line main.spx:259:1
+//line main.spx:393:1
 		this.maxHP[i] = 0
-//line main.spx:259:1
+//line main.spx:393:1
 		this.growth[i] = 0
-//line main.spx:260:1
+//line main.spx:394:1
 		this.dashCooldown[i] = 0
-//line main.spx:260:1
+//line main.spx:394:1
 		this.dashRemaining[i] = 0
-//line main.spx:260:1
+//line main.spx:394:1
 		this.dashWindup[i] = 0
-//line main.spx:260:1
+//line main.spx:394:1
 		this.hitFlash[i] = 0
-//line main.spx:260:1
+//line main.spx:394:1
 		this.rocket[i] = false
-//line main.spx:260:1
+//line main.spx:394:1
 		this.incendiary[i] = false
+//line main.spx:395:1
+		this.summoned[i] = false
+//line main.spx:395:1
+		this.hazardKind[i] = 0
+//line main.spx:395:1
+		this.hazardWarmup[i] = 0
+//line main.spx:395:1
+		this.hazardDuration[i] = 0
 	}
-//line main.spx:262:1
+//line main.spx:397:1
 	this.level = this.selectedLevel
-//line main.spx:263:1
-	if this.level < 1 || this.level > 3 {
-//line main.spx:263:1
+//line main.spx:398:1
+	for
+//line main.spx:398:1
+	t := 0; t < 3;
+//line main.spx:398:1
+	t++ {
+		spx.Sched()
+//line main.spx:398:1
+		this.zombieSlots[t] = 0
+	}
+//line main.spx:399:1
+	if this.level < 1 || this.level > 20 {
+//line main.spx:399:1
 		this.level = 1
-//line main.spx:263:1
+//line main.spx:399:1
 		this.selectedLevel = 1
 	}
-//line main.spx:264:1
+//line main.spx:400:1
+	this.bossTheme = (this.level - 1) / 5
+//line main.spx:400:1
+	this.bossAttack = 0
+//line main.spx:401:1
 	this.stageKills = 0
-//line main.spx:264:1
+//line main.spx:401:1
 	this.waveSpawned = 3
-//line main.spx:264:1
-	this.waveTarget = 3 + this.level*3
-//line main.spx:264:1
+//line main.spx:401:1
+	this.waveTarget = 5 + this.level
+//line main.spx:401:1
 	this.bossSlot = 0
-//line main.spx:264:1
+//line main.spx:401:1
 	this.bossStarted = false
-//line main.spx:264:1
+//line main.spx:401:1
 	this.bossDefeated = false
-//line main.spx:265:1
+//line main.spx:402:1
+	if this.level%5 == 0 {
+//line main.spx:402:1
+		this.waveSpawned = 0
+//line main.spx:402:1
+		this.waveTarget = 0
+	}
+//line main.spx:403:1
 	this.lives2 = 3
-//line main.spx:265:1
+//line main.spx:403:1
 	this.shield2 = 100
-//line main.spx:265:1
+//line main.spx:403:1
 	this.shotDelay2 = 0
-//line main.spx:265:1
+//line main.spx:403:1
 	this.ultimateCooldown2 = 0
-//line main.spx:265:1
+//line main.spx:403:1
 	this.ultimateDown2 = false
-//line main.spx:266:1
+//line main.spx:404:1
 	this.shieldCharges2 = 0
-//line main.spx:266:1
+//line main.spx:404:1
 	this.shieldBuff2 = 0
-//line main.spx:266:1
+//line main.spx:404:1
 	this.speedBuff2 = 0
-//line main.spx:266:1
+//line main.spx:404:1
 	this.pepperBuff2 = 0
-//line main.spx:267:1
+//line main.spx:405:1
 	this.score = 0
-//line main.spx:267:1
+//line main.spx:405:1
 	this.kills = 0
-//line main.spx:267:1
+//line main.spx:405:1
 	this.lives = 3
-//line main.spx:267:1
+//line main.spx:405:1
 	this.ticks = 0
-//line main.spx:267:1
+//line main.spx:405:1
 	this.shotDelay = 0
-//line main.spx:267:1
+//line main.spx:405:1
 	this.shield = 100
-//line main.spx:268:1
+//line main.spx:406:1
 	this.state = 0
-//line main.spx:268:1
+//line main.spx:406:1
 	this.weaponLevel = 0
-//line main.spx:268:1
+//line main.spx:406:1
 	this.upgradeFlash = 0
-//line main.spx:268:1
+//line main.spx:406:1
 	this.paused = false
-//line main.spx:268:1
+//line main.spx:406:1
 	this.ultimateCooldown = 0
-//line main.spx:268:1
+//line main.spx:406:1
 	this.ultimateDown = false
-//line main.spx:269:1
+//line main.spx:407:1
 	this.pickupTimer = 250
-//line main.spx:269:1
+//line main.spx:407:1
 	this.shieldCharges = 0
-//line main.spx:269:1
+//line main.spx:407:1
 	this.shieldBuff = 0
-//line main.spx:269:1
+//line main.spx:407:1
 	this.speedBuff = 0
-//line main.spx:269:1
+//line main.spx:407:1
 	this.pepperBuff = 0
-//line main.spx:269:1
+//line main.spx:407:1
 	this.pickupNotice = 0
-//line main.spx:270:1
+//line main.spx:408:1
 	this.entity[1] = 1
-//line main.spx:270:1
+//line main.spx:408:1
 	this.px[1] = -48
-//line main.spx:270:1
+//line main.spx:408:1
 	this.py[1] = -120
-//line main.spx:270:1
+//line main.spx:408:1
 	this.facing[1] = 0
-//line main.spx:271:1
+//line main.spx:409:1
 	if this.twoPlayers {
-//line main.spx:271:1
+//line main.spx:409:1
 		this.entity[191] = 1
-//line main.spx:271:1
+//line main.spx:409:1
 		this.px[191] = 48
-//line main.spx:271:1
+//line main.spx:409:1
 		this.py[191] = -120
-//line main.spx:271:1
+//line main.spx:409:1
 		this.facing[191] = 0
 	}
-//line main.spx:272:1
+//line main.spx:410:1
 	this.addEntity(5, 0, -120, 0)
-//line main.spx:273:1
+//line main.spx:411:1
 	for
-//line main.spx:273:1
+//line main.spx:411:1
 	col := 0; col < 19;
-//line main.spx:273:1
+//line main.spx:411:1
 	col++ {
 		spx.Sched()
-//line main.spx:274:1
+//line main.spx:412:1
 		for
-//line main.spx:274:1
+//line main.spx:412:1
 		row := 2; row <= 9;
-//line main.spx:274:1
+//line main.spx:412:1
 		row++ {
 			spx.Sched()
-//line main.spx:275:1
-			wall := (col == 2 || col == 6 || col == 12 || col == 16) && row != 6
-//line main.spx:276:1
-			if row == 5 && (col == 8 || col == 9 || col == 10) {
-//line main.spx:276:1
-				wall = true
-			}
-//line main.spx:277:1
-			if row == 8 && (col == 8 || col == 10) {
-//line main.spx:277:1
-				wall = true
-			}
-//line main.spx:278:1
-			if this.level == 2 {
-//line main.spx:278:1
-				wall = (row == 3 || row == 7) && col > 1 && col < 17 && col%4 != 1 && col != 9
-			}
-//line main.spx:279:1
-			if this.level == 3 {
-//line main.spx:279:1
-				wall = (col == 4 || col == 14) && row != 5 && row != 8 || row == 5 && col >= 7 && col <= 11 && col != 9
-			}
-//line main.spx:280:1
-			if wall {
-//line main.spx:281:1
-				k := 3
-//line main.spx:281:1
-				if row == 5 && (col == 6 || col == 12) {
-//line main.spx:281:1
-					k = 4
-				}
-//line main.spx:282:1
+//line main.spx:413:1
+			k := this.mapTile(this.level, col, row)
+//line main.spx:414:1
+			if k != 0 {
+//line main.spx:414:1
 				this.addEntity(k, float64(col*24-216), float64(132-row*24), 0)
 			}
 		}
 	}
-//line main.spx:286:1
+//line main.spx:417:1
 	this.addEntity(3, -24, -120, 0)
-//line main.spx:286:1
+//line main.spx:417:1
 	this.addEntity(3, 24, -120, 0)
-//line main.spx:286:1
+//line main.spx:417:1
 	this.addEntity(3, -24, -96, 0)
-//line main.spx:286:1
+//line main.spx:417:1
 	this.addEntity(3, 0, -96, 0)
-//line main.spx:286:1
+//line main.spx:417:1
 	this.addEntity(3, 24, -96, 0)
-//line main.spx:287:1
+//line main.spx:418:1
+	if this.level%5 == 0 {
+//line main.spx:418:1
+		this.startBoss()
+//line main.spx:418:1
+		return
+	}
+//line main.spx:419:1
 	for
-//line main.spx:287:1
+//line main.spx:419:1
 	t := 0; t < 3;
-//line main.spx:287:1
+//line main.spx:419:1
 	t++ {
 		spx.Sched()
-//line main.spx:288:1
+//line main.spx:420:1
 		i := this.addEntity(12, 0, 0, 0)
-//line main.spx:288:1
+//line main.spx:420:1
 		this.zombieSlots[t] = i
-//line main.spx:288:1
+//line main.spx:420:1
 		this.zombieType[i] = t
-//line main.spx:289:1
+//line main.spx:421:1
 		this.age[i] = 50
-//line main.spx:289:1
+//line main.spx:421:1
 		this.spawnZombie(i)
 	}
 }
-//line main.spx:292:1
+//line main.spx:424:1
 func (this *Game) updateGame() {
-//line main.spx:293:1
+//line main.spx:425:1
 	if this.state != 0 || this.paused {
-//line main.spx:293:1
+//line main.spx:425:1
 		return
 	}
-//line main.spx:294:1
+//line main.spx:426:1
 	this.ticks++
-//line main.spx:295:1
+//line main.spx:427:1
 	this.updateSecondPlayer()
-//line main.spx:296:1
+//line main.spx:428:1
 	if this.shieldBuff > 0 {
-//line main.spx:296:1
+//line main.spx:428:1
 		this.shieldBuff--
-//line main.spx:296:1
+//line main.spx:428:1
 		if this.shieldBuff == 0 {
-//line main.spx:296:1
+//line main.spx:428:1
 			this.shieldCharges = 0
 		}
 	}
-//line main.spx:297:1
+//line main.spx:429:1
 	if this.speedBuff > 0 {
-//line main.spx:297:1
+//line main.spx:429:1
 		this.speedBuff--
 	}
-//line main.spx:297:1
+//line main.spx:429:1
 	if this.pepperBuff > 0 {
-//line main.spx:297:1
+//line main.spx:429:1
 		this.pepperBuff--
 	}
-//line main.spx:297:1
+//line main.spx:429:1
 	if this.pickupNotice > 0 {
-//line main.spx:297:1
+//line main.spx:429:1
 		this.pickupNotice--
 	}
-//line main.spx:298:1
+//line main.spx:430:1
 	this.pickupTimer--
-//line main.spx:299:1
+//line main.spx:431:1
 	if this.pickupTimer <= 0 {
-//line main.spx:299:1
+//line main.spx:431:1
 		this.spawnPickup()
-//line main.spx:299:1
+//line main.spx:431:1
 		this.pickupTimer = 400
 	}
-//line main.spx:300:1
+//line main.spx:432:1
 	if this.shield > 0 {
-//line main.spx:300:1
+//line main.spx:432:1
 		this.shield--
 	}
-//line main.spx:300:1
+//line main.spx:432:1
 	if this.shotDelay > 0 {
-//line main.spx:300:1
+//line main.spx:432:1
 		this.shotDelay--
 	}
-//line main.spx:300:1
+//line main.spx:432:1
 	if this.upgradeFlash > 0 {
-//line main.spx:300:1
+//line main.spx:432:1
 		this.upgradeFlash--
 	}
-//line main.spx:301:1
+//line main.spx:433:1
 	d := -1
-//line main.spx:302:1
+//line main.spx:434:1
 	if this.KeyPressed(spx.KeyW) || !this.twoPlayers && this.KeyPressed(spx.KeyUp) {
-//line main.spx:302:1
+//line main.spx:434:1
 		d = 0
 	}
-//line main.spx:302:1
+//line main.spx:434:1
 	if this.KeyPressed(spx.KeyD) || !this.twoPlayers && this.KeyPressed(spx.KeyRight) {
-//line main.spx:302:1
+//line main.spx:434:1
 		d = 1
 	}
-//line main.spx:303:1
+//line main.spx:435:1
 	if this.KeyPressed(spx.KeyS) || !this.twoPlayers && this.KeyPressed(spx.KeyDown) {
-//line main.spx:303:1
+//line main.spx:435:1
 		d = 2
 	}
-//line main.spx:303:1
+//line main.spx:435:1
 	if this.KeyPressed(spx.KeyA) || !this.twoPlayers && this.KeyPressed(spx.KeyLeft) {
-//line main.spx:303:1
+//line main.spx:435:1
 		d = 3
 	}
-//line main.spx:304:1
+//line main.spx:436:1
 	if d >= 0 && this.entity[1] == 1 {
-//line main.spx:305:1
+//line main.spx:437:1
 		this.facing[1] = d
-//line main.spx:305:1
+//line main.spx:437:1
 		speed := 2.7
-//line main.spx:305:1
+//line main.spx:437:1
 		if this.speedBuff > 0 {
-//line main.spx:305:1
+//line main.spx:437:1
 			speed = 4.185
 		}
-//line main.spx:306:1
+//line main.spx:438:1
+		if this.onIce(1) {
+//line main.spx:438:1
+			speed *= 0.5
+		}
+//line main.spx:439:1
 		nx := this.px[1] + this.vx(d)*speed
-//line main.spx:306:1
+//line main.spx:439:1
 		ny := this.py[1] + this.vy(d)*speed
-//line main.spx:307:1
+//line main.spx:440:1
 		if !this.blocked(nx, ny, 1) {
-//line main.spx:307:1
+//line main.spx:440:1
 			this.px[1] = nx
-//line main.spx:307:1
+//line main.spx:440:1
 			this.py[1] = ny
 		}
 	}
-//line main.spx:309:1
+//line main.spx:442:1
 	this.updateUltimateInput()
-//line main.spx:310:1
+//line main.spx:443:1
 	if this.KeyPressed(spx.KeySpace) && this.entity[1] == 1 && this.shotDelay == 0 {
-//line main.spx:310:1
+//line main.spx:443:1
 		this.fire(1)
-//line main.spx:310:1
-		this.shotDelay = 14
+//line main.spx:443:1
+		this.shotDelay = this.classShotDelay(1)
 	}
-//line main.spx:311:1
+//line main.spx:444:1
 	for
-//line main.spx:311:1
+//line main.spx:444:1
 	i := 2; i < 192;
-//line main.spx:311:1
+//line main.spx:444:1
 	i++ {
 		spx.Sched()
-//line main.spx:312:1
+//line main.spx:445:1
 		if this.state != 0 {
-//line main.spx:312:1
+//line main.spx:445:1
 			return
 		}
-//line main.spx:313:1
+//line main.spx:446:1
 		k := this.entity[i]
-//line main.spx:313:1
+//line main.spx:446:1
 		if k != 0 {
-//line main.spx:313:1
+//line main.spx:446:1
 			this.age[i]++
 		}
-//line main.spx:314:1
+//line main.spx:447:1
 		if k == 2 {
-//line main.spx:314:1
+//line main.spx:447:1
 			this.updateZombie(i)
 		}
-//line main.spx:315:1
+//line main.spx:448:1
 		if k == 11 {
-//line main.spx:315:1
+//line main.spx:448:1
 			this.updateHedge(i)
 		}
-//line main.spx:316:1
+//line main.spx:449:1
 		if k == 12 && this.age[i] >= 50 && !this.bossStarted && this.waveSpawned < this.waveTarget {
-//line main.spx:316:1
+//line main.spx:449:1
 			if this.spawnZombie(i) {
-//line main.spx:316:1
+//line main.spx:449:1
 				this.waveSpawned++
 			}
 		}
-//line main.spx:317:1
+//line main.spx:450:1
+		if k == 12 && this.summoned[i] && this.age[i] >= 30 {
+//line main.spx:450:1
+			this.entity[i] = 0
+		}
+//line main.spx:451:1
+		if k == 16 {
+//line main.spx:451:1
+			this.updateHazard(i)
+		}
+//line main.spx:452:1
+		if k == 17 {
+//line main.spx:452:1
+			this.updateSporeCloud(i)
+		}
+//line main.spx:453:1
+		if k == 18 {
+//line main.spx:453:1
+			this.updateMelon(i)
+		}
+//line main.spx:454:1
 		if k == 13 && this.age[i] >= 20 && !this.blocked(this.px[i], this.py[i], i) {
-//line main.spx:317:1
+//line main.spx:454:1
 			this.entity[i] = 2
-//line main.spx:317:1
+//line main.spx:454:1
 			this.age[i] = 0
 		}
-//line main.spx:318:1
+//line main.spx:455:1
 		if k == 14 {
-//line main.spx:319:1
+//line main.spx:456:1
 			if this.entity[1] == 1 && this.overlaps(this.px[i], this.py[i], 1, 23) {
-//line main.spx:319:1
+//line main.spx:456:1
 				this.collectPickup(i)
 			} else
-//line main.spx:319:1
+//line main.spx:456:1
 			if this.entity[191] == 1 && this.overlaps(this.px[i], this.py[i], 191, 23) {
-//line main.spx:319:1
+//line main.spx:456:1
 				this.collectSecondPickup(i)
 			} else
-//line main.spx:319:1
+//line main.spx:456:1
 			if this.age[i] >= 900 {
-//line main.spx:319:1
+//line main.spx:456:1
 				this.entity[i] = 0
 			}
 		}
-//line main.spx:321:1
+//line main.spx:458:1
 		if k == 6 || k == 7 || k == 9 {
-//line main.spx:322:1
+//line main.spx:459:1
 			flying := true
-//line main.spx:322:1
+//line main.spx:459:1
 			steps := 3
-//line main.spx:322:1
+//line main.spx:459:1
 			if k == 9 {
-//line main.spx:322:1
+//line main.spx:459:1
 				steps = 4
 			}
-//line main.spx:323:1
+//line main.spx:460:1
 			for
-//line main.spx:323:1
+//line main.spx:460:1
 			sub := 0; sub < steps && flying;
-//line main.spx:323:1
+//line main.spx:460:1
 			sub++ {
 				spx.Sched()
-//line main.spx:324:1
+//line main.spx:461:1
 				this.px[i] += this.velx[i] * 2.5
-//line main.spx:324:1
+//line main.spx:461:1
 				this.py[i] += this.vely[i] * 2.5
-//line main.spx:325:1
+//line main.spx:462:1
 				edge := this.px[i] < -227 || this.px[i] > 227 || this.py[i] < -145 || this.py[i] > 134
-//line main.spx:326:1
+//line main.spx:463:1
 				if edge {
-//line main.spx:327:1
+//line main.spx:464:1
 					x := this.px[i]
-//line main.spx:327:1
+//line main.spx:464:1
 					y := this.py[i]
-//line main.spx:327:1
+//line main.spx:464:1
 					this.entity[i] = 0
-//line main.spx:327:1
+//line main.spx:464:1
 					flying = false
-//line main.spx:328:1
+//line main.spx:465:1
 					if k == 9 {
-//line main.spx:328:1
-						this.detonate(x, y)
+//line main.spx:465:1
+						this.detonateTier(x, y, this.projectileTier[i])
 					}
 				}
-//line main.spx:330:1
+//line main.spx:467:1
 				for
-//line main.spx:330:1
+//line main.spx:467:1
 				j := 1; j < 192 && flying;
-//line main.spx:330:1
+//line main.spx:467:1
 				j++ {
 					spx.Sched()
-//line main.spx:331:1
+//line main.spx:468:1
 					target := this.entity[j]
-//line main.spx:331:1
+//line main.spx:468:1
 					valid := target > 0 && target < 6
-//line main.spx:332:1
+//line main.spx:469:1
 					if (k == 6 || k == 9) && target == 1 {
-//line main.spx:332:1
+//line main.spx:469:1
 						valid = false
 					}
-//line main.spx:333:1
+//line main.spx:470:1
 					if k == 7 && target == 2 {
-//line main.spx:333:1
+//line main.spx:470:1
 						valid = false
 					}
-//line main.spx:334:1
+//line main.spx:471:1
+					if k == 6 && this.projectileClass[i] == 1 && this.sporeAlreadyHit(i, j) {
+//line main.spx:471:1
+						valid = false
+					}
+//line main.spx:472:1
 					if (k == 6 || k == 9) && target == 5 {
-//line main.spx:334:1
+//line main.spx:472:1
 						valid = false
 					}
-//line main.spx:335:1
+//line main.spx:473:1
 					radius := 14.0
-//line main.spx:335:1
+//line main.spx:473:1
 					if k == 9 {
-//line main.spx:335:1
+//line main.spx:473:1
 						radius = 22
 					}
-//line main.spx:335:1
+//line main.spx:473:1
 					if target == 2 && this.zombieType[j] == 3 {
-//line main.spx:335:1
+//line main.spx:473:1
 						radius = 26
 					}
-//line main.spx:336:1
+//line main.spx:474:1
 					if valid && this.overlaps(this.px[i], this.py[i], j, radius) {
-//line main.spx:337:1
-						flying = false
-//line main.spx:337:1
-						x := this.px[i]
-//line main.spx:337:1
-						y := this.py[i]
-//line main.spx:337:1
-						this.entity[i] = 0
-//line main.spx:338:1
-						if k == 9 {
-//line main.spx:338:1
-							this.detonate(x, y)
+//line main.spx:475:1
+						if k == 6 && this.projectileClass[i] == 1 && target == 2 && this.pierceRemaining[i] > 0 {
+//line main.spx:476:1
+							this.rememberSporeHit(i, j)
+//line main.spx:476:1
+							this.pierceRemaining[i]--
+//line main.spx:476:1
+							this.damageZombie(j, this.projectileDamage[i])
+//line main.spx:476:1
+							this.addEntity(8, this.px[j], this.py[j], 0)
 						} else {
-//line main.spx:339:1
-							if target == 3 {
-//line main.spx:339:1
-								this.breakHedge(j)
-//line main.spx:339:1
-								this.addEntity(8, this.px[j], this.py[j], 0)
-							}
-//line main.spx:340:1
-							if target == 2 {
-//line main.spx:340:1
-								this.damageZombie(j, this.projectileDamage[i])
-//line main.spx:340:1
-								this.addEntity(8, this.px[j], this.py[j], 0)
-							}
-//line main.spx:341:1
-							if target == 1 {
-//line main.spx:341:1
-								if j == 191 {
-//line main.spx:341:1
-									this.hitSecondPlayer()
-								} else {
-//line main.spx:341:1
-									this.hitPlayer()
+//line main.spx:478:1
+							flying = false
+//line main.spx:478:1
+							x := this.px[i]
+//line main.spx:478:1
+							y := this.py[i]
+//line main.spx:478:1
+							this.entity[i] = 0
+//line main.spx:479:1
+							if k == 9 {
+//line main.spx:479:1
+								this.detonateTier(x, y, this.projectileTier[i])
+							} else {
+//line main.spx:480:1
+								if target == 3 {
+//line main.spx:480:1
+									this.breakHedge(j)
+//line main.spx:480:1
+									this.addEntity(8, this.px[j], this.py[j], 0)
 								}
-							}
-//line main.spx:342:1
-							if target == 5 {
-//line main.spx:342:1
-								this.entity[j] = 0
-//line main.spx:342:1
-								this.state = -1
-//line main.spx:342:1
-								this.addEntity(8, this.px[j], this.py[j], 0)
+//line main.spx:481:1
+								if target == 2 {
+//line main.spx:481:1
+									this.damageZombie(j, this.projectileDamage[i])
+//line main.spx:481:1
+									this.addEntity(8, this.px[j], this.py[j], 0)
+								}
+//line main.spx:482:1
+								if target == 1 {
+//line main.spx:482:1
+									if j == 191 {
+//line main.spx:482:1
+										this.hitSecondPlayer()
+									} else {
+//line main.spx:482:1
+										this.hitPlayer()
+									}
+								}
+//line main.spx:483:1
+								if target == 5 && this.hp[j] <= 0 {
+//line main.spx:483:1
+									this.entity[j] = 0
+//line main.spx:483:1
+									this.state = -1
+//line main.spx:483:1
+									this.addEntity(8, this.px[j], this.py[j], 0)
+								}
 							}
 						}
 					}
 				}
 			}
 		}
-//line main.spx:348:1
+//line main.spx:490:1
 		if k == 8 && this.age[i] > 12 {
-//line main.spx:348:1
+//line main.spx:490:1
 			this.entity[i] = 0
 		}
-//line main.spx:349:1
+//line main.spx:491:1
 		if k == 10 && this.age[i] > 30 {
-//line main.spx:349:1
+//line main.spx:491:1
 			this.entity[i] = 0
 		}
-//line main.spx:350:1
+//line main.spx:492:1
 		if k == 15 && this.age[i] > 30 {
-//line main.spx:350:1
+//line main.spx:492:1
 			this.entity[i] = 0
 		}
 	}
-//line main.spx:352:1
-	if this.state == 0 && this.stageKills >= this.waveTarget && !this.bossStarted {
-//line main.spx:352:1
-		this.startBoss()
-	}
-//line main.spx:353:1
-	if this.state == 0 && this.bossDefeated {
-//line main.spx:353:1
+//line main.spx:494:1
+	this.updateBrainDefenses()
+//line main.spx:495:1
+	if this.state == 0 && (!this.bossStarted && this.stageKills >= this.waveTarget || this.bossDefeated) {
+//line main.spx:496:1
+		this.clearBossEffects()
+//line main.spx:497:1
 		this.state = 2
-//line main.spx:353:1
-		if this.level == 3 {
-//line main.spx:353:1
+//line main.spx:497:1
+		if this.level == 20 {
+//line main.spx:497:1
 			this.state = 3
 		}
+//line main.spx:498:1
+		if this.level > this.clearedLevel && this.profileLoaded {
+//line main.spx:498:1
+			this.clearedLevel = this.level
+		}
+//line main.spx:499:1
+		if this.level < 20 {
+//line main.spx:499:1
+			this.recordCheckpoint(this.level+1, this.score, this.kills, this.twoPlayers)
+		} else {
+//line main.spx:499:1
+			this.recordCheckpoint(20, this.runEntryScore, this.runEntryKills, this.twoPlayers)
+		}
 	}
 }
-//line main.spx:356:1
+//line main.spx:503:1
 // Player two owns independent cooldowns, lives and pickup effects.
 func (this *Game) hitSecondPlayer() {
-//line main.spx:358:1
+//line main.spx:505:1
 	if this.shield2 > 0 || this.entity[191] != 1 {
-//line main.spx:358:1
+//line main.spx:505:1
 		return
 	}
-//line main.spx:359:1
+//line main.spx:506:1
 	if this.shieldBuff2 > 0 && this.shieldCharges2 > 0 {
-//line main.spx:360:1
+//line main.spx:507:1
 		this.shieldCharges2--
-//line main.spx:360:1
+//line main.spx:507:1
 		this.shield2 = 25
-//line main.spx:361:1
+//line main.spx:508:1
 		if this.shieldCharges2 == 0 {
-//line main.spx:361:1
+//line main.spx:508:1
 			this.shieldBuff2 = 0
 		}
-//line main.spx:361:1
+//line main.spx:508:1
 		return
 	}
-//line main.spx:363:1
+//line main.spx:510:1
 	this.addEntity(8, this.px[191], this.py[191], 0)
-//line main.spx:363:1
+//line main.spx:510:1
 	this.lives2--
-//line main.spx:364:1
+//line main.spx:511:1
 	if this.lives2 <= 0 {
-//line main.spx:364:1
+//line main.spx:511:1
 		this.entity[191] = 0
-//line main.spx:364:1
+//line main.spx:511:1
 		if this.entity[1] != 1 {
-//line main.spx:364:1
+//line main.spx:511:1
 			this.state = -1
 		}
-//line main.spx:364:1
+//line main.spx:511:1
 		return
 	}
-//line main.spx:365:1
+//line main.spx:512:1
 	this.respawnPlayer(191)
-//line main.spx:365:1
+//line main.spx:512:1
 	this.facing[191] = 0
-//line main.spx:365:1
+//line main.spx:512:1
 	this.shield2 = 110
 }
-//line main.spx:367:1
+//line main.spx:514:1
 func (this *Game) respawnPlayer(i int) {
-//line main.spx:368:1
+//line main.spx:515:1
 	preferred := -48.0
-//line main.spx:368:1
+//line main.spx:515:1
 	if i == 191 {
-//line main.spx:368:1
+//line main.spx:515:1
 		preferred = 48
 	}
-//line main.spx:369:1
+//line main.spx:516:1
 	best := 1000000.0
-//line main.spx:370:1
+//line main.spx:517:1
 	for
-//line main.spx:370:1
+//line main.spx:517:1
 	row := 0; row < 11;
-//line main.spx:370:1
+//line main.spx:517:1
 	row++ {
 		spx.Sched()
-//line main.spx:371:1
+//line main.spx:518:1
 		for
-//line main.spx:371:1
+//line main.spx:518:1
 		col := 0; col < 17;
-//line main.spx:371:1
+//line main.spx:518:1
 		col++ {
 			spx.Sched()
-//line main.spx:372:1
+//line main.spx:519:1
 			x := float64(col*24 - 192)
-//line main.spx:372:1
+//line main.spx:519:1
 			y := float64(row*24 - 120)
-//line main.spx:373:1
+//line main.spx:520:1
 			distance := (x-preferred)*(x-preferred) + (y+120)*(y+120)
-//line main.spx:374:1
+//line main.spx:521:1
 			if distance < best && !this.blocked(x, y, i) {
-//line main.spx:374:1
+//line main.spx:521:1
 				best = distance
-//line main.spx:374:1
+//line main.spx:521:1
 				this.px[i] = x
-//line main.spx:374:1
+//line main.spx:521:1
 				this.py[i] = y
 			}
 		}
 	}
 }
-//line main.spx:378:1
+//line main.spx:525:1
 func (this *Game) collectSecondPickup(i int) {
-//line main.spx:379:1
+//line main.spx:526:1
 	kind := this.pickupType[i]
-//line main.spx:379:1
+//line main.spx:526:1
 	this.entity[i] = 0
-//line main.spx:380:1
+//line main.spx:527:1
 	if kind == 0 {
-//line main.spx:380:1
+//line main.spx:527:1
 		this.shieldCharges2 = 3
-//line main.spx:380:1
+//line main.spx:527:1
 		this.shieldBuff2 = 500
 	}
-//line main.spx:381:1
+//line main.spx:528:1
 	if kind == 1 {
-//line main.spx:381:1
+//line main.spx:528:1
 		this.blast(this.px[191], this.py[191], 5, 100)
-//line main.spx:381:1
+//line main.spx:528:1
 		this.addEntity(15, this.px[191], this.py[191], 0)
 	}
-//line main.spx:382:1
+//line main.spx:529:1
 	if kind == 2 {
-//line main.spx:382:1
+//line main.spx:529:1
 		this.speedBuff2 = 400
 	}
-//line main.spx:382:1
+//line main.spx:529:1
 	if kind == 3 {
-//line main.spx:382:1
+//line main.spx:529:1
 		this.pepperBuff2 = 400
 	}
-//line main.spx:383:1
+//line main.spx:530:1
 	this.addEntity(8, this.px[191], this.py[191], 0)
 }
-//line main.spx:385:1
+//line main.spx:532:1
 func (this *Game) updateSecondPlayer() {
-//line main.spx:386:1
+//line main.spx:533:1
 	if !this.twoPlayers || this.entity[191] != 1 {
-//line main.spx:386:1
+//line main.spx:533:1
 		return
 	}
-//line main.spx:387:1
+//line main.spx:534:1
 	if this.shield2 > 0 {
-//line main.spx:387:1
+//line main.spx:534:1
 		this.shield2--
 	}
-//line main.spx:387:1
+//line main.spx:534:1
 	if this.shotDelay2 > 0 {
-//line main.spx:387:1
+//line main.spx:534:1
 		this.shotDelay2--
 	}
-//line main.spx:388:1
+//line main.spx:535:1
 	if this.ultimateCooldown2 > 0 {
-//line main.spx:388:1
+//line main.spx:535:1
 		this.ultimateCooldown2--
 	}
-//line main.spx:389:1
+//line main.spx:536:1
 	if this.shieldBuff2 > 0 {
-//line main.spx:389:1
+//line main.spx:536:1
 		this.shieldBuff2--
-//line main.spx:389:1
+//line main.spx:536:1
 		if this.shieldBuff2 == 0 {
-//line main.spx:389:1
+//line main.spx:536:1
 			this.shieldCharges2 = 0
 		}
 	}
-//line main.spx:390:1
+//line main.spx:537:1
 	if this.speedBuff2 > 0 {
-//line main.spx:390:1
+//line main.spx:537:1
 		this.speedBuff2--
 	}
-//line main.spx:390:1
+//line main.spx:537:1
 	if this.pepperBuff2 > 0 {
-//line main.spx:390:1
+//line main.spx:537:1
 		this.pepperBuff2--
 	}
-//line main.spx:391:1
+//line main.spx:538:1
 	d := -1
-//line main.spx:392:1
+//line main.spx:539:1
 	if this.KeyPressed(spx.KeyUp) {
-//line main.spx:392:1
+//line main.spx:539:1
 		d = 0
 	}
-//line main.spx:392:1
+//line main.spx:539:1
 	if this.KeyPressed(spx.KeyRight) {
-//line main.spx:392:1
+//line main.spx:539:1
 		d = 1
 	}
-//line main.spx:393:1
+//line main.spx:540:1
 	if this.KeyPressed(spx.KeyDown) {
-//line main.spx:393:1
+//line main.spx:540:1
 		d = 2
 	}
-//line main.spx:393:1
+//line main.spx:540:1
 	if this.KeyPressed(spx.KeyLeft) {
-//line main.spx:393:1
+//line main.spx:540:1
 		d = 3
 	}
-//line main.spx:394:1
+//line main.spx:541:1
 	if d >= 0 {
-//line main.spx:395:1
+//line main.spx:542:1
 		this.facing[191] = d
-//line main.spx:395:1
+//line main.spx:542:1
 		speed := 2.7
-//line main.spx:395:1
+//line main.spx:542:1
 		if this.speedBuff2 > 0 {
-//line main.spx:395:1
+//line main.spx:542:1
 			speed = 4.185
 		}
-//line main.spx:396:1
+//line main.spx:543:1
+		if this.onIce(191) {
+//line main.spx:543:1
+			speed *= 0.5
+		}
+//line main.spx:544:1
 		x := this.px[191] + this.vx(d)*speed
-//line main.spx:396:1
+//line main.spx:544:1
 		y := this.py[191] + this.vy(d)*speed
-//line main.spx:397:1
+//line main.spx:545:1
 		if !this.blocked(x, y, 191) {
-//line main.spx:397:1
+//line main.spx:545:1
 			this.px[191] = x
-//line main.spx:397:1
+//line main.spx:545:1
 			this.py[191] = y
 		}
 	}
-//line main.spx:399:1
+//line main.spx:547:1
 	if this.KeyPressed(spx.KeyJ) && this.shotDelay2 == 0 {
-//line main.spx:399:1
+//line main.spx:547:1
 		this.fire(191)
-//line main.spx:399:1
-		this.shotDelay2 = 14
+//line main.spx:547:1
+		this.shotDelay2 = this.classShotDelay(191)
 	}
-//line main.spx:400:1
+//line main.spx:548:1
 	down := this.KeyPressed(spx.KeyK)
-//line main.spx:401:1
+//line main.spx:549:1
 	if down && !this.ultimateDown2 && this.ultimateCooldown2 == 0 {
-//line main.spx:402:1
-		d := this.facing[191]
-//line main.spx:403:1
-		if this.addEntity(9, this.px[191]+this.vx(d)*24, this.py[191]+this.vy(d)*24, d) != 0 {
-//line main.spx:403:1
-			this.ultimateCooldown2 = 250
+//line main.spx:550:1
+		if this.castClassUltimate(191) {
+//line main.spx:550:1
+			this.ultimateCooldown2 = this.classUltimateDelay(191)
 		}
 	}
-//line main.spx:405:1
+//line main.spx:552:1
 	this.ultimateDown2 = down
 }
-//line main.spx:407:1
+//line main.spx:554:1
 func (this *Game) startBoss() {
-//line main.spx:408:1
-	this.bossStarted = true
-//line main.spx:409:1
-	for
-//line main.spx:409:1
-	i := 2; i < 191;
-//line main.spx:409:1
-	i++ {
-		spx.Sched()
-//line main.spx:409:1
-		if this.entity[i] == 12 {
-//line main.spx:409:1
-			this.entity[i] = 0
-		}
-	}
-//line main.spx:411:1
-	for
-//line main.spx:411:1
-	i := 2; i < 191;
-//line main.spx:411:1
-	i++ {
-		spx.Sched()
-//line main.spx:411:1
-		if (this.entity[i] == 3 || this.entity[i] == 4 || this.entity[i] == 11) && math.Abs(this.px[i]) < 55 && this.py[i] > 50 {
-//line main.spx:411:1
-			this.entity[i] = 0
-		}
-	}
-//line main.spx:412:1
-	this.bossSlot = this.addEntity(2, 0, 100, 2)
-//line main.spx:413:1
-	if this.bossSlot == 0 {
-//line main.spx:413:1
-		this.bossStarted = false
-//line main.spx:413:1
+//line main.spx:555:1
+	if this.level%5 != 0 {
+//line main.spx:555:1
 		return
 	}
-//line main.spx:414:1
-	this.zombieType[this.bossSlot] = 3
-//line main.spx:414:1
-	this.hp[this.bossSlot] = 12 + this.level*6
-//line main.spx:414:1
-	if this.twoPlayers {
-//line main.spx:414:1
-		this.hp[this.bossSlot] += 10
+//line main.spx:556:1
+	this.bossStarted = true
+//line main.spx:557:1
+	for
+//line main.spx:557:1
+	i := 2; i < 191;
+//line main.spx:557:1
+	i++ {
+		spx.Sched()
+//line main.spx:557:1
+		if this.entity[i] == 12 {
+//line main.spx:557:1
+			this.entity[i] = 0
+		}
 	}
-//line main.spx:415:1
+//line main.spx:559:1
+	for
+//line main.spx:559:1
+	i := 2; i < 191;
+//line main.spx:559:1
+	i++ {
+		spx.Sched()
+//line main.spx:559:1
+		if (this.entity[i] == 3 || this.entity[i] == 4 || this.entity[i] == 11) && math.Abs(this.px[i]) < 55 && this.py[i] > 50 {
+//line main.spx:559:1
+			this.entity[i] = 0
+		}
+	}
+//line main.spx:560:1
+	this.bossSlot = this.addEntity(2, 0, 100, 2)
+//line main.spx:561:1
+	if this.bossSlot == 0 {
+//line main.spx:561:1
+		this.bossStarted = false
+//line main.spx:561:1
+		return
+	}
+//line main.spx:562:1
+	this.zombieType[this.bossSlot] = 3
+//line main.spx:562:1
+	this.hp[this.bossSlot] = 24 + this.bossTheme*12
+//line main.spx:562:1
+	if this.twoPlayers {
+//line main.spx:562:1
+		this.hp[this.bossSlot] += 16
+	}
+//line main.spx:563:1
 	this.maxHP[this.bossSlot] = this.hp[this.bossSlot]
-//line main.spx:415:1
+//line main.spx:563:1
 	this.zombieSlots[0] = this.bossSlot
 }
-//line main.spx:417:1
+//line main.spx:565:1
 func (this *Game) updateBoss(i int) {
-//line main.spx:418:1
+//line main.spx:566:1
+	if this.chillTicks[i] > 0 {
+//line main.spx:566:1
+		this.chillTicks[i]--
+	}
+//line main.spx:567:1
 	if this.hitFlash[i] > 0 {
-//line main.spx:418:1
+//line main.spx:567:1
 		this.hitFlash[i]--
 	}
-//line main.spx:419:1
-	cycle := this.age[i] % 150
-//line main.spx:420:1
-	if cycle == 1 {
-//line main.spx:420:1
+//line main.spx:568:1
+	period := 240 - this.bossTheme*15
+//line main.spx:569:1
+	if this.hp[i]*2 <= this.maxHP[i] {
+//line main.spx:569:1
+		period -= 30
+	}
+//line main.spx:571:1
+	if this.dashCooldown[i] > 0 {
+//line main.spx:571:1
+		this.dashCooldown[i]--
+	}
+//line main.spx:572:1
+	if this.dashCooldown[i] == 0 {
+//line main.spx:573:1
+		this.bossAttack++
+//line main.spx:573:1
+		this.planBossAttack(i)
+//line main.spx:573:1
+		this.dashCooldown[i] = period
+	}
+//line main.spx:575:1
+	this.dashWindup[i] = 0
+//line main.spx:576:1
+	for
+//line main.spx:576:1
+	j := 2; j < 191;
+//line main.spx:576:1
+	j++ {
+		spx.Sched()
+//line main.spx:577:1
+		if this.entity[j] == 16 && this.age[j] < this.hazardWarmup[j] && this.hazardWarmup[j]-this.age[j] > this.dashWindup[i] {
+//line main.spx:577:1
+			this.dashWindup[i] = this.hazardWarmup[j] - this.age[j]
+		}
+	}
+//line main.spx:579:1
+	if this.age[i]%50 == 1 {
+//line main.spx:579:1
 		this.facing[i] = this.towardPlayer(i)
 	}
-//line main.spx:421:1
-	if cycle < 100 {
-//line main.spx:422:1
-		speed := 0.6
-//line main.spx:422:1
+//line main.spx:580:1
+	if this.dashWindup[i] == 0 && !this.bitingBrain(i) {
+//line main.spx:581:1
+		speed := 0.55 + float64(this.bossTheme)*0.1
+//line main.spx:581:1
 		if this.hp[i]*2 <= this.maxHP[i] {
-//line main.spx:422:1
-			speed = 1.1
+//line main.spx:581:1
+			speed += 0.3
 		}
-//line main.spx:423:1
+//line main.spx:582:1
+		if this.chillTicks[i] > 0 {
+//line main.spx:582:1
+			speed *= 0.55
+		}
+//line main.spx:583:1
 		if !this.stepZombie(i, speed) {
-//line main.spx:423:1
+//line main.spx:583:1
 			this.facing[i] = (this.facing[i] + 1) % 4
 		}
 	}
-//line main.spx:426:1
-	if cycle >= 100 && cycle < 125 {
-//line main.spx:426:1
-		this.dashWindup[i] = 125 - cycle
-	} else {
-//line main.spx:426:1
-		this.dashWindup[i] = 0
-	}
-//line main.spx:427:1
-	if cycle == 125 || this.hp[i]*2 <= this.maxHP[i] && cycle == 145 {
-//line main.spx:428:1
-		old := this.facing[i]
-//line main.spx:429:1
-		for
-//line main.spx:429:1
-		d := 0; d < 4;
-//line main.spx:429:1
-		d++ {
-			spx.Sched()
-//line main.spx:429:1
-			this.facing[i] = d
-//line main.spx:429:1
-			this.fire(i)
-		}
-//line main.spx:429:1
-		this.facing[i] = old
-	}
-//line main.spx:431:1
-	if this.entity[1] == 1 && this.overlaps(this.px[i], this.py[i], 1, 35) {
-//line main.spx:431:1
-		this.hitPlayer()
-	}
-//line main.spx:432:1
-	if this.entity[191] == 1 && this.overlaps(this.px[i], this.py[i], 191, 35) {
-//line main.spx:432:1
-		this.hitSecondPlayer()
-	}
+//line main.spx:585:1
+	this.zombieContact(i, 35)
 }
-//line main.spx:434:1
-func (this *Game) nextLevel() {
-//line main.spx:435:1
-	if this.state != 2 {
-//line main.spx:435:1
+//line main.spx:587:1
+// Twenty deterministic layouts: five structures, each reconfigured per theme.
+// Crossroads and border lanes remain open for traversal and safe spawns.
+func (this *Game) mapTile(stage int, col int, row int) int {
+//line main.spx:590:1
+	if row < 2 || row > 9 || col < 2 || col > 16 {
+//line main.spx:590:1
+		return 0
+	}
+//line main.spx:591:1
+	theme := (stage - 1) / 5
+//line main.spx:591:1
+	layout := (stage - 1) % 5
+//line main.spx:592:1
+	if col == 5 || col == 9 || col == 13 || row == 6 || row == 9 {
+//line main.spx:592:1
+		return 0
+	}
+//line main.spx:593:1
+	wall := false
+//line main.spx:594:1
+	if layout == 0 {
+//line main.spx:594:1
+		wall = (col+theme)%4 == 2 && row != 4+theme%3
+	}
+//line main.spx:595:1
+	if layout == 1 {
+//line main.spx:595:1
+		wall = (row == 3+theme%2 || row == 7+theme%2) && (col+theme)%4 != 0
+	}
+//line main.spx:596:1
+	if layout == 2 {
+//line main.spx:596:1
+		wall = (col+row+theme)%5 == 0 || row%3 == 0 && col%4 == theme
+	}
+//line main.spx:597:1
+	if layout == 3 {
+//line main.spx:597:1
+		wall = (col == 3+theme || col == 15-theme) && row >= 3 && row <= 8 || (row == 3 || row == 8) && col >= 3+theme && col <= 15-theme
+	}
+//line main.spx:598:1
+	if layout == 4 {
+//line main.spx:598:1
+		wall = (col == 3+theme || col == 15-theme) && (row == 3 || row == 7) || row == 8 && (col+theme)%3 == 0
+	}
+//line main.spx:599:1
+	if !wall {
+//line main.spx:599:1
+		return 0
+	}
+//line main.spx:600:1
+	if (col*3+row+theme)%7 == 0 {
+//line main.spx:600:1
+		return 4
+	}
+//line main.spx:600:1
+	return 3
+}
+//line main.spx:602:1
+func (this *Game) clampArena(value float64, low float64, high float64) float64 {
+//line main.spx:603:1
+	if value < low {
+//line main.spx:603:1
+		return low
+	}
+//line main.spx:603:1
+	if value > high {
+//line main.spx:603:1
+		return high
+	}
+//line main.spx:603:1
+	return value
+}
+//line main.spx:605:1
+func (this *Game) addHazard(kind int, x float64, y float64) int {
+//line main.spx:607:1
+	i := this.addEntity(16, this.clampArena(x, -190, 190), this.clampArena(y, -108, 96), 0)
+//line main.spx:608:1
+	if i == 0 {
+//line main.spx:608:1
+		return 0
+	}
+//line main.spx:609:1
+	this.hazardKind[i] = kind
+//line main.spx:610:1
+	this.hazardWarmup[i] = 75
+//line main.spx:610:1
+	this.hazardDuration[i] = 150
+//line main.spx:611:1
+	if kind == 0 {
+//line main.spx:611:1
+		this.hazardDuration[i] = 1
+	}
+//line main.spx:612:1
+	if kind == 2 {
+//line main.spx:612:1
+		this.hazardWarmup[i] = 60
+//line main.spx:612:1
+		this.hazardDuration[i] = 100
+	}
+//line main.spx:613:1
+	if kind == 3 {
+//line main.spx:613:1
+		this.hazardWarmup[i] = 85
+//line main.spx:613:1
+		this.hazardDuration[i] = 16
+	}
+//line main.spx:614:1
+	return i
+}
+//line main.spx:616:1
+func (this *Game) minionCount() int {
+//line main.spx:617:1
+	count := 0
+//line main.spx:618:1
+	for
+//line main.spx:618:1
+	i := 2; i < 191;
+//line main.spx:618:1
+	i++ {
+		spx.Sched()
+//line main.spx:618:1
+		if this.summoned[i] && (this.entity[i] == 2 || this.entity[i] == 13) {
+//line main.spx:618:1
+			count++
+		}
+	}
+//line main.spx:619:1
+	return count
+}
+//line main.spx:621:1
+func (this *Game) planBossAttack(i int) {
+//line main.spx:622:1
+	enraged := this.hp[i]*2 <= this.maxHP[i]
+//line main.spx:623:1
+	if this.bossTheme == 0 {
+//line main.spx:624:1
+		limit := 4
+//line main.spx:624:1
+		if enraged {
+//line main.spx:624:1
+			limit = 6
+		}
+//line main.spx:625:1
+		pending := 0
+//line main.spx:626:1
+		for
+//line main.spx:626:1
+		j := 2; j < 191;
+//line main.spx:626:1
+		j++ {
+			spx.Sched()
+//line main.spx:626:1
+			if this.entity[j] == 16 && this.hazardKind[j] == 0 {
+//line main.spx:626:1
+				pending++
+			}
+		}
+//line main.spx:627:1
+		amount := 2
+//line main.spx:627:1
+		if enraged {
+//line main.spx:627:1
+			amount = 3
+		}
+//line main.spx:628:1
+		for
+//line main.spx:628:1
+		n := 0; n < amount && this.minionCount()+pending < limit;
+//line main.spx:628:1
+		n++ {
+			spx.Sched()
+//line main.spx:630:1
+			for
+//line main.spx:630:1
+			attempt := 0; attempt < 40;
+//line main.spx:630:1
+			attempt++ {
+				spx.Sched()
+//line main.spx:631:1
+				x := float64(int(spx.Rand__0(0, 15))*24 - 168)
+//line main.spx:631:1
+				y := float64(int(spx.Rand__0(0, 7))*24 - 48)
+//line main.spx:632:1
+				safe := !this.blocked(x, y, 0) && (this.entity[1] != 1 || math.Hypot(x-this.px[1], y-this.py[1]) > 50) && (this.entity[191] != 1 || math.Hypot(x-this.px[191], y-this.py[191]) > 50)
+//line main.spx:633:1
+				for
+//line main.spx:633:1
+				j := 2; j < 191;
+//line main.spx:633:1
+				j++ {
+					spx.Sched()
+//line main.spx:633:1
+					if this.entity[j] == 16 && this.overlaps(x, y, j, 30) {
+//line main.spx:633:1
+						safe = false
+					}
+				}
+//line main.spx:634:1
+				if safe {
+//line main.spx:635:1
+					if this.addHazard(0, x, y) > 0 {
+//line main.spx:635:1
+						pending++
+					}
+//line main.spx:636:1
+					break
+				}
+			}
+		}
+//line main.spx:640:1
 		return
 	}
-//line main.spx:436:1
+//line main.spx:642:1
+	for
+//line main.spx:642:1
+	player := 0; player < 2;
+//line main.spx:642:1
+	player++ {
+		spx.Sched()
+//line main.spx:643:1
+		target := 1
+//line main.spx:643:1
+		if player == 1 {
+//line main.spx:643:1
+			target = 191
+		}
+//line main.spx:644:1
+		if this.entity[target] != 1 {
+//line main.spx:645:1
+			continue
+		}
+//line main.spx:647:1
+		x := this.px[target]
+//line main.spx:647:1
+		y := this.py[target]
+//line main.spx:648:1
+		if this.bossTheme == 1 {
+//line main.spx:649:1
+			this.addHazard(1, x, y)
+//line main.spx:650:1
+			if enraged {
+//line main.spx:650:1
+				this.addHazard(1, x+64, y+48)
+			}
+		}
+//line main.spx:652:1
+		if this.bossTheme == 2 {
+//line main.spx:654:1
+			for
+//line main.spx:654:1
+			n := -1; n <= 1;
+//line main.spx:654:1
+			n++ {
+				spx.Sched()
+//line main.spx:655:1
+				dx := float64(n * 48)
+//line main.spx:655:1
+				dy := 0.0
+//line main.spx:656:1
+				if this.bossAttack%2 == 0 {
+//line main.spx:656:1
+					dy = dx
+//line main.spx:656:1
+					dx = 0
+				}
+//line main.spx:657:1
+				this.addHazard(2, x+dx, y+dy)
+			}
+//line main.spx:659:1
+			if enraged {
+//line main.spx:659:1
+				this.addHazard(2, x+72, y+72)
+			}
+		}
+//line main.spx:661:1
+		if this.bossTheme == 3 {
+//line main.spx:662:1
+			this.addHazard(3, x, y)
+//line main.spx:663:1
+			this.addHazard(3, x+68, y+48)
+//line main.spx:664:1
+			if enraged {
+//line main.spx:664:1
+				this.addHazard(3, x-68, y-48)
+			}
+		}
+	}
+}
+//line main.spx:668:1
+func (this *Game) onIce(player int) bool {
+//line main.spx:669:1
+	for
+//line main.spx:669:1
+	i := 2; i < 191;
+//line main.spx:669:1
+	i++ {
+		spx.Sched()
+//line main.spx:670:1
+		if this.entity[i] == 16 && this.hazardKind[i] == 1 && this.age[i] >= this.hazardWarmup[i] && this.age[i] < this.hazardWarmup[i]+this.hazardDuration[i] && math.Hypot(this.px[player]-this.px[i], this.py[player]-this.py[i]) < 36 {
+//line main.spx:670:1
+			return true
+		}
+	}
+//line main.spx:672:1
+	return false
+}
+//line main.spx:674:1
+func (this *Game) updateHazard(i int) {
+//line main.spx:675:1
+	warmup := this.hazardWarmup[i]
+//line main.spx:675:1
+	kind := this.hazardKind[i]
+//line main.spx:676:1
+	if this.age[i] < warmup {
+//line main.spx:676:1
+		return
+	}
+//line main.spx:677:1
+	if this.age[i] >= warmup+this.hazardDuration[i] {
+//line main.spx:677:1
+		this.entity[i] = 0
+//line main.spx:677:1
+		return
+	}
+//line main.spx:678:1
+	if kind == 0 {
+//line main.spx:679:1
+		if !this.blocked(this.px[i], this.py[i], 0) && this.minionCount() < 6 {
+//line main.spx:680:1
+			slot := this.addEntity(2, this.px[i], this.py[i], 2)
+//line main.spx:681:1
+			if slot > 0 {
+//line main.spx:682:1
+				this.summoned[slot] = true
+//line main.spx:682:1
+				this.zombieType[slot] = this.bossAttack % 3
+//line main.spx:683:1
+				this.hp[slot] = 2
+//line main.spx:683:1
+				if this.zombieType[slot] == 0 {
+//line main.spx:683:1
+					this.hp[slot] = 4
+				}
+//line main.spx:684:1
+				this.maxHP[slot] = this.hp[slot]
+//line main.spx:684:1
+				this.dashCooldown[slot] = 150
+			}
+		}
+//line main.spx:687:1
+		this.entity[i] = 0
+//line main.spx:687:1
+		return
+	}
+//line main.spx:689:1
+	damaging := kind == 2 && (this.age[i]-warmup)%20 == 0 || kind == 3 && this.age[i] == warmup
+//line main.spx:690:1
+	if !damaging {
+//line main.spx:690:1
+		return
+	}
+//line main.spx:691:1
+	for
+//line main.spx:691:1
+	player := 0; player < 2;
+//line main.spx:691:1
+	player++ {
+		spx.Sched()
+//line main.spx:692:1
+		target := 1
+//line main.spx:692:1
+		if player == 1 {
+//line main.spx:692:1
+			target = 191
+		}
+//line main.spx:693:1
+		if this.entity[target] != 1 {
+//line main.spx:694:1
+			continue
+		}
+//line main.spx:696:1
+		hit := math.Hypot(this.px[target]-this.px[i], this.py[target]-this.py[i]) < 30
+//line main.spx:697:1
+		if kind == 2 {
+//line main.spx:697:1
+			hit = this.overlaps(this.px[target], this.py[target], i, 25)
+		}
+//line main.spx:698:1
+		if hit {
+//line main.spx:698:1
+			if target == 1 {
+//line main.spx:698:1
+				this.hitPlayer()
+			} else {
+//line main.spx:698:1
+				this.hitSecondPlayer()
+			}
+		}
+	}
+}
+//line main.spx:701:1
+func (this *Game) clearBossEffects() {
+//line main.spx:702:1
+	for
+//line main.spx:702:1
+	i := 2; i < 191;
+//line main.spx:702:1
+	i++ {
+		spx.Sched()
+//line main.spx:703:1
+		if this.entity[i] == 16 || this.summoned[i] || this.entity[i] == 7 || this.entity[i] == 17 || this.entity[i] == 18 {
+//line main.spx:703:1
+			this.entity[i] = 0
+		}
+	}
+}
+//line main.spx:706:1
+func (this *Game) nextLevel() {
+//line main.spx:707:1
+	if this.state != 2 {
+//line main.spx:707:1
+		return
+	}
+//line main.spx:708:1
 	savedScore := this.score
-//line main.spx:436:1
+//line main.spx:708:1
 	savedKills := this.kills
-//line main.spx:437:1
+//line main.spx:709:1
 	this.selectedLevel = this.level + 1
-//line main.spx:437:1
+//line main.spx:709:1
 	this.restart()
-//line main.spx:437:1
+//line main.spx:709:1
 	this.score = savedScore
-//line main.spx:437:1
+//line main.spx:709:1
 	this.kills = savedKills
-//line main.spx:438:1
+//line main.spx:710:1
 	if this.kills >= 3 {
-//line main.spx:438:1
+//line main.spx:710:1
 		this.weaponLevel = 1
 	}
+//line main.spx:711:1
+	this.runEntryScore = this.score
+//line main.spx:711:1
+	this.runEntryKills = this.kills
+//line main.spx:712:1
+	this.recordCheckpoint(this.level, this.score, this.kills, this.twoPlayers)
 }
-//line main.spx:440:1
-func (this *Game) updateControls() {
-//line main.spx:441:1
-	m := this.KeyPressed(spx.KeyM)
-//line main.spx:442:1
-	if m && !this.menuDown {
-//line main.spx:442:1
+//line main.spx:714:1
+func (this *Game) roleOf(player int) int {
+//line main.spx:714:1
+	if player == 191 {
+//line main.spx:714:1
+		return this.playerClass2
+	}
+//line main.spx:714:1
+	return this.playerClass
+}
+//line main.spx:715:1
+func (this *Game) sporeAlreadyHit(projectile int, target int) bool {
+//line main.spx:715:1
+	for
+//line main.spx:715:1
+	n := 0; n < 4;
+//line main.spx:715:1
+	n++ {
+		spx.Sched()
+//line main.spx:715:1
+		if this.sporeHits[projectile][n] == target {
+//line main.spx:715:1
+			return true
+		}
+	}
+//line main.spx:715:1
+	return false
+}
+//line main.spx:716:1
+func (this *Game) rememberSporeHit(projectile int, target int) {
+//line main.spx:716:1
+	for
+//line main.spx:716:1
+	n := 0; n < 4;
+//line main.spx:716:1
+	n++ {
+		spx.Sched()
+//line main.spx:716:1
+		if this.sporeHits[projectile][n] == 0 {
+//line main.spx:716:1
+			this.sporeHits[projectile][n] = target
+//line main.spx:716:1
+			return
+		}
+	}
+}
+//line main.spx:717:1
+func (this *Game) routeTier(role int) int {
+//line main.spx:717:1
+	if role == 0 {
+//line main.spx:717:1
+		return this.evolution
+	}
+//line main.spx:717:1
+	return this.routeTiers[role]
+}
+//line main.spx:718:1
+func (this *Game) tierOf(player int) int {
+//line main.spx:718:1
+	return this.routeTier(this.roleOf(player))
+}
+//line main.spx:719:1
+func (this *Game) classShotDelay(player int) int {
+//line main.spx:720:1
+	role := this.roleOf(player)
+//line main.spx:720:1
+	tier := this.tierOf(player)
+//line main.spx:721:1
+	if role == 1 {
+//line main.spx:721:1
+		return 22 - tier
+	}
+//line main.spx:721:1
+	if role == 2 {
+//line main.spx:721:1
+		return 38 - tier*3
+	}
+//line main.spx:722:1
+	if tier >= 2 {
+//line main.spx:722:1
+		return 10 - tier
+	}
+//line main.spx:722:1
+	return 14 - tier
+}
+//line main.spx:724:1
+func (this *Game) classUltimateDelay(player int) int {
+//line main.spx:725:1
+	role := this.roleOf(player)
+//line main.spx:725:1
+	tier := this.tierOf(player)
+//line main.spx:726:1
+	if role == 1 {
+//line main.spx:726:1
+		return 300 - tier*15
+	}
+//line main.spx:726:1
+	if role == 2 {
+//line main.spx:726:1
+		return 350 - tier*20
+	}
+//line main.spx:726:1
+	return 250 - tier*15
+}
+//line main.spx:728:1
+func (this *Game) castClassUltimate(player int) bool {
+//line main.spx:729:1
+	role := this.roleOf(player)
+//line main.spx:729:1
+	tier := this.tierOf(player)
+//line main.spx:729:1
+	d := this.facing[player]
+//line main.spx:730:1
+	if role == 2 {
+//line main.spx:730:1
+		return this.fireMelon(player, true)
+	}
+//line main.spx:731:1
+	kind := 9
+//line main.spx:731:1
+	offset := 24.0
+//line main.spx:731:1
+	if role == 1 {
+//line main.spx:731:1
+		kind = 17
+//line main.spx:731:1
+		offset = 60
+	}
+//line main.spx:732:1
+	slot := this.addEntity(kind, this.clampArena(this.px[player]+this.vx(d)*offset, -200, 200), this.clampArena(this.py[player]+this.vy(d)*offset, -120, 110), d)
+//line main.spx:733:1
+	if slot == 0 {
+//line main.spx:733:1
+		return false
+	}
+//line main.spx:734:1
+	this.projectileClass[slot] = role
+//line main.spx:734:1
+	this.projectileTier[slot] = tier
+//line main.spx:734:1
+	return true
+}
+//line main.spx:736:1
+func (this *Game) fireMelon(player int, ultimate bool) bool {
+//line main.spx:737:1
+	d := this.facing[player]
+//line main.spx:737:1
+	tier := this.tierOf(player)
+//line main.spx:738:1
+	targetX := this.clampArena(this.px[player]+this.vx(d)*142, -210, 210)
+//line main.spx:738:1
+	targetY := this.clampArena(this.py[player]+this.vy(d)*142, -125, 115)
+//line main.spx:739:1
+	nearest := 185.0
+//line main.spx:740:1
+	for
+//line main.spx:740:1
+	j := 2; j < 191;
+//line main.spx:740:1
+	j++ {
+		spx.Sched()
+//line main.spx:741:1
+		dx := this.px[j] - this.px[player]
+//line main.spx:741:1
+		dy := this.py[j] - this.py[player]
+//line main.spx:741:1
+		distance := math.Hypot(dx, dy)
+//line main.spx:742:1
+		if this.entity[j] == 2 && distance < nearest && dx*this.vx(d)+dy*this.vy(d) > 0 {
+//line main.spx:743:1
+			nearest = distance
+//line main.spx:743:1
+			targetX = this.px[j]
+//line main.spx:743:1
+			targetY = this.py[j]
+		}
+	}
+//line main.spx:746:1
+	slot := this.addEntity(18, this.px[player]+this.vx(d)*18, this.py[player]+this.vy(d)*18, d)
+//line main.spx:747:1
+	if slot == 0 {
+//line main.spx:747:1
+		return false
+	}
+//line main.spx:748:1
+	this.projectileClass[slot] = 2
+//line main.spx:748:1
+	this.projectileTier[slot] = tier
+//line main.spx:748:1
+	this.rocket[slot] = ultimate
+//line main.spx:749:1
+	this.lobDuration[slot] = 30
+//line main.spx:749:1
+	this.projectileDamage[slot] = 3 + tier/2
+//line main.spx:750:1
+	if ultimate {
+//line main.spx:750:1
+		this.lobDuration[slot] = 40
+//line main.spx:750:1
+		this.projectileDamage[slot] = 8 + tier
+	} else
+//line main.spx:751:1
+	if player == 1 && this.pepperBuff > 0 || player == 191 && this.pepperBuff2 > 0 {
+//line main.spx:751:1
+		this.projectileDamage[slot]++
+//line main.spx:751:1
+		this.incendiary[slot] = true
+	}
+//line main.spx:753:1
+	this.landingX[slot] = targetX
+//line main.spx:753:1
+	this.landingY[slot] = targetY
+//line main.spx:754:1
+	this.velx[slot] = (targetX - this.px[slot]) / float64(this.lobDuration[slot])
+//line main.spx:754:1
+	this.vely[slot] = (targetY - this.py[slot]) / float64(this.lobDuration[slot])
+//line main.spx:755:1
+	return true
+}
+//line main.spx:757:1
+func (this *Game) updateMelon(i int) {
+//line main.spx:758:1
+	this.px[i] += this.velx[i]
+//line main.spx:758:1
+	this.py[i] += this.vely[i]
+//line main.spx:759:1
+	if this.age[i] < this.lobDuration[i] {
+//line main.spx:759:1
+		return
+	}
+//line main.spx:760:1
+	x := this.landingX[i]
+//line main.spx:760:1
+	y := this.landingY[i]
+//line main.spx:760:1
+	tier := this.projectileTier[i]
+//line main.spx:760:1
+	damage := this.projectileDamage[i]
+//line main.spx:761:1
+	heavy := this.rocket[i]
+//line main.spx:761:1
+	radius := float64(30 + tier*4)
+//line main.spx:761:1
+	if heavy {
+//line main.spx:761:1
+		radius = float64(65 + tier*4)
+	}
+//line main.spx:762:1
+	this.entity[i] = 0
+//line main.spx:762:1
+	this.blast(x, y, damage, radius)
+//line main.spx:763:1
+	if tier >= 4 {
+//line main.spx:764:1
+		for
+//line main.spx:764:1
+		j := 2; j < 191;
+//line main.spx:764:1
+		j++ {
+			spx.Sched()
+//line main.spx:764:1
+			if this.entity[j] == 2 && math.Hypot(this.px[j]-x, this.py[j]-y) <= radius {
+//line main.spx:764:1
+				this.chillTicks[j] = 80
+			}
+		}
+	}
+//line main.spx:766:1
+	slot := this.addEntity(10, x, y, 0)
+//line main.spx:767:1
+	if slot > 0 {
+//line main.spx:767:1
+		this.projectileClass[slot] = 2
+//line main.spx:767:1
+		this.projectileTier[slot] = tier
+//line main.spx:767:1
+		this.rocket[slot] = heavy
+	}
+}
+//line main.spx:769:1
+func (this *Game) updateSporeCloud(i int) {
+//line main.spx:770:1
+	if this.age[i] >= 150 {
+//line main.spx:770:1
+		this.entity[i] = 0
+//line main.spx:770:1
+		return
+	}
+//line main.spx:771:1
+	if this.age[i]%25 == 1 {
+//line main.spx:771:1
+		this.blast(this.px[i], this.py[i], 1+this.projectileTier[i]/3, float64(42+this.projectileTier[i]*3))
+	}
+}
+//line main.spx:773:1
+func (this *Game) unlockedLevel() int {
+//line main.spx:773:1
+	if this.clearedLevel >= 19 {
+//line main.spx:773:1
+		return 20
+	}
+//line main.spx:773:1
+	if this.clearedLevel < 0 {
+//line main.spx:773:1
+		return 1
+	}
+//line main.spx:773:1
+	return this.clearedLevel + 1
+}
+//line main.spx:774:1
+func (this *Game) frontEnd() bool {
+//line main.spx:774:1
+	return this.state == 1 || this.state == 4 || this.state == 5 || this.state == 6 || this.state == 7 || this.state == 8
+}
+//line main.spx:775:1
+func (this *Game) ultimateBar() int {
+//line main.spx:775:1
+	maximum := this.classUltimateDelay(1)
+//line main.spx:775:1
+	value := 10 - (this.ultimateCooldown*10+maximum-1)/maximum
+//line main.spx:775:1
+	if value < 0 {
+//line main.spx:775:1
+		return 0
+	}
+//line main.spx:775:1
+	if value > 10 {
+//line main.spx:775:1
+		return 10
+	}
+//line main.spx:775:1
+	return value
+}
+//line main.spx:776:1
+func (this *Game) canStartStage(stage int) bool {
+//line main.spx:776:1
+	return stage >= 1 && stage <= 20 && stage <= this.unlockedLevel()
+}
+//line main.spx:777:1
+func (this *Game) openClassSelect() {
+//line main.spx:778:1
+	if !this.canStartStage(this.selectedLevel) {
+//line main.spx:778:1
+		this.evolveNotice = 9
+//line main.spx:778:1
+		this.metaNoticeTicks = 150
+//line main.spx:778:1
+		return
+	}
+//line main.spx:779:1
+	this.pendingClass = this.playerClass
+//line main.spx:779:1
+	this.pendingClass2 = this.playerClass2
+//line main.spx:779:1
+	this.classMember = 0
+//line main.spx:779:1
+	this.evolveNotice = 0
+//line main.spx:779:1
+	this.metaNoticeTicks = 0
+//line main.spx:779:1
+	this.state = 7
+}
+//line main.spx:781:1
+func (this *Game) chooseClass(role int) {
+//line main.spx:782:1
+	if role < 0 || role > 2 {
+//line main.spx:782:1
+		return
+	}
+//line main.spx:783:1
+	if this.state == 7 {
+//line main.spx:783:1
+		if this.classMember == 0 {
+//line main.spx:783:1
+			this.pendingClass = role
+		} else {
+//line main.spx:783:1
+			this.pendingClass2 = role
+		}
+	}
+//line main.spx:784:1
+	if this.state == 4 {
+//line main.spx:784:1
+		this.labClass = role
+//line main.spx:784:1
+		this.evolveNotice = 0
+	}
+}
+//line main.spx:786:1
+func (this *Game) startWithClasses() {
+//line main.spx:787:1
+	if !this.canStartStage(this.selectedLevel) {
+//line main.spx:787:1
+		this.evolveNotice = 9
+//line main.spx:787:1
+		this.metaNoticeTicks = 150
+//line main.spx:787:1
 		this.state = 1
-//line main.spx:442:1
+//line main.spx:787:1
+		return
+	}
+//line main.spx:788:1
+	this.playerClass = this.pendingClass
+//line main.spx:788:1
+	this.playerClass2 = this.pendingClass2
+//line main.spx:789:1
+	this.restart()
+//line main.spx:789:1
+	this.runEntryScore = 0
+//line main.spx:789:1
+	this.runEntryKills = 0
+//line main.spx:789:1
+	this.recordCheckpoint(this.level, 0, 0, this.twoPlayers)
+}
+//line main.spx:791:1
+func (this *Game) uiAction(action int) {
+//line main.spx:792:1
+	if this.state == 6 {
+//line main.spx:793:1
+		if action == 0 {
+//line main.spx:793:1
+			this.selectedLevel = 1
+//line main.spx:793:1
+			this.state = 1
+		}
+//line main.spx:794:1
+		if action == 1 {
+//line main.spx:794:1
+			this.saveReturnState = 6
+//line main.spx:794:1
+			this.state = 5
+//line main.spx:794:1
+			this.evolveNotice = 0
+		}
+//line main.spx:795:1
+		if action == 2 {
+//line main.spx:795:1
+			this.state = 8
+		}
+//line main.spx:796:1
+		if action == 3 {
+//line main.spx:796:1
+			this.evolutionReturnState = 6
+//line main.spx:796:1
+			this.labClass = this.playerClass
+//line main.spx:796:1
+			this.state = 4
+//line main.spx:796:1
+			this.evolveNotice = 0
+		}
+//line main.spx:797:1
+		return
+	}
+//line main.spx:799:1
+	if this.state == 1 {
+//line main.spx:800:1
+		if action == 0 {
+//line main.spx:800:1
+			this.openClassSelect()
+		}
+//line main.spx:800:1
+		if action == 1 {
+//line main.spx:800:1
+			this.state = 6
+		}
+//line main.spx:800:1
+		return
+	}
+//line main.spx:802:1
+	if this.state == 7 {
+//line main.spx:803:1
+		if action < 3 {
+//line main.spx:803:1
+			this.chooseClass(action)
+		}
+//line main.spx:804:1
+		if action == 3 {
+//line main.spx:804:1
+			this.twoPlayers = !this.twoPlayers
+//line main.spx:804:1
+			this.classMember = 0
+		}
+//line main.spx:805:1
+		if action == 4 && this.twoPlayers {
+//line main.spx:805:1
+			this.classMember = 1 - this.classMember
+		}
+//line main.spx:806:1
+		if action == 5 {
+//line main.spx:806:1
+			this.startWithClasses()
+		}
+//line main.spx:806:1
+		if action == 6 {
+//line main.spx:806:1
+			this.state = 1
+		}
+//line main.spx:806:1
+		return
+	}
+//line main.spx:808:1
+	if this.state == 8 {
+//line main.spx:809:1
+		if action < 2 {
+//line main.spx:809:1
+			this.language = action
+//line main.spx:809:1
+			this.languageDirty = true
+//line main.spx:809:1
+			this.profileDirty = true
+//line main.spx:809:1
+			this.persistProfile()
+		}
+//line main.spx:810:1
+		if action == 2 {
+//line main.spx:810:1
+			this.state = 6
+		}
+//line main.spx:810:1
+		return
+	}
+//line main.spx:812:1
+	if this.state == 4 {
+//line main.spx:813:1
+		if action < 3 {
+//line main.spx:813:1
+			this.chooseClass(action)
+		}
+//line main.spx:813:1
+		if action == 3 {
+//line main.spx:813:1
+			this.buyEvolution()
+		}
+//line main.spx:813:1
+		if action == 4 {
+//line main.spx:813:1
+			this.state = this.evolutionReturnState
+		}
+//line main.spx:813:1
+		return
+	}
+//line main.spx:815:1
+	if this.state == 5 {
+//line main.spx:816:1
+		if action == 0 {
+//line main.spx:816:1
+			this.continueCheckpoint()
+		}
+//line main.spx:816:1
+		if action == 1 {
+//line main.spx:816:1
+			this.backupProgress(this.encodeSave())
+		}
+//line main.spx:816:1
+		if action == 2 {
+//line main.spx:816:1
+			code := this.restoreProgress()
+//line main.spx:816:1
+			if code != "" {
+//line main.spx:816:1
+				this.importProfile(code)
+			}
+		}
+//line main.spx:816:1
+		if action == 3 {
+//line main.spx:816:1
+			this.state = this.saveReturnState
+		}
+	}
+}
+//line main.spx:819:1
+func (this *Game) updateControls() {
+//line main.spx:820:1
+	this.uiTicks++
+//line main.spx:821:1
+	if this.metaNoticeTicks > 0 {
+//line main.spx:821:1
+		this.metaNoticeTicks--
+	}
+//line main.spx:822:1
+	this.updateProfile()
+//line main.spx:823:1
+	t := this.KeyPressed(spx.KeyT)
+//line main.spx:824:1
+	if t && !this.languageDown {
+//line main.spx:824:1
+		this.language = 1 - this.language
+//line main.spx:824:1
+		this.languageDirty = true
+//line main.spx:824:1
+		this.profileDirty = true
+//line main.spx:824:1
+		this.persistProfile()
+	}
+//line main.spx:824:1
+	this.languageDown = t
+//line main.spx:825:1
+	s := this.KeyPressed(spx.KeyS)
+//line main.spx:826:1
+	if s && !this.savePanelDown && (this.state == 6 || this.state == 1 || this.state == 2 || this.state == 3 || this.state == -1) {
+//line main.spx:826:1
+		this.saveReturnState = this.state
+//line main.spx:826:1
+		this.state = 5
+//line main.spx:826:1
+		this.paused = false
+//line main.spx:826:1
+		this.evolveNotice = 0
+	}
+//line main.spx:826:1
+	this.savePanelDown = s
+//line main.spx:827:1
+	n := this.KeyPressed(spx.KeyN)
+//line main.spx:828:1
+	if n && !this.continueDown && (this.state == 6 || this.state == 1 || this.state == 5) {
+//line main.spx:828:1
+		if !this.continueCheckpoint() && this.state != 5 {
+//line main.spx:828:1
+			this.saveReturnState = this.state
+//line main.spx:828:1
+			this.state = 5
+		}
+	}
+//line main.spx:828:1
+	this.continueDown = n
+//line main.spx:829:1
+	o := this.KeyPressed(spx.KeyO)
+//line main.spx:830:1
+	if o && !this.saveDown && this.state < 6 {
+//line main.spx:830:1
+		this.manualCheckpoint()
+	}
+//line main.spx:830:1
+	this.saveDown = o
+//line main.spx:831:1
+	m := this.KeyPressed(spx.KeyM)
+//line main.spx:832:1
+	if m && !this.menuDown {
+//line main.spx:833:1
+		if this.state == 4 {
+//line main.spx:833:1
+			this.state = this.evolutionReturnState
+		} else
+//line main.spx:833:1
+		if this.state == 5 {
+//line main.spx:833:1
+			this.state = this.saveReturnState
+		} else
+//line main.spx:833:1
+		if this.state == 7 {
+//line main.spx:833:1
+			this.state = 1
+		} else {
+//line main.spx:833:1
+			this.state = 6
+		}
+//line main.spx:834:1
 		this.paused = false
 	}
-//line main.spx:442:1
+//line main.spx:835:1
 	this.menuDown = m
-//line main.spx:443:1
+//line main.spx:836:1
 	enter := this.KeyPressed(spx.KeyEnter)
-//line main.spx:444:1
+//line main.spx:837:1
+	e := this.KeyPressed(spx.KeyB)
+//line main.spx:838:1
+	if e && !this.evolutionDown && (this.state == 6 || this.state == 1 || this.state == 2 || this.state == 3 || this.state == -1) {
+//line main.spx:838:1
+		this.evolutionReturnState = this.state
+//line main.spx:838:1
+		this.labClass = this.playerClass
+//line main.spx:838:1
+		this.state = 4
+//line main.spx:838:1
+		this.paused = false
+//line main.spx:838:1
+		this.evolveNotice = 0
+	}
+//line main.spx:839:1
+	this.evolutionDown = e
+//line main.spx:840:1
+	u := this.KeyPressed(spx.KeyU)
+//line main.spx:841:1
+	if this.state == 4 && u && !this.buyDown {
+//line main.spx:841:1
+		this.buyEvolution()
+	}
+//line main.spx:841:1
+	this.buyDown = u
+//line main.spx:842:1
+	c := this.KeyPressed(spx.KeyC)
+//line main.spx:843:1
+	if (this.state == 4 || this.state == 5) && c && !this.backupDown {
+//line main.spx:843:1
+		this.backupProgress(this.encodeSave())
+	}
+//line main.spx:843:1
+	this.backupDown = c
+//line main.spx:844:1
+	v := this.KeyPressed(spx.KeyV)
+//line main.spx:845:1
+	if (this.state == 4 || this.state == 5) && v && !this.restoreDown {
+//line main.spx:845:1
+		code := this.restoreProgress()
+//line main.spx:845:1
+		if code != "" {
+//line main.spx:845:1
+			this.importProfile(code)
+		}
+	}
+//line main.spx:845:1
+	this.restoreDown = v
+//line main.spx:846:1
+	one := this.KeyPressed(spx.Key1)
+//line main.spx:846:1
+	two := this.KeyPressed(spx.Key2)
+//line main.spx:846:1
+	three := this.KeyPressed(spx.Key3)
+//line main.spx:847:1
+	if this.state == 4 || this.state == 7 {
+//line main.spx:848:1
+		if one && !this.roleOneDown {
+//line main.spx:848:1
+			this.chooseClass(0)
+		}
+//line main.spx:848:1
+		if two && !this.roleTwoDown {
+//line main.spx:848:1
+			this.chooseClass(1)
+		}
+//line main.spx:848:1
+		if three && !this.roleThreeDown {
+//line main.spx:848:1
+			this.chooseClass(2)
+		}
+	}
+//line main.spx:850:1
+	this.roleOneDown = one
+//line main.spx:850:1
+	this.roleTwoDown = two
+//line main.spx:850:1
+	this.roleThreeDown = three
+//line main.spx:851:1
+	if this.state == 6 || this.state == 7 || this.state == 8 {
+//line main.spx:852:1
+		direction := 0
+//line main.spx:853:1
+		if this.KeyPressed(spx.KeyUp) || this.KeyPressed(spx.KeyLeft) {
+//line main.spx:853:1
+			direction = -1
+		}
+//line main.spx:853:1
+		if this.KeyPressed(spx.KeyDown) || this.KeyPressed(spx.KeyRight) {
+//line main.spx:853:1
+			direction = 1
+		}
+//line main.spx:854:1
+		if direction != 0 && direction != this.uiNavDown {
+//line main.spx:855:1
+			if this.state == 6 {
+//line main.spx:855:1
+				this.homeChoice = (this.homeChoice + direction + 4) % 4
+			}
+//line main.spx:856:1
+			if this.state == 7 {
+//line main.spx:856:1
+				role := this.pendingClass
+//line main.spx:856:1
+				if this.classMember == 1 {
+//line main.spx:856:1
+					role = this.pendingClass2
+				}
+//line main.spx:856:1
+				this.chooseClass((role + direction + 3) % 3)
+			}
+//line main.spx:857:1
+			if this.state == 8 {
+//line main.spx:857:1
+				this.language = 1 - this.language
+//line main.spx:857:1
+				this.languageDirty = true
+//line main.spx:857:1
+				this.profileDirty = true
+//line main.spx:857:1
+				this.persistProfile()
+			}
+		}
+//line main.spx:858:1
+		this.uiNavDown = direction
+//line main.spx:859:1
+		tab := this.KeyPressed(spx.KeyTab)
+//line main.spx:860:1
+		if this.state == 7 && tab && !this.uiTabDown && this.twoPlayers {
+//line main.spx:860:1
+			this.classMember = 1 - this.classMember
+		}
+//line main.spx:860:1
+		this.uiTabDown = tab
+//line main.spx:861:1
+		if enter && !this.confirmDown {
+//line main.spx:862:1
+			if this.state == 6 {
+//line main.spx:862:1
+				this.uiAction(this.homeChoice)
+			} else
+//line main.spx:862:1
+			if this.state == 7 {
+//line main.spx:862:1
+				this.startWithClasses()
+			} else {
+//line main.spx:862:1
+				this.state = 6
+			}
+		}
+//line main.spx:863:1
+		this.confirmDown = enter
+//line main.spx:864:1
+		return
+	}
+//line main.spx:866:1
+	this.uiNavDown = 0
+//line main.spx:867:1
 	if this.state == 1 {
-//line main.spx:445:1
-		if this.KeyPressed(spx.Key1) {
-//line main.spx:445:1
+//line main.spx:868:1
+		if one {
+//line main.spx:868:1
 			this.twoPlayers = false
 		}
-//line main.spx:445:1
-		if this.KeyPressed(spx.Key2) {
-//line main.spx:445:1
+//line main.spx:868:1
+		if two {
+//line main.spx:868:1
 			this.twoPlayers = true
 		}
-//line main.spx:446:1
+//line main.spx:869:1
 		if this.KeyPressed(spx.KeyF) {
-//line main.spx:446:1
+//line main.spx:869:1
 			this.selectedLevel = 1
 		}
-//line main.spx:446:1
+//line main.spx:869:1
 		if this.KeyPressed(spx.KeyG) {
-//line main.spx:446:1
-			this.selectedLevel = 2
+//line main.spx:869:1
+			this.selectedLevel = 6
 		}
-//line main.spx:446:1
+//line main.spx:869:1
 		if this.KeyPressed(spx.KeyH) {
-//line main.spx:446:1
-			this.selectedLevel = 3
+//line main.spx:869:1
+			this.selectedLevel = 11
 		}
-//line main.spx:447:1
+//line main.spx:869:1
+		if this.KeyPressed(spx.KeyL) {
+//line main.spx:869:1
+			this.selectedLevel = 16
+		}
+//line main.spx:870:1
+		direction := 0
+//line main.spx:871:1
+		if this.KeyPressed(spx.KeyLeft) {
+//line main.spx:871:1
+			direction = -1
+		}
+//line main.spx:871:1
+		if this.KeyPressed(spx.KeyRight) {
+//line main.spx:871:1
+			direction = 1
+		}
+//line main.spx:872:1
+		if this.KeyPressed(spx.KeyUp) {
+//line main.spx:872:1
+			direction = -5
+		}
+//line main.spx:872:1
+		if this.KeyPressed(spx.KeyDown) {
+//line main.spx:872:1
+			direction = 5
+		}
+//line main.spx:873:1
+		if direction != 0 && direction != this.menuDirection {
+//line main.spx:873:1
+			this.selectedLevel += direction
+		}
+//line main.spx:873:1
+		this.menuDirection = direction
+//line main.spx:874:1
+		if this.selectedLevel < 1 {
+//line main.spx:874:1
+			this.selectedLevel = 1
+		}
+//line main.spx:874:1
+		if this.selectedLevel > 20 {
+//line main.spx:874:1
+			this.selectedLevel = 20
+		}
+//line main.spx:875:1
 		if enter && !this.confirmDown {
-//line main.spx:447:1
-			this.restart()
+//line main.spx:875:1
+			this.openClassSelect()
 		}
-	} else
-//line main.spx:448:1
-	if this.state == 2 && enter && !this.confirmDown {
-//line main.spx:448:1
-		this.nextLevel()
+	} else {
+//line main.spx:877:1
+		this.menuDirection = 0
+//line main.spx:878:1
+		if this.state == 2 && enter && !this.confirmDown {
+//line main.spx:878:1
+			this.nextLevel()
+		}
 	}
-//line main.spx:449:1
+//line main.spx:879:1
 	this.confirmDown = enter
-//line main.spx:450:1
+//line main.spx:880:1
 	r := this.KeyPressed(spx.KeyR)
-//line main.spx:450:1
-	if r && !this.restartDown && this.state != 1 {
-//line main.spx:450:1
+//line main.spx:881:1
+	if r && !this.restartDown && (this.state == 0 || this.state == 2 || this.state == 3 || this.state == -1) {
+//line main.spx:881:1
 		this.restart()
+//line main.spx:881:1
+		this.runEntryScore = 0
+//line main.spx:881:1
+		this.runEntryKills = 0
+//line main.spx:881:1
+		this.recordCheckpoint(this.level, 0, 0, this.twoPlayers)
 	}
-//line main.spx:450:1
+//line main.spx:881:1
 	this.restartDown = r
-//line main.spx:451:1
+//line main.spx:882:1
 	p := this.KeyPressed(spx.KeyP)
-//line main.spx:451:1
+//line main.spx:882:1
 	if p && !this.pauseDown && this.state == 0 {
-//line main.spx:451:1
+//line main.spx:882:1
 		this.paused = !this.paused
 	}
-//line main.spx:451:1
+//line main.spx:882:1
 	this.pauseDown = p
 }
-//line main.spx:453
+//line main.spx:884:1
+func (this *Game) evolutionCost(tier int) int {
+//line main.spx:885:1
+	costs := []int{100, 250, 500, 900, 1500}
+//line main.spx:886:1
+	if tier < 0 || tier >= 5 {
+//line main.spx:886:1
+		return 0
+	}
+//line main.spx:886:1
+	return costs[tier]
+}
+//line main.spx:888:1
+func (this *Game) spentCoins(tier int) int {
+//line main.spx:889:1
+	total := 0
+//line main.spx:890:1
+	for
+//line main.spx:890:1
+	i := 0; i < tier && i < 5;
+//line main.spx:890:1
+	i++ {
+		spx.Sched()
+//line main.spx:890:1
+		total += this.evolutionCost(i)
+	}
+//line main.spx:890:1
+	return total
+}
+//line main.spx:892:1
+func (this *Game) profileCode(money int, tier int, total int) string {
+//line main.spx:893:1
+	checksum := (money*31 + tier*97 + total*13 + 61101) % 1000003
+//line main.spx:894:1
+	return "TG1|" + strconv.Itoa(money) + "|" + strconv.Itoa(tier) + "|" + strconv.Itoa(total) + "|" + strconv.Itoa(checksum)
+}
+//line main.spx:896:1
+func (this *Game) decodeProfile(raw string) (int, int, int, bool) {
+//line main.spx:897:1
+	fields := strings.Split(strings.TrimSpace(raw), "|")
+//line main.spx:898:1
+	if len(fields) != 5 || fields[0] != "TG1" {
+//line main.spx:898:1
+		return 0, 0, 0, false
+	}
+//line main.spx:899:1
+	money, err1 := strconv.Atoi(fields[1])
+//line main.spx:899:1
+	tier, err2 := strconv.Atoi(fields[2])
+//line main.spx:899:1
+	total, err3 := strconv.Atoi(fields[3])
+//line main.spx:900:1
+	if err1 != nil || err2 != nil || err3 != nil {
+//line main.spx:900:1
+		return 0, 0, 0, false
+	}
+//line main.spx:901:1
+	if money < 0 || money > 9999999 || tier < 0 || tier > 5 || total < money+this.spentCoins(tier) || total > 9999999 {
+//line main.spx:901:1
+		return 0, 0, 0, false
+	}
+//line main.spx:902:1
+	if this.profileCode(money, tier, total) != strings.TrimSpace(raw) {
+//line main.spx:902:1
+		return 0, 0, 0, false
+	}
+//line main.spx:903:1
+	return money, tier, total, true
+}
+//line main.spx:905:1
+func (this *Game) tr(zh string, en string) string {
+//line main.spx:905:1
+	if this.language == 1 {
+//line main.spx:905:1
+		return en
+	}
+//line main.spx:905:1
+	return zh
+}
+//line main.spx:906:1
+func (this *Game) langSuffix() string {
+//line main.spx:906:1
+	if this.language == 1 {
+//line main.spx:906:1
+		return "-en"
+	}
+//line main.spx:906:1
+	return ""
+}
+//line main.spx:907:1
+func (this *Game) encodeSaveValues(money int, tier int, total int, stage int, entryScore int, entryKills int, coop bool, cleared int, lang int) string {
+//line main.spx:908:1
+	mode := 0
+//line main.spx:908:1
+	if coop {
+//line main.spx:908:1
+		mode = 1
+	}
+//line main.spx:909:1
+	sum := (money*31 + tier*97 + total*13 + stage*101 + entryScore*7 + entryKills*19 + mode*41 + cleared*53 + lang*89 + 61102) % 1000003
+//line main.spx:910:1
+	return "TG2|" + strconv.Itoa(money) + "|" + strconv.Itoa(tier) + "|" + strconv.Itoa(total) + "|" + strconv.Itoa(stage) + "|" + strconv.Itoa(entryScore) + "|" + strconv.Itoa(entryKills) + "|" + strconv.Itoa(mode) + "|" + strconv.Itoa(cleared) + "|" + strconv.Itoa(lang) + "|" + strconv.Itoa(sum)
+}
+//line main.spx:912:1
+func (this *Game) encodeSave() string {
+//line main.spx:913:1
+	return this.encodeRosterSave(this.coins, this.evolution, this.lifetimeCoins, this.checkpointLevel, this.checkpointScore, this.checkpointKills, this.checkpointCoop, this.clearedLevel, this.language, this.routeTiers[1], this.routeTiers[2], this.checkpointClass, this.checkpointClass2)
+}
+//line main.spx:915:1
+func (this *Game) rosterHash(body string) int {
+//line main.spx:916:1
+	hash := 61103
+//line main.spx:917:1
+	for
+//line main.spx:917:1
+	i := 0; i < len(body);
+//line main.spx:917:1
+	i++ {
+		spx.Sched()
+//line main.spx:917:1
+		hash = (hash*33 + int(body[i])) % 1000003
+	}
+//line main.spx:917:1
+	return hash
+}
+//line main.spx:919:1
+func (this *Game) encodeRosterSave(money int, tier int, total int, stage int, entryScore int, entryKills int, coop bool, cleared int, lang int, mushroom int, melon int, class1 int, class2 int) string {
+//line main.spx:920:1
+	base := this.encodeSaveValues(money, tier, total, stage, entryScore, entryKills, coop, cleared, lang)
+//line main.spx:921:1
+	body := "TG3" + base[3:strings.LastIndex(base, "|")] + "|" + strconv.Itoa(mushroom) + "|" + strconv.Itoa(melon) + "|" + strconv.Itoa(class1) + "|" + strconv.Itoa(class2)
+//line main.spx:922:1
+	return body + "|" + strconv.Itoa(this.rosterHash(body))
+}
+//line main.spx:924:1
+func (this *Game) decodeRosterSave(raw string) (int, int, int, bool) {
+//line main.spx:925:1
+	fields := strings.Split(raw, "|")
+//line main.spx:926:1
+	if len(fields) != 15 {
+//line main.spx:926:1
+		return 0, 0, 0, false
+	}
+//line main.spx:927:1
+	values := []int{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+//line main.spx:928:1
+	for
+//line main.spx:928:1
+	i := 0; i < 13;
+//line main.spx:928:1
+	i++ {
+		spx.Sched()
+//line main.spx:928:1
+		value, err := strconv.Atoi(fields[i+1])
+//line main.spx:928:1
+		if err != nil {
+//line main.spx:928:1
+			return 0, 0, 0, false
+		}
+//line main.spx:928:1
+		values[i] = value
+	}
+//line main.spx:929:1
+	if values[9] < 0 || values[9] > 5 || values[10] < 0 || values[10] > 5 || values[11] < 0 || values[11] > 2 || values[12] < 0 || values[12] > 2 {
+//line main.spx:929:1
+		return 0, 0, 0, false
+	}
+//line main.spx:930:1
+	if raw != this.encodeRosterSave(values[0], values[1], values[2], values[3], values[4], values[5], values[6] == 1, values[7], values[8], values[9], values[10], values[11], values[12]) {
+//line main.spx:930:1
+		return 0, 0, 0, false
+	}
+//line main.spx:931:1
+	if values[6] < 0 || values[6] > 1 || values[2] < values[0]+this.spentCoins(values[1])+this.spentCoins(values[9])+this.spentCoins(values[10]) {
+//line main.spx:931:1
+		return 0, 0, 0, false
+	}
+//line main.spx:932:1
+	money, tier, total, ok := this.decodeSave(this.encodeSaveValues(values[0], values[1], values[2], values[3], values[4], values[5], values[6] == 1, values[7], values[8]))
+//line main.spx:933:1
+	if !ok {
+//line main.spx:933:1
+		return 0, 0, 0, false
+	}
+//line main.spx:934:1
+	this.decodedMushroom = values[9]
+//line main.spx:934:1
+	this.decodedMelon = values[10]
+//line main.spx:934:1
+	this.decodedClass = values[11]
+//line main.spx:934:1
+	this.decodedClass2 = values[12]
+//line main.spx:935:1
+	return money, tier, total, true
+}
+//line main.spx:937:1
+func (this *Game) decodeSave(raw string) (int, int, int, bool) {
+//line main.spx:938:1
+	this.decodedStage = 0
+//line main.spx:938:1
+	this.decodedScore = 0
+//line main.spx:938:1
+	this.decodedKills = 0
+//line main.spx:938:1
+	this.decodedCoop = false
+//line main.spx:938:1
+	this.decodedCleared = 0
+//line main.spx:938:1
+	this.decodedLanguage = this.language
+//line main.spx:939:1
+	this.decodedMushroom = 0
+//line main.spx:939:1
+	this.decodedMelon = 0
+//line main.spx:939:1
+	this.decodedClass = 0
+//line main.spx:939:1
+	this.decodedClass2 = 0
+//line main.spx:940:1
+	raw = strings.TrimSpace(raw)
+//line main.spx:941:1
+	if strings.HasPrefix(raw, "TG3|") {
+//line main.spx:941:1
+		return this.decodeRosterSave(raw)
+	}
+//line main.spx:942:1
+	if strings.HasPrefix(raw, "TG1|") {
+//line main.spx:942:1
+		return this.decodeProfile(raw)
+	}
+//line main.spx:943:1
+	fields := strings.Split(raw, "|")
+//line main.spx:944:1
+	if len(fields) != 11 || fields[0] != "TG2" {
+//line main.spx:944:1
+		return 0, 0, 0, false
+	}
+//line main.spx:945:1
+	values := []int{0, 0, 0, 0, 0, 0, 0, 0, 0}
+//line main.spx:946:1
+	for
+//line main.spx:946:1
+	i := 0; i < 9;
+//line main.spx:946:1
+	i++ {
+		spx.Sched()
+//line main.spx:946:1
+		value, err := strconv.Atoi(fields[i+1])
+//line main.spx:946:1
+		if err != nil {
+//line main.spx:946:1
+			return 0, 0, 0, false
+		}
+//line main.spx:946:1
+		values[i] = value
+	}
+//line main.spx:947:1
+	money := values[0]
+//line main.spx:947:1
+	tier := values[1]
+//line main.spx:947:1
+	total := values[2]
+//line main.spx:947:1
+	stage := values[3]
+//line main.spx:947:1
+	entryScore := values[4]
+//line main.spx:947:1
+	entryKills := values[5]
+//line main.spx:947:1
+	mode := values[6]
+//line main.spx:947:1
+	cleared := values[7]
+//line main.spx:947:1
+	lang := values[8]
+//line main.spx:948:1
+	if money < 0 || money > 9999999 || tier < 0 || tier > 5 || total < money+this.spentCoins(tier) || total > 9999999 {
+//line main.spx:948:1
+		return 0, 0, 0, false
+	}
+//line main.spx:949:1
+	if stage < 0 || stage > 20 || entryScore < 0 || entryScore > 99999999 || entryKills < 0 || entryKills > 999999 || mode < 0 || mode > 1 || cleared < 0 || cleared > 20 || lang < 0 || lang > 1 {
+//line main.spx:949:1
+		return 0, 0, 0, false
+	}
+//line main.spx:950:1
+	if stage == 0 && (entryScore != 0 || entryKills != 0) {
+//line main.spx:950:1
+		return 0, 0, 0, false
+	}
+//line main.spx:951:1
+	if raw != this.encodeSaveValues(money, tier, total, stage, entryScore, entryKills, mode == 1, cleared, lang) {
+//line main.spx:951:1
+		return 0, 0, 0, false
+	}
+//line main.spx:952:1
+	this.decodedStage = stage
+//line main.spx:952:1
+	this.decodedScore = entryScore
+//line main.spx:952:1
+	this.decodedKills = entryKills
+//line main.spx:952:1
+	this.decodedCoop = mode == 1
+//line main.spx:952:1
+	this.decodedCleared = cleared
+//line main.spx:952:1
+	this.decodedLanguage = lang
+//line main.spx:953:1
+	return money, tier, total, true
+}
+//line main.spx:955:1
+func (this *Game) applyDecodedCheckpoint() {
+//line main.spx:956:1
+	this.checkpointLevel = this.decodedStage
+//line main.spx:956:1
+	this.checkpointScore = this.decodedScore
+//line main.spx:956:1
+	this.checkpointKills = this.decodedKills
+//line main.spx:956:1
+	this.checkpointCoop = this.decodedCoop
+//line main.spx:956:1
+	this.clearedLevel = this.decodedCleared
+//line main.spx:956:1
+	this.language = this.decodedLanguage
+//line main.spx:957:1
+	this.routeTiers[1] = this.decodedMushroom
+//line main.spx:957:1
+	this.routeTiers[2] = this.decodedMelon
+//line main.spx:958:1
+	this.playerClass = this.decodedClass
+//line main.spx:958:1
+	this.playerClass2 = this.decodedClass2
+//line main.spx:958:1
+	this.checkpointClass = this.decodedClass
+//line main.spx:958:1
+	this.checkpointClass2 = this.decodedClass2
+//line main.spx:958:1
+	this.labClass = this.playerClass
+//line main.spx:959:1
+	if this.checkpointLevel > this.unlockedLevel() {
+//line main.spx:959:1
+		this.checkpointLevel = this.unlockedLevel()
+//line main.spx:959:1
+		this.checkpointScore = 0
+//line main.spx:959:1
+		this.checkpointKills = 0
+	}
+}
+//line main.spx:961:1
+func (this *Game) recordCheckpoint(stage int, entryScore int, entryKills int, coop bool) bool {
+//line main.spx:962:1
+	if !this.profileLoaded || stage < 1 || stage > 20 {
+//line main.spx:962:1
+		return false
+	}
+//line main.spx:963:1
+	this.checkpointLevel = stage
+//line main.spx:963:1
+	this.checkpointScore = entryScore
+//line main.spx:963:1
+	this.checkpointKills = entryKills
+//line main.spx:963:1
+	this.checkpointCoop = coop
+//line main.spx:964:1
+	this.checkpointClass = this.playerClass
+//line main.spx:964:1
+	this.checkpointClass2 = this.playerClass2
+//line main.spx:965:1
+	if this.checkpointScore < 0 {
+//line main.spx:965:1
+		this.checkpointScore = 0
+	}
+//line main.spx:965:1
+	if this.checkpointScore > 99999999 {
+//line main.spx:965:1
+		this.checkpointScore = 99999999
+	}
+//line main.spx:966:1
+	if this.checkpointKills < 0 {
+//line main.spx:966:1
+		this.checkpointKills = 0
+	}
+//line main.spx:966:1
+	if this.checkpointKills > 999999 {
+//line main.spx:966:1
+		this.checkpointKills = 999999
+	}
+//line main.spx:967:1
+	this.checkpointDirty = true
+//line main.spx:967:1
+	this.profileDirty = true
+//line main.spx:968:1
+	return this.persistProfile()
+}
+//line main.spx:970:1
+func (this *Game) continueCheckpoint() bool {
+//line main.spx:971:1
+	if !this.profileLoaded || this.profileReadPending || this.profileDamaged {
+//line main.spx:971:1
+		this.evolveNotice = 5
+//line main.spx:971:1
+		return false
+	}
+//line main.spx:972:1
+	if this.checkpointLevel < 1 {
+//line main.spx:972:1
+		this.evolveNotice = 8
+//line main.spx:972:1
+		return false
+	}
+//line main.spx:973:1
+	this.selectedLevel = this.checkpointLevel
+//line main.spx:973:1
+	this.twoPlayers = this.checkpointCoop
+//line main.spx:974:1
+	if this.checkpointLevel > this.unlockedLevel() {
+//line main.spx:974:1
+		this.evolveNotice = 9
+//line main.spx:974:1
+		this.metaNoticeTicks = 150
+//line main.spx:974:1
+		return false
+	}
+//line main.spx:975:1
+	this.playerClass = this.checkpointClass
+//line main.spx:975:1
+	this.playerClass2 = this.checkpointClass2
+//line main.spx:976:1
+	savedScore := this.checkpointScore
+//line main.spx:976:1
+	savedKills := this.checkpointKills
+//line main.spx:977:1
+	this.restart()
+//line main.spx:977:1
+	this.score = savedScore
+//line main.spx:977:1
+	this.kills = savedKills
+//line main.spx:978:1
+	this.runEntryScore = this.score
+//line main.spx:978:1
+	this.runEntryKills = this.kills
+//line main.spx:979:1
+	if this.kills >= 3 {
+//line main.spx:979:1
+		this.weaponLevel = 1
+	}
+//line main.spx:980:1
+	this.evolveNotice = 0
+//line main.spx:980:1
+	return true
+}
+//line main.spx:982:1
+func (this *Game) manualCheckpoint() {
+//line main.spx:983:1
+	ok := false
+//line main.spx:984:1
+	if this.state == 0 || this.state == -1 {
+//line main.spx:984:1
+		ok = this.recordCheckpoint(this.level, this.runEntryScore, this.runEntryKills, this.twoPlayers)
+	}
+//line main.spx:985:1
+	if this.state == 1 || this.state == 5 && this.saveReturnState == 1 {
+//line main.spx:985:1
+		if !this.canStartStage(this.selectedLevel) {
+//line main.spx:985:1
+			this.evolveNotice = 9
+//line main.spx:985:1
+			this.metaNoticeTicks = 150
+//line main.spx:985:1
+			return
+		}
+//line main.spx:985:1
+		ok = this.recordCheckpoint(this.selectedLevel, 0, 0, this.twoPlayers)
+	}
+//line main.spx:986:1
+	if this.state == 2 || this.state == 3 || this.state == 5 && this.saveReturnState != 1 {
+//line main.spx:986:1
+		ok = this.persistProfile()
+	}
+//line main.spx:987:1
+	if ok {
+//line main.spx:987:1
+		this.evolveNotice = 7
+	} else {
+//line main.spx:987:1
+		this.evolveNotice = 5
+	}
+//line main.spx:988:1
+	this.metaNoticeTicks = 150
+}
+//line main.spx:990:1
+func (this *Game) loadProfile() {
+//line main.spx:991:1
+	if this.profileLoaded {
+//line main.spx:991:1
+		return
+	}
+//line main.spx:992:1
+	this.profileLoaded = true
+//line main.spx:992:1
+	this.coins = 0
+//line main.spx:992:1
+	this.lifetimeCoins = 0
+//line main.spx:992:1
+	this.evolution = 0
+//line main.spx:993:1
+	this.profileDirty = false
+//line main.spx:993:1
+	this.profileDamaged = false
+//line main.spx:993:1
+	this.profileReadPending = false
+//line main.spx:993:1
+	this.saveRetry = 0
+//line main.spx:994:1
+	this.checkpointLevel = 0
+//line main.spx:994:1
+	this.checkpointScore = 0
+//line main.spx:994:1
+	this.checkpointKills = 0
+//line main.spx:994:1
+	this.checkpointCoop = false
+//line main.spx:994:1
+	this.clearedLevel = 0
+//line main.spx:994:1
+	this.language = 0
+//line main.spx:994:1
+	this.checkpointDirty = false
+//line main.spx:994:1
+	this.languageDirty = false
+//line main.spx:995:1
+	this.routeTiers[1] = 0
+//line main.spx:995:1
+	this.routeTiers[2] = 0
+//line main.spx:995:1
+	this.playerClass = 0
+//line main.spx:995:1
+	this.playerClass2 = 0
+//line main.spx:995:1
+	this.labClass = 0
+//line main.spx:995:1
+	this.checkpointClass = 0
+//line main.spx:995:1
+	this.checkpointClass2 = 0
+//line main.spx:996:1
+	raw, available := this.storageRead()
+//line main.spx:997:1
+	if !available {
+//line main.spx:997:1
+		this.profileReadPending = true
+//line main.spx:997:1
+		this.saveStatus = 2
+//line main.spx:997:1
+		this.saveRetry = 150
+//line main.spx:997:1
+		return
+	}
+//line main.spx:998:1
+	if raw == "" {
+//line main.spx:998:1
+		this.saveStatus = 1
+//line main.spx:998:1
+		return
+	}
+//line main.spx:999:1
+	money, tier, total, ok := this.decodeSave(raw)
+//line main.spx:1000:1
+	if !ok {
+//line main.spx:1000:1
+		this.profileDamaged = true
+//line main.spx:1000:1
+		this.saveStatus = 3
+//line main.spx:1000:1
+		return
+	}
+//line main.spx:1001:1
+	this.coins = money
+//line main.spx:1001:1
+	this.evolution = tier
+//line main.spx:1001:1
+	this.lifetimeCoins = total
+//line main.spx:1001:1
+	this.saveStatus = 1
+//line main.spx:1002:1
+	this.applyDecodedCheckpoint()
+}
+//line main.spx:1004:1
+func (this *Game) persistProfile() bool {
+//line main.spx:1005:1
+	if !this.profileLoaded || this.profileDamaged || this.profileReadPending {
+//line main.spx:1005:1
+		return false
+	}
+//line main.spx:1006:1
+	if this.storageWrite(this.encodeSave()) {
+//line main.spx:1007:1
+		this.profileDirty = false
+//line main.spx:1007:1
+		this.checkpointDirty = false
+//line main.spx:1007:1
+		this.languageDirty = false
+//line main.spx:1007:1
+		this.saveStatus = 1
+//line main.spx:1007:1
+		return true
+	}
+//line main.spx:1009:1
+	this.profileDirty = true
+//line main.spx:1009:1
+	this.saveStatus = 2
+//line main.spx:1009:1
+	this.saveRetry = 150
+//line main.spx:1009:1
+	return false
+}
+//line main.spx:1011:1
+func (this *Game) awardCoins(amount int) {
+//line main.spx:1012:1
+	if !this.profileLoaded || amount <= 0 {
+//line main.spx:1012:1
+		return
+	}
+//line main.spx:1013:1
+	if amount > 9999999-this.lifetimeCoins {
+//line main.spx:1013:1
+		amount = 9999999 - this.lifetimeCoins
+	}
+//line main.spx:1014:1
+	this.coins += amount
+//line main.spx:1014:1
+	this.lifetimeCoins += amount
+//line main.spx:1014:1
+	this.profileDirty = true
+//line main.spx:1015:1
+	this.persistProfile()
+}
+//line main.spx:1017:1
+func (this *Game) buyEvolution() bool {
+//line main.spx:1018:1
+	if this.state != 4 {
+//line main.spx:1018:1
+		return false
+	}
+//line main.spx:1019:1
+	if !this.profileLoaded || this.profileReadPending {
+//line main.spx:1019:1
+		this.evolveNotice = 5
+//line main.spx:1019:1
+		return false
+	}
+//line main.spx:1020:1
+	if this.profileDamaged {
+//line main.spx:1020:1
+		this.evolveNotice = 4
+//line main.spx:1020:1
+		return false
+	}
+//line main.spx:1021:1
+	tier := this.routeTier(this.labClass)
+//line main.spx:1022:1
+	if tier >= 5 {
+//line main.spx:1022:1
+		this.evolveNotice = 3
+//line main.spx:1022:1
+		return false
+	}
+//line main.spx:1023:1
+	price := this.evolutionCost(tier)
+//line main.spx:1024:1
+	if this.coins < price {
+//line main.spx:1024:1
+		this.evolveNotice = 2
+//line main.spx:1024:1
+		return false
+	}
+//line main.spx:1025:1
+	this.coins -= price
+//line main.spx:1026:1
+	if this.labClass == 0 {
+//line main.spx:1026:1
+		this.evolution++
+	} else {
+//line main.spx:1026:1
+		this.routeTiers[this.labClass]++
+	}
+//line main.spx:1027:1
+	this.profileDirty = true
+//line main.spx:1027:1
+	this.persistProfile()
+//line main.spx:1027:1
+	this.evolveNotice = 1
+//line main.spx:1028:1
+	return true
+}
+//line main.spx:1030:1
+func (this *Game) importProfile(raw string) bool {
+//line main.spx:1031:1
+	money, tier, total, valid := this.decodeSave(raw)
+//line main.spx:1032:1
+	if !valid {
+//line main.spx:1032:1
+		this.evolveNotice = 4
+//line main.spx:1032:1
+		return false
+	}
+//line main.spx:1033:1
+	if !this.storageWrite(this.encodeRosterSave(money, tier, total, this.decodedStage, this.decodedScore, this.decodedKills, this.decodedCoop, this.decodedCleared, this.decodedLanguage, this.decodedMushroom, this.decodedMelon, this.decodedClass, this.decodedClass2)) {
+//line main.spx:1033:1
+		this.saveStatus = 2
+//line main.spx:1033:1
+		this.evolveNotice = 5
+//line main.spx:1033:1
+		return false
+	}
+//line main.spx:1034:1
+	this.coins = money
+//line main.spx:1034:1
+	this.evolution = tier
+//line main.spx:1034:1
+	this.lifetimeCoins = total
+//line main.spx:1035:1
+	this.profileLoaded = true
+//line main.spx:1035:1
+	this.profileDamaged = false
+//line main.spx:1035:1
+	this.profileReadPending = false
+//line main.spx:1035:1
+	this.profileDirty = false
+//line main.spx:1035:1
+	this.saveStatus = 1
+//line main.spx:1035:1
+	this.evolveNotice = 6
+//line main.spx:1036:1
+	this.applyDecodedCheckpoint()
+//line main.spx:1036:1
+	this.checkpointDirty = false
+//line main.spx:1036:1
+	this.languageDirty = false
+//line main.spx:1037:1
+	return true
+}
+//line main.spx:1039:1
+func (this *Game) updateProfile() {
+//line main.spx:1040:1
+	if this.saveRetry > 0 {
+//line main.spx:1040:1
+		this.saveRetry--
+	}
+//line main.spx:1041:1
+	if this.profileReadPending && this.saveRetry == 0 {
+//line main.spx:1042:1
+		raw, available := this.storageRead()
+//line main.spx:1043:1
+		this.saveRetry = 150
+//line main.spx:1044:1
+		if available {
+//line main.spx:1045:1
+			money := 0
+//line main.spx:1045:1
+			tier := 0
+//line main.spx:1045:1
+			total := 0
+//line main.spx:1045:1
+			valid := true
+//line main.spx:1046:1
+			this.decodedStage = 0
+//line main.spx:1046:1
+			this.decodedScore = 0
+//line main.spx:1046:1
+			this.decodedKills = 0
+//line main.spx:1046:1
+			this.decodedCoop = false
+//line main.spx:1046:1
+			this.decodedCleared = 0
+//line main.spx:1046:1
+			this.decodedLanguage = this.language
+//line main.spx:1047:1
+			this.decodedMushroom = 0
+//line main.spx:1047:1
+			this.decodedMelon = 0
+//line main.spx:1047:1
+			this.decodedClass = 0
+//line main.spx:1047:1
+			this.decodedClass2 = 0
+//line main.spx:1048:1
+			if raw != "" {
+//line main.spx:1048:1
+				money, tier, total, valid = this.decodeSave(raw)
+			}
+//line main.spx:1049:1
+			this.profileReadPending = false
+//line main.spx:1050:1
+			if !valid {
+//line main.spx:1050:1
+				this.profileDamaged = true
+//line main.spx:1050:1
+				this.saveStatus = 3
+			} else {
+//line main.spx:1051:1
+				pending := this.lifetimeCoins
+//line main.spx:1051:1
+				if pending > 9999999-total {
+//line main.spx:1051:1
+					pending = 9999999 - total
+				}
+//line main.spx:1052:1
+				this.coins = money + pending
+//line main.spx:1052:1
+				this.lifetimeCoins = total + pending
+//line main.spx:1052:1
+				this.evolution = tier
+//line main.spx:1052:1
+				this.profileDirty = true
+//line main.spx:1053:1
+				if !this.checkpointDirty {
+//line main.spx:1053:1
+					this.checkpointLevel = this.decodedStage
+//line main.spx:1053:1
+					this.checkpointScore = this.decodedScore
+//line main.spx:1053:1
+					this.checkpointKills = this.decodedKills
+//line main.spx:1053:1
+					this.checkpointCoop = this.decodedCoop
+//line main.spx:1053:1
+					this.checkpointClass = this.decodedClass
+//line main.spx:1053:1
+					this.checkpointClass2 = this.decodedClass2
+//line main.spx:1053:1
+					this.playerClass = this.decodedClass
+//line main.spx:1053:1
+					this.playerClass2 = this.decodedClass2
+				}
+//line main.spx:1054:1
+				this.routeTiers[1] = this.decodedMushroom
+//line main.spx:1054:1
+				this.routeTiers[2] = this.decodedMelon
+//line main.spx:1055:1
+				if this.decodedCleared > this.clearedLevel {
+//line main.spx:1055:1
+					this.clearedLevel = this.decodedCleared
+				}
+//line main.spx:1056:1
+				if this.checkpointLevel > this.unlockedLevel() {
+//line main.spx:1056:1
+					this.checkpointLevel = this.unlockedLevel()
+//line main.spx:1056:1
+					this.checkpointScore = 0
+//line main.spx:1056:1
+					this.checkpointKills = 0
+				}
+//line main.spx:1057:1
+				if !this.languageDirty {
+//line main.spx:1057:1
+					this.language = this.decodedLanguage
+				}
+//line main.spx:1058:1
+				this.persistProfile()
+			}
+		}
+	}
+//line main.spx:1062:1
+	if this.profileDirty && !this.profileDamaged && this.saveRetry == 0 {
+//line main.spx:1062:1
+		this.persistProfile()
+	}
+}
+//line main.spx:1064:1
+// Browser persistence bridge. The native logic harness replaces only this block.
+// BEGIN_BROWSER_STORAGE
+func (this *Game) storageRead() (raw string, ok bool) {
+//line main.spx:1067:1
+	defer func() {
+//line main.spx:1067:1
+		if recover() != nil {
+//line main.spx:1067:1
+			raw = ""
+//line main.spx:1067:1
+			ok = false
+		}
+	}()
+//line main.spx:1068:1
+	storage := js.Global().Get("Reflect").Call("get", js.Global(), "localStorage")
+//line main.spx:1069:1
+	if storage.IsUndefined() || storage.IsNull() {
+//line main.spx:1069:1
+		return "", false
+	}
+//line main.spx:1070:1
+	value := storage.Call("getItem", "twilight-garden.progress.v1")
+//line main.spx:1071:1
+	if value.IsNull() || value.IsUndefined() {
+//line main.spx:1071:1
+		return "", true
+	}
+//line main.spx:1072:1
+	return value.String(), true
+}
+//line main.spx:1074:1
+func (this *Game) storageWrite(raw string) (ok bool) {
+//line main.spx:1075:1
+	defer func() {
+//line main.spx:1075:1
+		if recover() != nil {
+//line main.spx:1075:1
+			ok = false
+		}
+	}()
+//line main.spx:1076:1
+	storage := js.Global().Get("Reflect").Call("get", js.Global(), "localStorage")
+//line main.spx:1077:1
+	if storage.IsUndefined() || storage.IsNull() {
+//line main.spx:1077:1
+		return false
+	}
+//line main.spx:1078:1
+	storage.Call("setItem", "twilight-garden.progress.v1", raw)
+//line main.spx:1079:1
+	return storage.Call("getItem", "twilight-garden.progress.v1").String() == raw
+}
+//line main.spx:1081:1
+func (this *Game) backupProgress(raw string) {
+//line main.spx:1082:1
+	defer func() {
+//line main.spx:1082:1
+		if recover() != nil {
+//line main.spx:1082:1
+			this.evolveNotice = 5
+		}
+	}()
+//line main.spx:1083:1
+	js.Global().Call("prompt", this.tr("复制备份码。恢复会替换金币、进化、闯关进度和语言。", "Copy this backup. Restore replaces coins, evolution, checkpoint and language."), raw)
+}
+//line main.spx:1085:1
+func (this *Game) restoreProgress() (raw string) {
+//line main.spx:1086:1
+	defer func() {
+//line main.spx:1086:1
+		if recover() != nil {
+//line main.spx:1086:1
+			raw = ""
+//line main.spx:1086:1
+			this.evolveNotice = 5
+		}
+	}()
+//line main.spx:1087:1
+	value := js.Global().Call("prompt", this.tr("粘贴备份码，确认后替换本机进度。", "Paste a backup code to replace local progress."), "")
+//line main.spx:1088:1
+	if value.IsNull() || value.IsUndefined() {
+//line main.spx:1088:1
+		return ""
+	}
+//line main.spx:1088:1
+	return value.String()
+}
+//line main.spx:1090
+// END_BROWSER_STORAGE
 func (this *Game) MainEntry() {
-//line main.spx:453:1
+//line main.spx:1091:1
 	this.OnStart(func() {
-//line main.spx:454:1
+//line main.spx:1092:1
+		this.loadProfile()
+//line main.spx:1093:1
 		this.selectedLevel = 1
-//line main.spx:454:1
+//line main.spx:1094:1
 		this.restart()
-//line main.spx:454:1
-		this.state = 1
-//line main.spx:455:1
+//line main.spx:1094:1
+		this.state = 6
+//line main.spx:1095:1
 		spx.Forever(func() {
-//line main.spx:456:1
+//line main.spx:1096:1
 			this.updateControls()
-//line main.spx:457:1
+//line main.spx:1097:1
 			this.updateGame()
-//line main.spx:458:1
+//line main.spx:1098:1
 			this.Wait(0.02)
 		})
 	})
@@ -1892,21 +4538,33 @@ func (this *Game) Main() {
 	this.Actor = _xgo_obj1
 	_xgo_obj2 := &Atmosphere{Game: this}
 	this.Atmosphere = _xgo_obj2
-	_xgo_obj3 := &Buff{Game: this}
-	this.Buff = _xgo_obj3
-	_xgo_obj4 := &Campaign{Game: this}
-	this.Campaign = _xgo_obj4
-	_xgo_obj5 := &Frame{Game: this}
-	this.Frame = _xgo_obj5
-	_xgo_obj6 := &Health{Game: this}
-	this.Health = _xgo_obj6
-	_xgo_obj7 := &Hud{Game: this}
-	this.Hud = _xgo_obj7
-	_xgo_obj8 := &Notice{Game: this}
-	this.Notice = _xgo_obj8
-	_xgo_obj9 := &Scene{Game: this}
-	this.Scene = _xgo_obj9
-	spx.XGot_Game_Main(this, _xgo_obj0, _xgo_obj1, _xgo_obj2, _xgo_obj3, _xgo_obj4, _xgo_obj5, _xgo_obj6, _xgo_obj7, _xgo_obj8, _xgo_obj9)
+	_xgo_obj3 := &Brain{Game: this}
+	this.Brain = _xgo_obj3
+	_xgo_obj4 := &Buff{Game: this}
+	this.Buff = _xgo_obj4
+	_xgo_obj5 := &Campaign{Game: this}
+	this.Campaign = _xgo_obj5
+	_xgo_obj6 := &Frame{Game: this}
+	this.Frame = _xgo_obj6
+	_xgo_obj7 := &Health{Game: this}
+	this.Health = _xgo_obj7
+	_xgo_obj8 := &HomeDecor{Game: this}
+	this.HomeDecor = _xgo_obj8
+	_xgo_obj9 := &Hud{Game: this}
+	this.Hud = _xgo_obj9
+	_xgo_obj10 := &Notice{Game: this}
+	this.Notice = _xgo_obj10
+	_xgo_obj11 := &Scene{Game: this}
+	this.Scene = _xgo_obj11
+	_xgo_obj12 := &Splash{Game: this}
+	this.Splash = _xgo_obj12
+	_xgo_obj13 := &StageCard{Game: this}
+	this.StageCard = _xgo_obj13
+	_xgo_obj14 := &UIAction{Game: this}
+	this.UIAction = _xgo_obj14
+	_xgo_obj15 := &Wallet{Game: this}
+	this.Wallet = _xgo_obj15
+	spx.XGot_Game_Main(this, _xgo_obj0, _xgo_obj1, _xgo_obj2, _xgo_obj3, _xgo_obj4, _xgo_obj5, _xgo_obj6, _xgo_obj7, _xgo_obj8, _xgo_obj9, _xgo_obj10, _xgo_obj11, _xgo_obj12, _xgo_obj13, _xgo_obj14, _xgo_obj15)
 }
 //line Ability.spx:1
 func (this *Ability) Main() {
@@ -1930,11 +4588,11 @@ func (this *Ability) Main() {
 				seconds = 5
 			}
 //line Ability.spx:9:1
-			this.SetCostume__0(labels[seconds])
+			this.SetCostume__0(labels[seconds] + this.langSuffix())
 //line Ability.spx:10:1
 			if seconds == 0 && this.ticks/12%2 == 0 {
 //line Ability.spx:10:1
-				this.SetCostume__0("ready-lit")
+				this.SetCostume__0("ready-lit" + this.langSuffix())
 			}
 //line Ability.spx:11:1
 			this.SetLayer__0(spx.Front)
@@ -1996,122 +4654,109 @@ func (this *Actor) Main() {
 				protection = this.shield2
 			}
 //line Actor.spx:21:1
-			if k == 0 || k == 1 && protection > 0 && protection%10 < 4 || k == 12 && (this.age[this.slot] >= 30 || this.zombieType[this.slot] == 3) {
+			if k == 0 || k == 5 || k == 1 && protection > 0 && protection%10 < 4 || k == 12 && (this.age[this.slot] >= 30 || this.zombieType[this.slot] == 3) {
 //line Actor.spx:22:1
 				this.Hide()
 			} else {
 //line Actor.spx:24:1
 				this.SetHeading(spx.Right)
 //line Actor.spx:25:1
-				if k == 1 {
+				this.SetSize(1)
 //line Actor.spx:26:1
+				if k == 1 {
+//line Actor.spx:27:1
 					f := this.ticks / 5 % 4
-//line Actor.spx:27:1
-					if this.shotDelay > 10 {
-//line Actor.spx:27:1
+//line Actor.spx:28:1
+					delay := this.shotDelay
+//line Actor.spx:28:1
+					player := "1"
+//line Actor.spx:28:1
+					if this.slot == 191 {
+//line Actor.spx:28:1
+						delay = this.shotDelay2
+//line Actor.spx:28:1
+						player = "2"
+					}
+//line Actor.spx:29:1
+					if delay > this.classShotDelay(this.slot)-3 {
+//line Actor.spx:29:1
 						f = 4
 					} else
-//line Actor.spx:27:1
-					if this.shotDelay > 7 {
-//line Actor.spx:27:1
+//line Actor.spx:29:1
+					if delay > this.classShotDelay(this.slot)-6 {
+//line Actor.spx:29:1
 						f = 5
 					}
-//line Actor.spx:28:1
-					prefix := "plant-"
-//line Actor.spx:28:1
-					if this.slot == 191 {
-//line Actor.spx:28:1
-						prefix = "partner-"
-					}
-//line Actor.spx:29:1
-					if this.slot == 191 {
-//line Actor.spx:29:1
-						f = this.ticks / 5 % 4
-//line Actor.spx:29:1
-						if this.shotDelay2 > 10 {
-//line Actor.spx:29:1
-							f = 4
-						} else
-//line Actor.spx:29:1
-						if this.shotDelay2 > 7 {
-//line Actor.spx:29:1
-							f = 5
-						}
-					}
 //line Actor.spx:30:1
-					this.SetCostume__0(prefix + directions[this.facing[this.slot]] + "-" + digits[f])
+					this.SetCostume__0("hero-" + digits[this.roleOf(this.slot)] + "-" + digits[this.tierOf(this.slot)] + "-p" + player + "-" + directions[this.facing[this.slot]] + "-" + digits[f])
 				}
 //line Actor.spx:32:1
 				if k == 2 {
 //line Actor.spx:33:1
 					f := this.age[this.slot] / 5 % 4
 //line Actor.spx:34:1
-					if this.age[this.slot]%(100+this.zombieType[this.slot]*15) >= 30 && this.age[this.slot]%(100+this.zombieType[this.slot]*15) < 35 {
-//line Actor.spx:34:1
-						f = 4
-					}
-//line Actor.spx:35:1
 					if this.hitFlash[this.slot] > 0 {
-//line Actor.spx:35:1
+//line Actor.spx:34:1
 						f = 5
 					}
-//line Actor.spx:36:1
+//line Actor.spx:35:1
 					if this.dashWindup[this.slot] > 0 {
-//line Actor.spx:36:1
+//line Actor.spx:35:1
 						f = 6
 					}
-//line Actor.spx:37:1
+//line Actor.spx:36:1
 					if this.dashRemaining[this.slot] > 0 {
-//line Actor.spx:37:1
+//line Actor.spx:36:1
 						f = 7
 					}
-//line Actor.spx:38:1
+//line Actor.spx:37:1
 					if this.zombieType[this.slot] == 3 {
 //line Actor.spx:38:1
-						this.SetCostume__0("boss")
-					} else {
+						pose := "idle"
 //line Actor.spx:38:1
+						frame := this.ticks / 10 % 4
+//line Actor.spx:39:1
+						if this.hp[this.slot]*2 <= this.maxHP[this.slot] {
+//line Actor.spx:39:1
+							pose = "rage"
+						}
+//line Actor.spx:40:1
+						if this.dashWindup[this.slot] > 0 {
+//line Actor.spx:40:1
+							pose = "cast"
+//line Actor.spx:40:1
+							frame = this.ticks / 7 % 2
+						}
+//line Actor.spx:41:1
+						if this.hitFlash[this.slot] > 0 {
+//line Actor.spx:41:1
+							pose = "hit"
+//line Actor.spx:41:1
+							frame = 0
+						}
+//line Actor.spx:42:1
+						this.SetCostume__0("boss-" + digits[this.bossTheme] + "-" + pose + "-" + digits[frame])
+					} else {
+//line Actor.spx:43:1
 						this.SetCostume__0("zombie-" + digits[this.zombieType[this.slot]] + "-" + directions[this.facing[this.slot]] + "-" + digits[f])
 					}
 				}
-//line Actor.spx:40:1
+//line Actor.spx:45:1
 				if k == 3 {
-//line Actor.spx:40:1
+//line Actor.spx:45:1
 					this.SetCostume__0("hedge")
 				}
-//line Actor.spx:41:1
+//line Actor.spx:46:1
 				if k == 4 {
-//line Actor.spx:41:1
+//line Actor.spx:46:1
 					this.SetCostume__0("stone")
 				}
-//line Actor.spx:42:1
-				if k == 5 {
-//line Actor.spx:42:1
-					this.SetCostume__0("house")
-				}
-//line Actor.spx:43:1
+//line Actor.spx:47:1
 				if k == 6 {
-//line Actor.spx:44:1
-					if this.rocket[this.slot] {
-//line Actor.spx:45:1
-						if this.incendiary[this.slot] {
-//line Actor.spx:45:1
-							this.SetCostume__0("fire-missile-" + digits[this.ticks%2])
-						} else {
-//line Actor.spx:45:1
-							this.SetCostume__0("missile-" + digits[this.ticks%2])
-						}
-//line Actor.spx:46:1
-						this.SetHeading(90 - math.Atan2(this.vely[this.slot], this.velx[this.slot])*180/math.Pi)
-					} else
 //line Actor.spx:48:1
-					if this.incendiary[this.slot] {
-//line Actor.spx:48:1
-						this.SetCostume__0("fire-seed-" + digits[this.ticks%2])
-					} else {
-//line Actor.spx:48:1
-						this.SetCostume__0("seed-" + digits[this.ticks%2])
-					}
+					this.SetCostume__0("role-shot-" + digits[this.projectileClass[this.slot]] + "-" + digits[this.projectileTier[this.slot]] + "-" + digits[this.ticks%2])
+//line Actor.spx:49:1
+					this.SetHeading(90 - math.Atan2(this.vely[this.slot], this.velx[this.slot])*180/math.Pi)
 				}
 //line Actor.spx:51:1
 				if k == 7 {
@@ -2133,67 +4778,121 @@ func (this *Actor) Main() {
 //line Actor.spx:57:1
 				if k == 9 {
 //line Actor.spx:58:1
-					this.SetCostume__0("mega-" + digits[this.age[this.slot]/2%4])
+					prefix := ""
+//line Actor.spx:58:1
+					if this.projectileTier[this.slot] > 0 {
+//line Actor.spx:58:1
+						prefix = "evo-" + digits[this.projectileTier[this.slot]] + "-"
+					}
 //line Actor.spx:59:1
+					this.SetCostume__0(prefix + "mega-" + digits[this.age[this.slot]/2%4])
+//line Actor.spx:60:1
 					this.SetHeading(float64(this.facing[this.slot] * 90))
 				}
-//line Actor.spx:61:1
-				if k == 10 {
 //line Actor.spx:62:1
+				if k == 10 {
+//line Actor.spx:63:1
 					f := visualAge / 3
-//line Actor.spx:63:1
+//line Actor.spx:64:1
 					if f > 9 {
-//line Actor.spx:63:1
+//line Actor.spx:64:1
 						f = 9
 					}
-//line Actor.spx:64:1
-					this.SetCostume__0("burst-" + digits[f])
-				}
+//line Actor.spx:65:1
+					this.SetCostume__0("role-burst-" + digits[this.projectileClass[this.slot]] + "-" + digits[this.projectileTier[this.slot]] + "-" + digits[f])
 //line Actor.spx:66:1
+					if this.projectileClass[this.slot] == 2 && !this.rocket[this.slot] {
+//line Actor.spx:66:1
+						this.SetSize(0.55)
+					}
+				}
+//line Actor.spx:68:1
 				if k == 11 {
-//line Actor.spx:67:1
+//line Actor.spx:69:1
 					f := this.growth[this.slot] / 10
-//line Actor.spx:68:1
+//line Actor.spx:70:1
 					if f > 4 {
-//line Actor.spx:68:1
+//line Actor.spx:70:1
 						f = 4
 					}
-//line Actor.spx:69:1
+//line Actor.spx:71:1
 					this.SetCostume__0("grow-" + digits[f])
 				}
-//line Actor.spx:71:1
+//line Actor.spx:73:1
 				if k == 12 {
-//line Actor.spx:71:1
+//line Actor.spx:73:1
 					this.SetCostume__0("death-" + digits[this.age[this.slot]/5])
 				}
-//line Actor.spx:72:1
+//line Actor.spx:74:1
 				if k == 13 {
-//line Actor.spx:72:1
+//line Actor.spx:74:1
 					this.SetCostume__0("portal-" + digits[this.age[this.slot]/4%5])
 				}
-//line Actor.spx:73:1
+//line Actor.spx:75:1
 				if k == 14 {
-//line Actor.spx:73:1
+//line Actor.spx:75:1
 					this.SetCostume__0("pickup-" + digits[this.pickupType[this.slot]] + "-" + digits[this.ticks/6%2])
 				}
-//line Actor.spx:74:1
+//line Actor.spx:76:1
 				if k == 15 {
-//line Actor.spx:74:1
+//line Actor.spx:76:1
 					this.SetCostume__0("cherry-burst-" + digits[this.age[this.slot]/4])
 				}
-//line Actor.spx:75:1
+//line Actor.spx:77:1
+				if k == 16 {
+//line Actor.spx:78:1
+					phase := "active"
+//line Actor.spx:78:1
+					if this.age[this.slot] < this.hazardWarmup[this.slot] {
+//line Actor.spx:78:1
+						phase = "warn"
+					}
+//line Actor.spx:79:1
+					this.SetCostume__0("zone-" + digits[this.hazardKind[this.slot]] + "-" + phase + "-" + digits[this.ticks/8%2])
+				}
+//line Actor.spx:81:1
+				if k == 17 {
+//line Actor.spx:81:1
+					this.SetCostume__0("role-cloud-" + digits[this.projectileTier[this.slot]] + "-" + digits[this.age[this.slot]/8%4])
+//line Actor.spx:81:1
+					this.SetSize(float64(42+this.projectileTier[this.slot]*3) / 60)
+				}
+//line Actor.spx:82:1
+				if k == 18 {
+//line Actor.spx:83:1
+					if this.rocket[this.slot] {
+//line Actor.spx:83:1
+						this.SetCostume__0("role-heavy-" + digits[this.projectileTier[this.slot]] + "-" + digits[this.ticks%2])
+					} else {
+//line Actor.spx:83:1
+						this.SetCostume__0("role-shot-2-" + digits[this.projectileTier[this.slot]] + "-" + digits[this.ticks%2])
+					}
+//line Actor.spx:84:1
+					this.SetHeading(float64(this.age[this.slot] * 9))
+				}
+//line Actor.spx:86:1
 				this.SetXpos(this.px[this.slot])
-//line Actor.spx:76:1
+//line Actor.spx:87:1
 				this.SetYpos(this.py[this.slot])
-//line Actor.spx:77:1
+//line Actor.spx:88:1
 				if k == 14 {
-//line Actor.spx:77:1
+//line Actor.spx:88:1
 					this.SetYpos(this.py[this.slot] + math.Sin(float64(this.ticks+this.slot*7)*0.12)*2)
 				}
-//line Actor.spx:78:1
+//line Actor.spx:89:1
+				if k == 18 {
+//line Actor.spx:89:1
+					this.SetYpos(this.py[this.slot] + math.Sin(float64(this.age[this.slot])/float64(this.lobDuration[this.slot])*math.Pi)*38)
+				}
+//line Actor.spx:90:1
 				this.Show()
 			}
-//line Actor.spx:80:1
+//line Actor.spx:92:1
+			if this.frontEnd() {
+//line Actor.spx:92:1
+				this.Hide()
+			}
+//line Actor.spx:93:1
 			this.Wait(0.02)
 		})
 	})
@@ -2260,238 +4959,315 @@ func (this *Atmosphere) Main() {
 //line Atmosphere.spx:29:1
 						if ordinal == this.effect-12 {
 //line Atmosphere.spx:30:1
-							if this.entity[i] == 6 {
-//line Atmosphere.spx:30:1
-								if this.rocket[i] {
-//line Atmosphere.spx:30:1
-									this.SetCostume__0("missile-trail")
-								} else {
-//line Atmosphere.spx:30:1
-									this.SetCostume__0("seed-trail")
-								}
-							} else
-//line Atmosphere.spx:30:1
-							if this.entity[i] == 9 {
-//line Atmosphere.spx:30:1
-								this.SetCostume__0("mega-trail")
-							} else {
-//line Atmosphere.spx:30:1
-								this.SetCostume__0("spore-trail")
-							}
+							prefix := ""
 //line Atmosphere.spx:31:1
-							if this.entity[i] == 6 && this.incendiary[i] {
+							if this.entity[i] != 7 && this.projectileTier[i] > 0 {
 //line Atmosphere.spx:31:1
-								this.SetCostume__0("fire-trail")
+								prefix = "evo-" + []string{"0", "1", "2", "3", "4", "5"}[this.projectileTier[i]] + "-"
 							}
 //line Atmosphere.spx:32:1
-							this.SetXpos(this.px[i] - this.velx[i]*10)
+							if this.entity[i] == 6 {
+//line Atmosphere.spx:32:1
+								if this.rocket[i] {
+//line Atmosphere.spx:32:1
+									this.SetCostume__0(prefix + "missile-trail")
+								} else {
+//line Atmosphere.spx:32:1
+									this.SetCostume__0(prefix + "seed-trail")
+								}
+							} else
+//line Atmosphere.spx:32:1
+							if this.entity[i] == 9 {
+//line Atmosphere.spx:32:1
+								this.SetCostume__0(prefix + "mega-trail")
+							} else {
+//line Atmosphere.spx:32:1
+								this.SetCostume__0("spore-trail")
+							}
 //line Atmosphere.spx:33:1
-							this.SetYpos(this.py[i] - this.vely[i]*10)
+							if this.entity[i] == 6 && this.incendiary[i] {
+//line Atmosphere.spx:33:1
+								this.SetCostume__0(prefix + "fire-trail")
+							}
 //line Atmosphere.spx:34:1
-							this.SetHeading(90 - math.Atan2(this.vely[i], this.velx[i])*180/math.Pi)
+							if this.entity[i] == 6 && this.projectileClass[i] == 1 {
+//line Atmosphere.spx:34:1
+								this.SetCostume__0("spore-trail")
+							}
 //line Atmosphere.spx:35:1
+							this.SetXpos(this.px[i] - this.velx[i]*10)
+//line Atmosphere.spx:36:1
+							this.SetYpos(this.py[i] - this.vely[i]*10)
+//line Atmosphere.spx:37:1
+							this.SetHeading(90 - math.Atan2(this.vely[i], this.velx[i])*180/math.Pi)
+//line Atmosphere.spx:38:1
 							this.Show()
 						}
-//line Atmosphere.spx:37:1
+//line Atmosphere.spx:40:1
 						ordinal++
 					}
 				}
 			}
-//line Atmosphere.spx:41:1
-			if this.effect == 22 && this.entity[1] == 1 {
-//line Atmosphere.spx:42:1
-				this.SetXpos(this.px[1])
-//line Atmosphere.spx:43:1
-				this.SetYpos(this.py[1] - 12)
 //line Atmosphere.spx:44:1
+			if this.effect == 22 && this.entity[1] == 1 {
+//line Atmosphere.spx:45:1
+				this.SetXpos(this.px[1])
+//line Atmosphere.spx:46:1
+				this.SetYpos(this.py[1] - 12)
+//line Atmosphere.spx:47:1
 				this.SetCostume__0(names[this.ticks/4%4])
-//line Atmosphere.spx:45:1
+//line Atmosphere.spx:48:1
 				if this.shield > 0 {
-//line Atmosphere.spx:45:1
+//line Atmosphere.spx:48:1
 					this.SetSize(1.15)
 				} else {
-//line Atmosphere.spx:45:1
+//line Atmosphere.spx:48:1
 					this.SetSize(0.78)
 				}
-//line Atmosphere.spx:46:1
-				this.Show()
-			}
-//line Atmosphere.spx:48:1
-			if this.effect == 23 && this.entity[1] == 1 && this.shotDelay > 9 {
 //line Atmosphere.spx:49:1
-				this.SetCostume__0("muzzle")
-//line Atmosphere.spx:50:1
-				this.SetXpos(this.px[1] + this.vx(this.facing[1])*19)
-//line Atmosphere.spx:51:1
-				this.SetYpos(this.py[1] + this.vy(this.facing[1])*19)
-//line Atmosphere.spx:52:1
-				this.SetHeading(float64(this.facing[1] * 90))
-//line Atmosphere.spx:53:1
-				this.SetSize(0.65 + float64(this.shotDelay-9)*0.08)
-//line Atmosphere.spx:54:1
 				this.Show()
 			}
+//line Atmosphere.spx:51:1
+			if this.effect == 23 && this.entity[1] == 1 && this.shotDelay > 9 {
+//line Atmosphere.spx:52:1
+				this.SetCostume__0("muzzle")
+//line Atmosphere.spx:53:1
+				this.SetXpos(this.px[1] + this.vx(this.facing[1])*19)
+//line Atmosphere.spx:54:1
+				this.SetYpos(this.py[1] + this.vy(this.facing[1])*19)
+//line Atmosphere.spx:55:1
+				this.SetHeading(float64(this.facing[1] * 90))
 //line Atmosphere.spx:56:1
-			if this.effect == 24 {
+				this.SetSize(0.65 + float64(this.shotDelay-9)*0.08)
 //line Atmosphere.spx:57:1
-				if this.score < previousScore {
-//line Atmosphere.spx:57:1
-					previousScore = this.score
-//line Atmosphere.spx:57:1
-					feedbackUntil = 0
-				}
-//line Atmosphere.spx:58:1
-				if this.score > previousScore {
+				this.Show()
+			}
 //line Atmosphere.spx:59:1
+			if this.effect == 24 {
+//line Atmosphere.spx:60:1
+				if this.score < previousScore {
+//line Atmosphere.spx:60:1
 					previousScore = this.score
 //line Atmosphere.spx:60:1
+					feedbackUntil = 0
+				}
+//line Atmosphere.spx:61:1
+				if this.score > previousScore {
+//line Atmosphere.spx:62:1
+					previousScore = this.score
+//line Atmosphere.spx:63:1
 					feedbackUntil = this.ticks + 28
 				}
-//line Atmosphere.spx:62:1
-				if this.ticks < feedbackUntil && this.state == 0 {
-//line Atmosphere.spx:63:1
-					this.SetCostume__0("reward")
-//line Atmosphere.spx:64:1
-					this.SetXpos(this.px[1])
 //line Atmosphere.spx:65:1
-					this.SetYpos(this.py[1] + 22 + float64(28-feedbackUntil+this.ticks)*0.4)
+				if this.ticks < feedbackUntil && this.state == 0 {
 //line Atmosphere.spx:66:1
-					this.SetLayer__0(spx.Front)
+					this.SetCostume__0("reward")
 //line Atmosphere.spx:67:1
+					this.SetXpos(this.px[1])
+//line Atmosphere.spx:68:1
+					this.SetYpos(this.py[1] + 22 + float64(28-feedbackUntil+this.ticks)*0.4)
+//line Atmosphere.spx:69:1
+					this.SetLayer__0(spx.Front)
+//line Atmosphere.spx:70:1
 					this.Show()
 				}
 			}
-//line Atmosphere.spx:70:1
-			if this.effect == 25 {
-//line Atmosphere.spx:71:1
-				this.SetCostume__0(bars[10-(this.ultimateCooldown+24)/25])
-//line Atmosphere.spx:72:1
-				this.SetXpos(-112)
 //line Atmosphere.spx:73:1
-				this.SetYpos(-155)
+			if this.effect == 25 {
 //line Atmosphere.spx:74:1
-				this.Show()
-			}
+				this.SetCostume__0(bars[this.ultimateBar()])
+//line Atmosphere.spx:75:1
+				this.SetXpos(-112)
 //line Atmosphere.spx:76:1
-			if this.effect == 26 && this.shield > 0 && this.entity[1] == 1 {
+				this.SetYpos(-155)
 //line Atmosphere.spx:77:1
-				this.SetCostume__0("shield")
-//line Atmosphere.spx:78:1
-				this.SetXpos(this.px[1])
-//line Atmosphere.spx:79:1
-				this.SetYpos(this.py[1])
-//line Atmosphere.spx:80:1
-				this.SetSize(0.9 + math.Sin(float64(this.ticks)*0.15)*0.04)
-//line Atmosphere.spx:81:1
 				this.Show()
 			}
+//line Atmosphere.spx:79:1
+			if this.effect == 26 && this.shield > 0 && this.entity[1] == 1 {
+//line Atmosphere.spx:80:1
+				this.SetCostume__0("shield")
+//line Atmosphere.spx:81:1
+				this.SetXpos(this.px[1])
+//line Atmosphere.spx:82:1
+				this.SetYpos(this.py[1])
 //line Atmosphere.spx:83:1
-			if this.effect >= 27 && this.effect < 30 {
+				this.SetSize(0.9 + math.Sin(float64(this.ticks)*0.15)*0.04)
 //line Atmosphere.spx:84:1
+				this.Show()
+			}
+//line Atmosphere.spx:86:1
+			if this.effect >= 27 && this.effect < 30 {
+//line Atmosphere.spx:87:1
 				i := this.zombieSlots[this.effect-27]
-//line Atmosphere.spx:85:1
+//line Atmosphere.spx:88:1
 				if i > 0 && this.entity[i] == 2 && this.zombieType[i] == 2 && (this.dashWindup[i] > 0 || this.dashRemaining[i] > 0) {
-//line Atmosphere.spx:86:1
+//line Atmosphere.spx:89:1
 					if this.dashWindup[i] > 0 {
-//line Atmosphere.spx:86:1
+//line Atmosphere.spx:89:1
 						this.SetCostume__0("dash-warning")
 					} else {
-//line Atmosphere.spx:86:1
+//line Atmosphere.spx:89:1
 						this.SetCostume__0("dash-trail")
 					}
-//line Atmosphere.spx:87:1
+//line Atmosphere.spx:90:1
 					offset := 36.0
-//line Atmosphere.spx:87:1
+//line Atmosphere.spx:90:1
 					if this.dashRemaining[i] > 0 {
-//line Atmosphere.spx:87:1
+//line Atmosphere.spx:90:1
 						offset = -36
 					}
-//line Atmosphere.spx:88:1
-					this.SetXpos(this.px[i] + this.vx(this.facing[i])*offset)
-//line Atmosphere.spx:89:1
-					this.SetYpos(this.py[i] + this.vy(this.facing[i])*offset)
-//line Atmosphere.spx:90:1
-					this.SetHeading(float64(this.facing[i] * 90))
 //line Atmosphere.spx:91:1
-					this.SetSize(1)
+					this.SetXpos(this.px[i] + this.vx(this.facing[i])*offset)
 //line Atmosphere.spx:92:1
+					this.SetYpos(this.py[i] + this.vy(this.facing[i])*offset)
+//line Atmosphere.spx:93:1
+					this.SetHeading(float64(this.facing[i] * 90))
+//line Atmosphere.spx:94:1
+					this.SetSize(1)
+//line Atmosphere.spx:95:1
 					this.Show()
 				}
 			}
-//line Atmosphere.spx:95:1
+//line Atmosphere.spx:98:1
 			if this.effect == 30 && this.state == 0 && this.upgradeFlash > 0 {
-//line Atmosphere.spx:96:1
+//line Atmosphere.spx:99:1
 				if this.upgradeFlash > 0 {
-//line Atmosphere.spx:96:1
+//line Atmosphere.spx:99:1
 					this.SetCostume__0("upgrade")
 				} else
-//line Atmosphere.spx:96:1
+//line Atmosphere.spx:99:1
 				if this.weaponLevel == 1 {
-//line Atmosphere.spx:96:1
+//line Atmosphere.spx:99:1
 					this.SetCostume__0("weapon-ready")
 				} else
-//line Atmosphere.spx:97:1
+//line Atmosphere.spx:100:1
 				if this.kills == 0 {
-//line Atmosphere.spx:97:1
+//line Atmosphere.spx:100:1
 					this.SetCostume__0("weapon-0")
 				} else
-//line Atmosphere.spx:97:1
+//line Atmosphere.spx:100:1
 				if this.kills == 1 {
-//line Atmosphere.spx:97:1
+//line Atmosphere.spx:100:1
 					this.SetCostume__0("weapon-1")
 				} else {
-//line Atmosphere.spx:97:1
+//line Atmosphere.spx:100:1
 					this.SetCostume__0("weapon-2")
 				}
-//line Atmosphere.spx:99:1
-				this.SetSize(1)
-//line Atmosphere.spx:100:1
-				this.SetHeading(spx.Right)
-//line Atmosphere.spx:101:1
-				this.SetXpos(0)
 //line Atmosphere.spx:102:1
-				this.SetYpos(70)
+				this.SetSize(1)
 //line Atmosphere.spx:103:1
-				this.SetLayer__0(spx.Front)
+				this.SetHeading(spx.Right)
 //line Atmosphere.spx:104:1
+				this.SetXpos(0)
+//line Atmosphere.spx:105:1
+				this.SetYpos(70)
+//line Atmosphere.spx:106:1
+				this.SetLayer__0(spx.Front)
+//line Atmosphere.spx:107:1
 				this.Show()
 			}
-//line Atmosphere.spx:106:1
-			if this.effect >= 31 && this.entity[1] == 1 && this.state == 0 {
-//line Atmosphere.spx:107:1
-				this.SetHeading(spx.Right)
-//line Atmosphere.spx:108:1
-				this.SetSize(1)
 //line Atmosphere.spx:109:1
-				this.SetXpos(this.px[1])
+			if this.effect >= 31 && this.entity[1] == 1 && this.state == 0 {
 //line Atmosphere.spx:110:1
+				this.SetHeading(spx.Right)
+//line Atmosphere.spx:111:1
+				this.SetSize(1)
+//line Atmosphere.spx:112:1
+				this.SetXpos(this.px[1])
+//line Atmosphere.spx:113:1
 				this.SetYpos(this.py[1])
-//line Atmosphere.spx:111:1
+//line Atmosphere.spx:114:1
 				if this.effect == 31 && this.shieldBuff > 0 && this.shieldCharges > 0 {
-//line Atmosphere.spx:111:1
+//line Atmosphere.spx:114:1
 					this.SetCostume__0("nut-shield")
-//line Atmosphere.spx:111:1
+//line Atmosphere.spx:114:1
 					this.Show()
 				}
-//line Atmosphere.spx:112:1
+//line Atmosphere.spx:115:1
 				if this.effect == 32 && this.speedBuff > 0 {
-//line Atmosphere.spx:112:1
+//line Atmosphere.spx:115:1
 					this.SetCostume__0("speed-wake")
-//line Atmosphere.spx:112:1
+//line Atmosphere.spx:115:1
 					this.SetHeading(float64(this.facing[1] * 90))
-//line Atmosphere.spx:112:1
+//line Atmosphere.spx:115:1
 					this.Show()
 				}
-//line Atmosphere.spx:113:1
+//line Atmosphere.spx:116:1
 				if this.effect == 33 && this.pepperBuff > 0 {
-//line Atmosphere.spx:113:1
+//line Atmosphere.spx:116:1
 					this.SetCostume__0("pepper-aura")
-//line Atmosphere.spx:113:1
+//line Atmosphere.spx:116:1
 					this.Show()
 				}
 			}
-//line Atmosphere.spx:115:1
+//line Atmosphere.spx:118:1
+			if this.effect == 25 && this.language == 1 {
+//line Atmosphere.spx:118:1
+				this.SetCostume__0(bars[this.ultimateBar()] + this.langSuffix())
+			}
+//line Atmosphere.spx:119:1
+			if this.effect == 30 && this.state == 0 && this.upgradeFlash > 0 && this.language == 1 {
+//line Atmosphere.spx:119:1
+				this.SetCostume__0("upgrade" + this.langSuffix())
+			}
+//line Atmosphere.spx:120:1
+			if this.frontEnd() || this.effect == 25 {
+//line Atmosphere.spx:120:1
+				this.Hide()
+			}
+//line Atmosphere.spx:121:1
 			this.Wait(0.04)
+		})
+	})
+}
+//line Brain.spx:2
+func (this *Brain) Main() {
+//line Brain.spx:2:1
+	this.OnStart(func() {
+//line Brain.spx:3:1
+		spx.Forever(func() {
+//line Brain.spx:4:1
+			target := 0
+//line Brain.spx:5:1
+			for
+//line Brain.spx:5:1
+			i := 2; i < 191;
+//line Brain.spx:5:1
+			i++ {
+				spx.Sched()
+//line Brain.spx:5:1
+				if this.entity[i] == 5 {
+//line Brain.spx:5:1
+					target = i
+				}
+			}
+//line Brain.spx:6:1
+			if target == 0 || this.frontEnd() {
+//line Brain.spx:6:1
+				this.Hide()
+			} else {
+//line Brain.spx:7:1
+				frame := strconv.Itoa(this.ticks / 10 % 4)
+//line Brain.spx:8:1
+				if this.hp[target] > 0 {
+//line Brain.spx:9:1
+					strength := (this.hp[target]*10 + 149) / 150
+//line Brain.spx:10:1
+					this.SetCostume__0("brain-barrier-" + strconv.Itoa(strength) + "-" + frame)
+				} else {
+//line Brain.spx:11:1
+					this.SetCostume__0("brain-open-" + frame)
+				}
+//line Brain.spx:12:1
+				this.SetXpos(this.px[target])
+//line Brain.spx:12:1
+				this.SetYpos(this.py[target])
+//line Brain.spx:12:1
+				this.Show()
+			}
+//line Brain.spx:14:1
+			this.Wait(0.02)
 		})
 	})
 }
@@ -2531,21 +5307,21 @@ func (this *Buff) Main() {
 //line Buff.spx:15:1
 				if this.panel == 0 && this.shieldBuff > 0 && this.shieldCharges > 0 {
 //line Buff.spx:16:1
-					this.SetCostume__0("shield-" + digits[this.shieldCharges] + "-" + digits[(this.shieldBuff+49)/50])
+					this.SetCostume__0("shield-" + digits[this.shieldCharges] + "-" + digits[(this.shieldBuff+49)/50] + this.langSuffix())
 //line Buff.spx:17:1
 					this.Show()
 				}
 //line Buff.spx:19:1
 				if this.panel == 1 && this.speedBuff > 0 {
 //line Buff.spx:19:1
-					this.SetCostume__0("speed-" + digits[(this.speedBuff+49)/50])
+					this.SetCostume__0("speed-" + digits[(this.speedBuff+49)/50] + this.langSuffix())
 //line Buff.spx:19:1
 					this.Show()
 				}
 //line Buff.spx:20:1
 				if this.panel == 2 && this.pepperBuff > 0 {
 //line Buff.spx:20:1
-					this.SetCostume__0("pepper-" + digits[(this.pepperBuff+49)/50])
+					this.SetCostume__0("pepper-" + digits[(this.pepperBuff+49)/50] + this.langSuffix())
 //line Buff.spx:20:1
 					this.Show()
 				}
@@ -2556,7 +5332,7 @@ func (this *Buff) Main() {
 //line Buff.spx:23:1
 					this.SetYpos(101)
 //line Buff.spx:24:1
-					this.SetCostume__0("picked-" + digits[this.lastPickup])
+					this.SetCostume__0("picked-" + digits[this.lastPickup] + this.langSuffix())
 //line Buff.spx:25:1
 					this.Show()
 				}
@@ -2594,7 +5370,7 @@ func (this *Campaign) Main() {
 //line Campaign.spx:10:1
 			this.Hide()
 //line Campaign.spx:11:1
-			if this.state != 1 {
+			if !this.frontEnd() {
 //line Campaign.spx:12:1
 				if this.part < 2 {
 //line Campaign.spx:13:1
@@ -2617,7 +5393,7 @@ func (this *Campaign) Main() {
 //line Campaign.spx:16:1
 					if this.part == 0 || this.twoPlayers {
 //line Campaign.spx:17:1
-						this.SetCostume__0("p" + strconv.Itoa(this.part+1) + "-" + strconv.Itoa(life) + "-" + strconv.Itoa((cooldown+49)/50))
+						this.SetCostume__0("p" + strconv.Itoa(this.part+1) + "-" + strconv.Itoa(life) + "-" + strconv.Itoa((cooldown+49)/50) + this.langSuffix())
 //line Campaign.spx:18:1
 						this.Show()
 					}
@@ -2625,7 +5401,7 @@ func (this *Campaign) Main() {
 //line Campaign.spx:21:1
 				if this.part == 2 {
 //line Campaign.spx:22:1
-					this.SetCostume__0("stage-" + strconv.Itoa(this.level) + "-" + strconv.Itoa(this.stageKills))
+					this.SetCostume__0("stage-" + strconv.Itoa(this.level) + "-" + strconv.Itoa(this.stageKills) + this.langSuffix())
 //line Campaign.spx:23:1
 					this.SetXpos(105)
 //line Campaign.spx:23:1
@@ -2638,7 +5414,7 @@ func (this *Campaign) Main() {
 //line Campaign.spx:26:1
 					value := (this.hp[this.bossSlot]*10 + this.maxHP[this.bossSlot] - 1) / this.maxHP[this.bossSlot]
 //line Campaign.spx:27:1
-					this.SetCostume__0("boss-" + strconv.Itoa(value))
+					this.SetCostume__0("boss-" + strconv.Itoa(this.bossTheme) + "-" + strconv.Itoa(value) + this.langSuffix())
 //line Campaign.spx:28:1
 					this.SetXpos(0)
 //line Campaign.spx:28:1
@@ -2649,11 +5425,11 @@ func (this *Campaign) Main() {
 //line Campaign.spx:30:1
 				if this.part == 4 && this.bossStarted && !this.bossDefeated && this.bossSlot > 0 && this.dashWindup[this.bossSlot] > 0 {
 //line Campaign.spx:31:1
-					this.SetCostume__0("warning")
+					this.SetCostume__0("warning-" + strconv.Itoa(this.bossTheme) + this.langSuffix())
 //line Campaign.spx:31:1
-					this.SetXpos(this.px[this.bossSlot])
+					this.SetXpos(0)
 //line Campaign.spx:31:1
-					this.SetYpos(this.py[this.bossSlot] + 44)
+					this.SetYpos(50)
 //line Campaign.spx:31:1
 					this.Show()
 				}
@@ -2675,6 +5451,21 @@ func (this *Frame) Main() {
 		this.SetYpos(0)
 //line Frame.spx:4:1
 		this.Show()
+//line Frame.spx:5:1
+		spx.Forever(func() {
+//line Frame.spx:6:1
+			this.SetCostume__0("frame" + this.langSuffix())
+//line Frame.spx:7:1
+			if this.frontEnd() {
+//line Frame.spx:7:1
+				this.Hide()
+			} else {
+//line Frame.spx:7:1
+				this.Show()
+			}
+//line Frame.spx:8:1
+			this.Wait(0.1)
+		})
 	})
 }
 //line Health.spx:3
@@ -2707,26 +5498,83 @@ func (this *Health) Main() {
 //line Health.spx:12:1
 			this.Hide()
 //line Health.spx:13:1
-			if i > 0 && this.entity[i] == 2 && this.zombieType[i] != 3 {
+			if !this.frontEnd() && i > 0 && this.entity[i] == 2 && this.zombieType[i] != 3 {
 //line Health.spx:14:1
-				this.SetCostume__0("hp-" + digits[this.zombieType[i]] + "-" + digits[this.hp[i]])
+				total := 1
+//line Health.spx:14:1
+				if this.zombieType[i] == 0 {
+//line Health.spx:14:1
+					total = 5
+				}
+//line Health.spx:14:1
+				if this.zombieType[i] == 2 {
+//line Health.spx:14:1
+					total = 3
+				}
 //line Health.spx:15:1
-				this.SetXpos(this.px[i])
+				value := (this.hp[i]*total + this.maxHP[i] - 1) / this.maxHP[i]
 //line Health.spx:16:1
+				this.SetCostume__0("hp-" + digits[this.zombieType[i]] + "-" + digits[value])
+//line Health.spx:17:1
+				this.SetXpos(this.px[i])
+//line Health.spx:18:1
 				this.SetYpos(this.py[i] + 26)
-//line Health.spx:17:1
+//line Health.spx:19:1
 				if this.hitFlash[i] > 0 {
-//line Health.spx:17:1
+//line Health.spx:19:1
 					this.SetSize(1.12)
 				} else {
-//line Health.spx:17:1
+//line Health.spx:19:1
 					this.SetSize(1)
 				}
-//line Health.spx:18:1
+//line Health.spx:20:1
 				this.Show()
 			}
-//line Health.spx:20:1
+//line Health.spx:22:1
 			this.Wait(0.02)
+		})
+	})
+}
+//line HomeDecor.spx:2
+func (this *HomeDecor) Main() {
+//line HomeDecor.spx:2:1
+	this.OnStart(func() {
+//line HomeDecor.spx:3:1
+		this.Hide()
+//line HomeDecor.spx:4:1
+		for
+//line HomeDecor.spx:4:1
+		n := 0; n < 18;
+//line HomeDecor.spx:4:1
+		n++ {
+			spx.Sched()
+//line HomeDecor.spx:4:1
+			this.Clone__1(n)
+		}
+	})
+//line HomeDecor.spx:6:1
+	this.OnCloned__1(func(data any) {
+//line HomeDecor.spx:7:1
+		this.particle = data.(int)
+//line HomeDecor.spx:8:1
+		spx.Forever(func() {
+//line HomeDecor.spx:9:1
+			this.Hide()
+//line HomeDecor.spx:10:1
+			if this.state == 6 {
+//line HomeDecor.spx:11:1
+				this.SetCostume__0("mote")
+//line HomeDecor.spx:12:1
+				this.SetXpos(float64(this.particle*71%450-225) + math.Sin(float64(this.uiTicks+this.particle*37)*0.014)*14)
+//line HomeDecor.spx:13:1
+				this.SetYpos(float64(this.particle*47%290-145) + math.Cos(float64(this.uiTicks+this.particle*23)*0.017)*11)
+//line HomeDecor.spx:14:1
+				this.SetSize(0.5 + (1+math.Sin(float64(this.uiTicks+this.particle*31)*0.05))*0.4)
+//line HomeDecor.spx:15:1
+				this.Show()
+			}
+//line HomeDecor.spx:17:1
+			this.Wait(0.04)
 		})
 	})
 }
@@ -2834,7 +5682,7 @@ func (this *Hud) Main() {
 //line Hud.spx:29:1
 			this.SetCostume__0(names[value])
 //line Hud.spx:30:1
-			if this.bossStarted && !this.bossDefeated {
+			if this.frontEnd() || this.bossStarted && !this.bossDefeated {
 //line Hud.spx:30:1
 				this.Hide()
 			} else {
@@ -2857,65 +5705,109 @@ func (this *Notice) Main() {
 //line Notice.spx:4:1
 		this.SetYpos(0)
 //line Notice.spx:5:1
-		spx.Forever(func() {
+		previous := -100
 //line Notice.spx:6:1
-			if this.state == 1 {
+		wasPaused := false
 //line Notice.spx:7:1
+		spx.Forever(func() {
+//line Notice.spx:8:1
+			if this.state == 5 {
+//line Notice.spx:9:1
 				mode := 1
-//line Notice.spx:7:1
-				if this.twoPlayers {
-//line Notice.spx:7:1
+//line Notice.spx:9:1
+				if this.checkpointCoop {
+//line Notice.spx:9:1
 					mode = 2
 				}
-//line Notice.spx:8:1
-				this.SetCostume__0("menu-" + strconv.Itoa(mode) + "-" + strconv.Itoa(this.selectedLevel))
-//line Notice.spx:9:1
-				this.Show()
-			} else
 //line Notice.spx:10:1
-			if this.state == 2 {
-//line Notice.spx:10:1
-				this.SetCostume__0("clear")
+				this.SetCostume__0("savepanel-" + strconv.Itoa(mode) + "-" + strconv.Itoa(this.checkpointLevel) + this.langSuffix())
 //line Notice.spx:10:1
 				this.Show()
 			} else
 //line Notice.spx:11:1
-			if this.state == 3 {
-//line Notice.spx:11:1
-				this.SetCostume__0("win")
-//line Notice.spx:11:1
-				this.Show()
-			} else
+			if this.state == 4 {
 //line Notice.spx:12:1
-			if this.state == -1 {
-//line Notice.spx:13:1
-				this.SetCostume__0("lose")
-//line Notice.spx:14:1
+				this.SetCostume__0("class-lab-" + strconv.Itoa(this.labClass) + "-" + strconv.Itoa(this.routeTier(this.labClass)) + this.langSuffix())
+//line Notice.spx:12:1
 				this.Show()
 			} else
+//line Notice.spx:13:1
+			if this.state == 1 {
+//line Notice.spx:14:1
+				this.SetCostume__0("stage-view-" + strconv.Itoa(this.selectedLevel) + this.langSuffix())
 //line Notice.spx:15:1
-			if this.paused {
+				this.Show()
+			} else
 //line Notice.spx:16:1
-				this.SetCostume__0("pause")
+			if this.state == 6 {
+//line Notice.spx:16:1
+				this.SetCostume__0("home" + this.langSuffix())
+//line Notice.spx:16:1
+				this.Show()
+			} else
+//line Notice.spx:17:1
+			if this.state == 7 {
+//line Notice.spx:17:1
+				this.SetCostume__0("class-select" + this.langSuffix())
 //line Notice.spx:17:1
 				this.Show()
-			} else {
+			} else
 //line Notice.spx:18:1
+			if this.state == 8 {
+//line Notice.spx:18:1
+				this.SetCostume__0("settings" + this.langSuffix())
+//line Notice.spx:18:1
+				this.Show()
+			} else
+//line Notice.spx:19:1
+			if this.state == 2 {
+//line Notice.spx:19:1
+				this.SetCostume__0("clear" + this.langSuffix())
+//line Notice.spx:19:1
+				this.Show()
+			} else
+//line Notice.spx:20:1
+			if this.state == 3 {
+//line Notice.spx:20:1
+				this.SetCostume__0("win" + this.langSuffix())
+//line Notice.spx:20:1
+				this.Show()
+			} else
+//line Notice.spx:21:1
+			if this.state == -1 {
+//line Notice.spx:22:1
+				this.SetCostume__0("lose" + this.langSuffix())
+//line Notice.spx:23:1
+				this.Show()
+			} else
+//line Notice.spx:24:1
+			if this.paused {
+//line Notice.spx:25:1
+				this.SetCostume__0("pause" + this.langSuffix())
+//line Notice.spx:26:1
+				this.Show()
+			} else {
+//line Notice.spx:27:1
 				this.Hide()
 			}
-//line Notice.spx:19:1
-			this.SetLayer__0(spx.Front)
-//line Notice.spx:20:1
+//line Notice.spx:28:1
+			if this.state != previous || this.paused != wasPaused {
+//line Notice.spx:29:1
+				this.SetLayer__0(spx.Front)
+//line Notice.spx:30:1
+				previous = this.state
+//line Notice.spx:30:1
+				wasPaused = this.paused
+			}
+//line Notice.spx:32:1
 			this.Wait(0.1)
 		})
 	})
 }
-//line Scene.spx:1
+//line Scene.spx:2
 func (this *Scene) Main() {
-//line Scene.spx:1:1
-	this.OnStart(func() {
 //line Scene.spx:2:1
-		names := []string{"scene-1", "scene-2", "scene-3"}
+	this.OnStart(func() {
 //line Scene.spx:3:1
 		this.SetXpos(0)
 //line Scene.spx:3:1
@@ -2930,16 +5822,517 @@ func (this *Scene) Main() {
 				current = this.selectedLevel
 			}
 //line Scene.spx:6:1
-			if current < 1 || current > 3 {
+			if current < 1 || current > 20 {
 //line Scene.spx:6:1
 				current = 1
 			}
 //line Scene.spx:7:1
-			this.SetCostume__0(names[current-1])
+			this.SetCostume__0("scene-" + strconv.Itoa(current))
 //line Scene.spx:8:1
 			this.Show()
 //line Scene.spx:9:1
+			if this.frontEnd() {
+//line Scene.spx:9:1
+				this.Hide()
+			}
+//line Scene.spx:10:1
 			this.Wait(0.1)
+		})
+	})
+}
+//line Splash.spx:1
+func (this *Splash) Main() {
+//line Splash.spx:1:1
+	this.OnStart(func() {
+//line Splash.spx:2:1
+		this.SetCostume__0("splash")
+//line Splash.spx:3:1
+		this.SetSize(1.04)
+//line Splash.spx:4:1
+		spx.Forever(func() {
+//line Splash.spx:5:1
+			if this.frontEnd() {
+//line Splash.spx:6:1
+				this.SetXpos(math.Sin(float64(this.uiTicks)*0.006) * 3)
+//line Splash.spx:7:1
+				this.SetYpos(math.Cos(float64(this.uiTicks)*0.005) * 2)
+//line Splash.spx:8:1
+				this.Show()
+			} else {
+//line Splash.spx:9:1
+				this.Hide()
+			}
+//line Splash.spx:10:1
+			this.Wait(0.04)
+		})
+	})
+}
+//line StageCard.spx:3
+func (this *StageCard) Main() {
+//line StageCard.spx:3:1
+	this.OnStart(func() {
+//line StageCard.spx:4:1
+		this.Hide()
+//line StageCard.spx:5:1
+		for
+//line StageCard.spx:5:1
+		n := 1; n <= 20;
+//line StageCard.spx:5:1
+		n++ {
+			spx.Sched()
+//line StageCard.spx:5:1
+			this.Clone__1(n)
+		}
+	})
+//line StageCard.spx:7:1
+	this.OnClick(func() {
+//line StageCard.spx:8:1
+		if this.state == 1 && this.stageNumber >= 1 {
+//line StageCard.spx:9:1
+			this.selectedLevel = this.stageNumber
+//line StageCard.spx:10:1
+			if !this.canStartStage(this.stageNumber) {
+//line StageCard.spx:10:1
+				this.evolveNotice = 9
+//line StageCard.spx:10:1
+				this.metaNoticeTicks = 150
+			} else {
+//line StageCard.spx:10:1
+				this.evolveNotice = 0
+			}
+		}
+	})
+//line StageCard.spx:13:1
+	this.OnCloned__1(func(data any) {
+//line StageCard.spx:14:1
+		this.stageNumber = data.(int)
+//line StageCard.spx:15:1
+		spx.Forever(func() {
+//line StageCard.spx:16:1
+			this.Hide()
+//line StageCard.spx:17:1
+			if this.state == 1 {
+//line StageCard.spx:18:1
+				status := 1
+//line StageCard.spx:19:1
+				if this.stageNumber > this.unlockedLevel() {
+//line StageCard.spx:19:1
+					status = 0
+				}
+//line StageCard.spx:20:1
+				if this.stageNumber <= this.clearedLevel {
+//line StageCard.spx:20:1
+					status = 3
+				}
+//line StageCard.spx:21:1
+				if this.stageNumber == this.selectedLevel {
+//line StageCard.spx:21:1
+					if status == 0 {
+//line StageCard.spx:21:1
+						status = 4
+					} else {
+//line StageCard.spx:21:1
+						status = 2
+					}
+				}
+//line StageCard.spx:22:1
+				this.SetCostume__0("stage-" + strconv.Itoa(this.stageNumber) + "-" + strconv.Itoa(status) + this.langSuffix())
+//line StageCard.spx:23:1
+				this.SetXpos(float64(-124 + (this.stageNumber-1)%5*76))
+//line StageCard.spx:24:1
+				this.SetYpos(float64(76 - (this.stageNumber-1)/5*52))
+//line StageCard.spx:25:1
+				this.Show()
+			}
+//line StageCard.spx:27:1
+			this.SetLayer__0(spx.Front)
+//line StageCard.spx:28:1
+			this.Wait(0.04)
+		})
+	})
+}
+//line UIAction.spx:3
+func (this *UIAction) Main() {
+//line UIAction.spx:3:1
+	this.OnStart(func() {
+//line UIAction.spx:4:1
+		this.Hide()
+//line UIAction.spx:5:1
+		for
+//line UIAction.spx:5:1
+		n := 0; n < 7;
+//line UIAction.spx:5:1
+		n++ {
+			spx.Sched()
+//line UIAction.spx:5:1
+			this.Clone__1(n)
+		}
+	})
+//line UIAction.spx:7:1
+	this.OnClick(func() {
+//line UIAction.spx:7:1
+		this.uiAction(this.action)
+	})
+//line UIAction.spx:8:1
+	this.OnCloned__1(func(data any) {
+//line UIAction.spx:9:1
+		this.action = data.(int)
+//line UIAction.spx:10:1
+		spx.Forever(func() {
+//line UIAction.spx:11:1
+			this.Hide()
+//line UIAction.spx:12:1
+			if this.state == 6 && this.action < 4 {
+//line UIAction.spx:13:1
+				active := 0
+//line UIAction.spx:13:1
+				if this.action == this.homeChoice {
+//line UIAction.spx:13:1
+					active = 1
+				}
+//line UIAction.spx:14:1
+				this.SetCostume__0("home-" + strconv.Itoa(this.action) + "-" + strconv.Itoa(active) + this.langSuffix())
+//line UIAction.spx:15:1
+				this.SetXpos(-125)
+//line UIAction.spx:15:1
+				this.SetYpos(float64(40 - this.action*45))
+//line UIAction.spx:15:1
+				this.Show()
+			}
+//line UIAction.spx:17:1
+			if this.state == 1 && this.action < 2 {
+//line UIAction.spx:18:1
+				if this.action == 0 {
+//line UIAction.spx:18:1
+					this.SetCostume__0("stage-start" + this.langSuffix())
+//line UIAction.spx:18:1
+					this.SetXpos(85)
+				} else {
+//line UIAction.spx:18:1
+					this.SetCostume__0("back" + this.langSuffix())
+//line UIAction.spx:18:1
+					this.SetXpos(-130)
+				}
+//line UIAction.spx:19:1
+				this.SetYpos(-148)
+//line UIAction.spx:19:1
+				this.Show()
+			}
+//line UIAction.spx:21:1
+			if this.state == 7 {
+//line UIAction.spx:22:1
+				if this.action < 3 {
+//line UIAction.spx:23:1
+					bits := 0
+//line UIAction.spx:23:1
+					if this.pendingClass == this.action {
+//line UIAction.spx:23:1
+						bits++
+					}
+//line UIAction.spx:23:1
+					if this.twoPlayers && this.pendingClass2 == this.action {
+//line UIAction.spx:23:1
+						bits += 2
+					}
+//line UIAction.spx:24:1
+					this.SetCostume__0("class-" + strconv.Itoa(this.action) + "-" + strconv.Itoa(this.routeTier(this.action)) + "-" + strconv.Itoa(bits) + this.langSuffix())
+//line UIAction.spx:25:1
+					this.SetXpos(float64((this.action - 1) * 145))
+//line UIAction.spx:25:1
+					this.SetYpos(12)
+//line UIAction.spx:25:1
+					this.Show()
+				}
+//line UIAction.spx:27:1
+				mode := 1
+//line UIAction.spx:27:1
+				if this.twoPlayers {
+//line UIAction.spx:27:1
+					mode = 2
+				}
+//line UIAction.spx:28:1
+				if this.action == 3 {
+//line UIAction.spx:28:1
+					this.SetCostume__0("mode-" + strconv.Itoa(mode) + this.langSuffix())
+//line UIAction.spx:28:1
+					this.SetXpos(-100)
+//line UIAction.spx:28:1
+					this.SetYpos(-101)
+//line UIAction.spx:28:1
+					this.Show()
+				}
+//line UIAction.spx:29:1
+				if this.action == 4 && this.twoPlayers {
+//line UIAction.spx:29:1
+					this.SetCostume__0("member-" + strconv.Itoa(this.classMember+1) + this.langSuffix())
+//line UIAction.spx:29:1
+					this.SetXpos(100)
+//line UIAction.spx:29:1
+					this.SetYpos(-101)
+//line UIAction.spx:29:1
+					this.Show()
+				}
+//line UIAction.spx:30:1
+				if this.action == 5 {
+//line UIAction.spx:30:1
+					this.SetCostume__0("battle" + this.langSuffix())
+//line UIAction.spx:30:1
+					this.SetXpos(85)
+//line UIAction.spx:30:1
+					this.SetYpos(-150)
+//line UIAction.spx:30:1
+					this.Show()
+				}
+//line UIAction.spx:31:1
+				if this.action == 6 {
+//line UIAction.spx:31:1
+					this.SetCostume__0("back" + this.langSuffix())
+//line UIAction.spx:31:1
+					this.SetXpos(-130)
+//line UIAction.spx:31:1
+					this.SetYpos(-150)
+//line UIAction.spx:31:1
+					this.Show()
+				}
+			}
+//line UIAction.spx:33:1
+			if this.state == 8 && this.action < 3 {
+//line UIAction.spx:34:1
+				if this.action < 2 {
+//line UIAction.spx:35:1
+					active := 0
+//line UIAction.spx:35:1
+					if this.language == this.action {
+//line UIAction.spx:35:1
+						active = 1
+					}
+//line UIAction.spx:36:1
+					this.SetCostume__0("language-" + strconv.Itoa(this.action) + "-" + strconv.Itoa(active) + this.langSuffix())
+//line UIAction.spx:37:1
+					this.SetXpos(float64((this.action*2 - 1) * 95))
+//line UIAction.spx:37:1
+					this.SetYpos(15)
+				} else {
+//line UIAction.spx:38:1
+					this.SetCostume__0("back" + this.langSuffix())
+//line UIAction.spx:38:1
+					this.SetXpos(0)
+//line UIAction.spx:38:1
+					this.SetYpos(-135)
+				}
+//line UIAction.spx:39:1
+				this.Show()
+			}
+//line UIAction.spx:41:1
+			if this.state == 4 && this.action < 5 {
+//line UIAction.spx:42:1
+				if this.action < 3 {
+//line UIAction.spx:43:1
+					active := 0
+//line UIAction.spx:43:1
+					if this.labClass == this.action {
+//line UIAction.spx:43:1
+						active = 1
+					}
+//line UIAction.spx:44:1
+					this.SetCostume__0("tab-" + strconv.Itoa(this.action) + "-" + strconv.Itoa(active) + this.langSuffix())
+//line UIAction.spx:44:1
+					this.SetXpos(float64((this.action - 1) * 145))
+//line UIAction.spx:44:1
+					this.SetYpos(92)
+				} else
+//line UIAction.spx:45:1
+				if this.action == 3 {
+//line UIAction.spx:45:1
+					this.SetCostume__0("buy" + this.langSuffix())
+//line UIAction.spx:45:1
+					this.SetXpos(85)
+//line UIAction.spx:45:1
+					this.SetYpos(-149)
+				} else {
+//line UIAction.spx:45:1
+					this.SetCostume__0("back" + this.langSuffix())
+//line UIAction.spx:45:1
+					this.SetXpos(-130)
+//line UIAction.spx:45:1
+					this.SetYpos(-149)
+				}
+//line UIAction.spx:46:1
+				this.Show()
+			}
+//line UIAction.spx:48:1
+			if this.state == 5 && this.action < 4 {
+//line UIAction.spx:49:1
+				if this.action < 3 {
+//line UIAction.spx:49:1
+					this.SetCostume__0("load-" + strconv.Itoa(this.action) + this.langSuffix())
+				} else {
+//line UIAction.spx:49:1
+					this.SetCostume__0("back" + this.langSuffix())
+				}
+//line UIAction.spx:50:1
+				this.SetXpos(float64(-162 + this.action*108))
+//line UIAction.spx:50:1
+				this.SetYpos(-126)
+//line UIAction.spx:50:1
+				this.Show()
+			}
+//line UIAction.spx:52:1
+			this.SetLayer__0(spx.Front)
+//line UIAction.spx:53:1
+			this.Wait(0.02)
+		})
+	})
+}
+//line Wallet.spx:3
+func (this *Wallet) Main() {
+//line Wallet.spx:3:1
+	this.OnStart(func() {
+//line Wallet.spx:4:1
+		this.Hide()
+//line Wallet.spx:5:1
+		for
+//line Wallet.spx:5:1
+		i := 0; i < 19;
+//line Wallet.spx:5:1
+		i++ {
+			spx.Sched()
+//line Wallet.spx:5:1
+			this.Clone__1(i)
+		}
+	})
+//line Wallet.spx:7:1
+	this.OnCloned__1(func(data any) {
+//line Wallet.spx:8:1
+		this.component = data.(int)
+//line Wallet.spx:9:1
+		digits := []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+//line Wallet.spx:10:1
+		spx.Forever(func() {
+//line Wallet.spx:11:1
+			this.Hide()
+//line Wallet.spx:12:1
+			if this.component < 14 {
+//line Wallet.spx:13:1
+				value := this.coins
+//line Wallet.spx:13:1
+				ordinal := this.component
+//line Wallet.spx:14:1
+				if this.component >= 7 {
+//line Wallet.spx:14:1
+					value = this.lifetimeCoins
+//line Wallet.spx:14:1
+					ordinal = this.component - 7
+				}
+//line Wallet.spx:15:1
+				if this.component < 7 && (this.state == 0 || this.state == 2 || this.state == 3 || this.state == -1 || this.state == 4 || this.state == 5) || this.state == 5 {
+//line Wallet.spx:16:1
+					divisor := 1
+//line Wallet.spx:16:1
+					for
+//line Wallet.spx:16:1
+					n := 0; n < 6-ordinal;
+//line Wallet.spx:16:1
+					n++ {
+						spx.Sched()
+//line Wallet.spx:16:1
+						divisor *= 10
+					}
+//line Wallet.spx:17:1
+					this.SetCostume__0("coin-" + digits[value/divisor%10])
+//line Wallet.spx:18:1
+					if this.state == 4 {
+//line Wallet.spx:19:1
+						this.SetXpos(float64(110 + ordinal*10))
+//line Wallet.spx:19:1
+						this.SetYpos(125)
+					} else
+//line Wallet.spx:20:1
+					if this.state == 5 {
+//line Wallet.spx:21:1
+						this.SetXpos(float64(-100 + ordinal*10))
+//line Wallet.spx:21:1
+						this.SetYpos(-36)
+//line Wallet.spx:22:1
+						if this.component >= 7 {
+//line Wallet.spx:22:1
+							this.SetYpos(-60)
+						}
+					} else {
+//line Wallet.spx:24:1
+						this.SetXpos(float64(-19 + ordinal*10))
+//line Wallet.spx:24:1
+						this.SetYpos(130)
+					}
+//line Wallet.spx:26:1
+					this.Show()
+				}
+			}
+//line Wallet.spx:29:1
+			if this.component == 14 && !this.frontEnd() {
+//line Wallet.spx:30:1
+				this.SetCostume__0("coin-label-" + strconv.Itoa(this.saveStatus) + this.langSuffix())
+//line Wallet.spx:30:1
+				this.SetXpos(-48)
+//line Wallet.spx:30:1
+				this.SetYpos(130)
+//line Wallet.spx:31:1
+				if this.state == 1 {
+//line Wallet.spx:31:1
+					this.SetXpos(96)
+//line Wallet.spx:31:1
+					this.SetYpos(148)
+				}
+//line Wallet.spx:32:1
+				this.Show()
+			}
+//line Wallet.spx:34:1
+			if this.component == 15 && (this.state == 4 || this.state == 5) {
+//line Wallet.spx:35:1
+				this.SetCostume__0("save-" + strconv.Itoa(this.saveStatus) + this.langSuffix())
+//line Wallet.spx:35:1
+				this.SetXpos(0)
+//line Wallet.spx:35:1
+				this.SetYpos(-82)
+//line Wallet.spx:35:1
+				this.Show()
+//line Wallet.spx:36:1
+				if this.state == 4 {
+//line Wallet.spx:36:1
+					this.SetYpos(-100)
+				}
+			}
+//line Wallet.spx:38:1
+			if this.component == 16 && (this.state == 4 || this.state == 5 || this.metaNoticeTicks > 0) && this.evolveNotice > 0 {
+//line Wallet.spx:39:1
+				if this.state == 4 || this.state == 5 {
+//line Wallet.spx:40:1
+					this.SetCostume__0("notice-" + strconv.Itoa(this.evolveNotice) + this.langSuffix())
+//line Wallet.spx:40:1
+					this.SetYpos(-112)
+//line Wallet.spx:41:1
+					if this.state == 4 {
+//line Wallet.spx:41:1
+						this.SetYpos(-118)
+					} else {
+//line Wallet.spx:41:1
+						this.SetYpos(-103)
+					}
+				} else {
+//line Wallet.spx:43:1
+					this.SetCostume__0("notice-toast-" + strconv.Itoa(this.evolveNotice) + this.langSuffix())
+//line Wallet.spx:43:1
+					this.SetYpos(-106)
+				}
+//line Wallet.spx:45:1
+				this.SetXpos(0)
+//line Wallet.spx:45:1
+				this.Show()
+			}
+//line Wallet.spx:47:1
+			this.SetLayer__0(spx.Front)
+//line Wallet.spx:48:1
+			this.Wait(0.02)
 		})
 	})
 }

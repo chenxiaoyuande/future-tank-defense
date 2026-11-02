@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="20" viewBox="0 0 32 20"><defs>
+<linearGradient id="leaf" x2=".3" y2="1"><stop stop-color="#fcc09d"/><stop offset=".45" stop-color="#e1976b"/><stop offset="1" stop-color="#ae7553"/></linearGradient>
+<radialGradient id="face" cx=".3" cy=".2" r=".85"><stop stop-color="#ffc39f"/><stop offset=".55" stop-color="#f1b998"/><stop offset="1" stop-color="#b97c58"/></radialGradient>
+<linearGradient id="gold" x2=".2" y2="1"><stop stop-color="#ffc39f"/><stop offset=".4" stop-color="#ffc39f"/><stop offset="1" stop-color="#df956a"/></linearGradient>
+<linearGradient id="petal" x2=".2" y2="1"><stop stop-color="#ffc39f"/><stop offset=".45" stop-color="#ffc39f"/><stop offset="1" stop-color="#ea9d6f"/></linearGradient>
+<radialGradient id="skin" cx=".3" cy=".2" r=".9"><stop stop-color="#f4bb99"/><stop offset=".5" stop-color="#d38d64"/><stop offset="1" stop-color="#b97c58"/></radialGradient>
+<linearGradient id="coat" x2=".8" y2="1"><stop stop-color="#e0966a"/><stop offset=".5" stop-color="#c1825c"/><stop offset="1" stop-color="#a66f4f"/></linearGradient>
+<radialGradient id="orb" cx=".35" cy=".3"><stop stop-color="#fff7f8"/><stop offset=".35" stop-color="#f9be9c"/><stop offset="1" stop-color="#c1825c"/></radialGradient>
+<linearGradient id="hedge" x2=".4" y2="1"><stop stop-color="#f2ba98"/><stop offset=".25" stop-color="#cf8b62"/><stop offset=".7" stop-color="#b47855"/><stop offset="1" stop-color="#a16c4c"/></linearGradient>
+<linearGradient id="stone" x2=".8" y2="1"><stop stop-color="#db9368"/><stop offset=".5" stop-color="#c2825c"/><stop offset="1" stop-color="#ad7452"/></linearGradient>
+</defs><path d="M1 10L10 5v10Z" fill="#ffc39f" opacity=".7"/><path d="M8 10L22 4l8 6-8 6Z" fill="url(#gold)" stroke="#ffc39f"/><path d="M12 8l-2-5 9 3m-7 6l-2 5 9-3" fill="#e4996c" stroke="#f8bd9b"/><ellipse cx="24" cy="10" rx="4" ry="3" fill="#ffc39f"/><path d="M-1 10Q3 10 3 6Q3 10 7 10Q3 10 3 14Q3 10 -1 10Z" fill="#ffc39f" opacity="1"/><path d="M16.0 5.6q-4.4 4.4 0 8.8 4.4 -4.4 0 -8.8Z" fill="none" stroke="#ffebbd" stroke-width="1"/></svg>
